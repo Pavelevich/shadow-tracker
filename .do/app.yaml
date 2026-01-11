@@ -1,0 +1,25 @@
+# Digital Ocean App Platform spec for Shadow Tracker API
+name: shadow-tracker-api
+
+services:
+  - name: api
+    dockerfile_path: Dockerfile
+    github:
+      repo: Pavelevich/shadow-tracker
+      branch: main
+      deploy_on_push: true
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    http_port: 3000
+    routes:
+      - path: /
+    envs:
+      - key: HELIUS_API_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: NODE_ENV
+        scope: RUN_TIME
+        value: production
+      - key: PORT
+        scope: RUN_TIME
+        value: "3000"
