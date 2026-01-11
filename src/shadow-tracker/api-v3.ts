@@ -15,10 +15,11 @@
  * Hackathon Bounties: Helius ($5,000) + Encrypt.trade ($1,000) + Privacy Track ($15,000)
  */
 
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import path from 'path';
 import * as dotenv from 'dotenv';
+import rateLimit from 'express-rate-limit';
 import AdvancedPrivacyAnalyzerV3 from './advanced-analyzer-v3';
 import { AdvancedPrivacyReportV3 } from './privacy-math-v3';
 
@@ -27,9 +28,72 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// ===========================================
+// ANTI-BOT & RATE LIMITING
+// ===========================================
+
+// General rate limit: 100 requests per 15 minutes per IP
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+  message: {
+    error: 'Too many requests',
+    message: 'Rate limit exceeded. Please try again later.',
+    retryAfter: '15 minutes'
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Strict rate limit for analyze endpoint: 10 requests per 5 minutes per IP
+const analyzeLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 10,
+  message: {
+    error: 'Too many analysis requests',
+    message: 'You can only analyze 10 wallets per 5 minutes. Please wait.',
+    retryAfter: '5 minutes'
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Bot detection middleware
+const botDetection = (req: Request, res: Response, next: NextFunction) => {
+  const userAgent = req.headers['user-agent'] || '';
+  const suspiciousAgents = ['curl', 'wget', 'python-requests', 'scrapy', 'bot', 'spider', 'crawler'];
+
+  // Check for missing or suspicious user agent
+  if (!userAgent || suspiciousAgents.some(agent => userAgent.toLowerCase().includes(agent))) {
+    // Allow but flag - don't block legitimate tools completely
+    (req as any).isSuspicious = true;
+  }
+
+  // Check for missing common headers (browsers always send these)
+  const hasAcceptHeader = req.headers['accept'];
+  const hasAcceptLanguage = req.headers['accept-language'];
+
+  if (!hasAcceptHeader && !hasAcceptLanguage) {
+    (req as any).isSuspicious = true;
+  }
+
+  next();
+};
+
+// Request logging for monitoring
+const requestLogger = (req: Request, res: Response, next: NextFunction) => {
+  const ip = req.ip || req.connection.remoteAddress;
+  const suspicious = (req as any).isSuspicious ? ' [SUSPICIOUS]' : '';
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} - ${ip}${suspicious}`);
+  next();
+};
+
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(botDetection);
+app.use(requestLogger);
+app.use(generalLimiter);
 
 // Initialize V3 Analyzer
 const apiKey = process.env.HELIUS_API_KEY;
@@ -83,7 +147,7 @@ app.get('/api/health', (req: Request, res: Response) => {
  * Full v3 wallet analysis
  * GET /api/v3/analyze/:address
  */
-app.get('/api/v3/analyze/:address', async (req: Request, res: Response) => {
+app.get('/api/v3/analyze/:address', analyzeLimiter, async (req: Request, res: Response) => {
   const { address } = req.params;
   const maxTransactions = parseInt(req.query.limit as string) || 100;
 
