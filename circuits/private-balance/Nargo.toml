@@ -1,0 +1,7 @@
+[package]
+name = "private_balance"
+type = "bin"
+authors = ["Solana Privacy Hackathon"]
+compiler_version = ">=0.30.0"
+
+[dependencies]

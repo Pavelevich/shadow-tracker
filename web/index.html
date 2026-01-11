@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow Tracker - Privacy Analyzer</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'SF Mono', monospace;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        input {
+            flex: 1;
+            background: #1a1a25;
+            border: 1px solid #2a2a3a;
+            border-radius: 8px;
+            padding: 15px;
+            color: #e0e0e0;
+            font-family: inherit;
+        }
+        button {
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            border: none;
+            border-radius: 8px;
+            padding: 15px 30px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .result {
+            background: #1a1a25;
+            border-radius: 12px;
+            padding: 30px;
+            display: none;
+        }
+        .result.active { display: block; }
+        .score { font-size: 4rem; text-align: center; margin: 20px 0; }
+        .upgrade-notice {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: #1a1a25;
+            border-radius: 8px;
+        }
+        .upgrade-notice a { color: #06b6d4; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SHADOW TRACKER v1.0</h1>
+        <div class="search-box">
+            <input type="text" id="wallet" placeholder="Enter Solana wallet address...">
+            <button onclick="analyze()">Analyze</button>
+        </div>
+        <div class="result" id="result">
+            <div class="score" id="score">--</div>
+            <pre id="details" style="overflow: auto; max-height: 400px; font-size: 0.8rem;"></pre>
+        </div>
+        <div class="upgrade-notice">
+            <p>Try the <a href="/">Advanced Dashboard (v2)</a> for:</p>
+            <p style="color: #888; margin-top: 10px;">Shannon Entropy, k-Anonymity, Graph Analysis, Attack Simulation</p>
+        </div>
+    </div>
+    <script>
+        async function analyze() {
+            const address = document.getElementById('wallet').value.trim();
+            if (!address) return;
+            try {
+                const res = await fetch('/api/v2/analyze/' + address);
+                const json = await res.json();
+                if (json.success) {
+                    document.getElementById('score').textContent = json.data.advancedPrivacyScore + '/100';
+                    document.getElementById('details').textContent = JSON.stringify(json.data, null, 2);
+                    document.getElementById('result').classList.add('active');
+                }
+            } catch (e) {
+                alert('Error: ' + e.message);
+            }
+        }
+    </script>
+</body>
+</html>

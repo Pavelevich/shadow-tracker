@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+*.js.map
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Noir artifacts
+circuits/*/target/
+circuits/*/proofs/
+circuits/*/Prover.toml
+circuits/*/Verifier.toml
+*.proof
+
+# Keys (NEVER commit)
+*.pem
+*.key
+id.json
+keypair.json
+*-keypair.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# Test coverage
+coverage/
+
+# Misc
+.cache/
+tmp/
+temp/
