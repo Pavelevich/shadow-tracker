@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://solana.com"><img src="https://img.shields.io/badge/Solana-Privacy%20Hackathon%202025-9945FF?style=flat-square&logo=solana" alt="Solana" /></a>
+  <a href="https://solana.com"><img src="https://img.shields.io/badge/Solana-Privacy%20Hackathon%202026-9945FF?style=flat-square&logo=solana" alt="Solana" /></a>
   <a href="https://helius.dev"><img src="https://img.shields.io/badge/Powered%20by-Helius%20API-E84142?style=flat-square" alt="Helius" /></a>
   <a href="#"><img src="https://img.shields.io/badge/Papers-10%20Academic-green?style=flat-square" alt="Papers" /></a>
   <a href="#"><img src="https://img.shields.io/badge/Attack%20Coverage-80%25-orange?style=flat-square" alt="Coverage" /></a>
@@ -297,7 +297,7 @@ AQFnRFkK8Jrxi91h2HCxQrdtdayWPSHKvAURR85ZeLWG
 
 ## License
 
-MIT License - Built for Solana Privacy Hackathon 2025
+MIT License - Built for Solana Privacy Hackathon 2026
 
 ---
 
