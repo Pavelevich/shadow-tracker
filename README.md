@@ -17,6 +17,11 @@
 </p>
 
 <p align="center">
+  <a href="https://solprivacy.xyz"><img src="https://img.shields.io/badge/🌐_Live_App-solprivacy.xyz-9945FF?style=for-the-badge" alt="Live App" /></a>
+  <a href="https://www.npmjs.com/package/solprivacy"><img src="https://img.shields.io/badge/📦_CLI-npm_install_solprivacy-14F195?style=for-the-badge" alt="NPM CLI" /></a>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
   <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node.js" />
   <img src="https://img.shields.io/badge/Express-000000?style=flat-square&logo=express&logoColor=white" alt="Express" />
@@ -38,14 +43,26 @@
 
 ---
 
-## Demo
+## Try It
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Live%20Demo-localhost:3000-success?style=for-the-badge" alt="Demo" />
-</p>
+### Web App (Live)
+
+👉 **[solprivacy.xyz](https://solprivacy.xyz)** - Just paste a wallet and go
+
+### CLI (Terminal)
 
 ```bash
-npm install && npm run api
+npm install -g solprivacy
+solprivacy
+```
+
+Then use `/analyze` to scan any wallet. [View on NPM →](https://www.npmjs.com/package/solprivacy)
+
+### Self-hosted
+
+```bash
+git clone https://github.com/Pavelevich/shadow-tracker.git
+cd shadow-tracker && npm install && npm run api
 # Open http://localhost:3000
 ```
 
@@ -292,6 +309,18 @@ AQFnRFkK8Jrxi91h2HCxQrdtdayWPSHKvAURR85ZeLWG
 # Heavy Dust Attack Victim
 4nepvZMsEGfK7GhFA4738VGTnQucnWwngN76Wem1EB4F
 ```
+
+---
+
+## Ecosystem
+
+| Project | Description | Link |
+|---------|-------------|------|
+| **Shadow Tracker API** | Core privacy analysis engine | [GitHub](https://github.com/Pavelevich/shadow-tracker) |
+| **SolPrivacy Web** | Web interface for wallet analysis | [solprivacy.xyz](https://solprivacy.xyz) |
+| **SolPrivacy CLI** | Terminal tool for privacy checks | [NPM](https://www.npmjs.com/package/solprivacy) • [GitHub](https://github.com/Pavelevich/solprivacy-cli) |
+
+Powered by **TETSUO** 🤖 - [View on Dexscreener](https://dexscreener.com/solana/69kdRLyP5DTRkpHraaSZAQbWmAwzF9guKjZfzMXzcbAs)
 
 ---
 
