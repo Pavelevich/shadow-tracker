@@ -9,6 +9,8 @@ import { MetricsGrid } from "@/components/MetricsGrid";
 import { TemporalFingerprint } from "@/components/TemporalFingerprint";
 import { DetailedAlerts } from "@/components/DetailedAlerts";
 import { Recommendations } from "@/components/Recommendations";
+import { IdentityFingerprint } from "@/components/IdentityFingerprint";
+import { Methodology } from "@/components/Methodology";
 import { Footer } from "@/components/Footer";
 import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 import { usePrivacyAnalysis } from "@/hooks/usePrivacyAnalysis";
@@ -119,10 +121,12 @@ const Index = () => {
                 <PrivacyScore data={data.data} />
                 <UrgentAlert data={data.data} />
                 <AttackSimulation data={data.data} />
+                <IdentityFingerprint data={data.data} />
                 <MetricsGrid data={data.data} />
                 <TemporalFingerprint data={data.data} />
                 <DetailedAlerts data={data.data} />
                 <Recommendations data={data.data} />
+                <Methodology data={data.data} />
               </motion.div>
             )}
           </AnimatePresence>

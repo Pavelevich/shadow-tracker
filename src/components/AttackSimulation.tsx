@@ -11,7 +11,7 @@ export function AttackSimulation({ data }: AttackSimulationProps) {
 
   const getRiskColor = (probability: number) => {
     if (probability >= 0.7) return "bg-critical";
-    if (probability >= 0.4) return "text-warning";
+    if (probability >= 0.4) return "bg-warning";
     return "bg-success";
   };
 

@@ -6,27 +6,40 @@ export interface PrivacyAnalysisResponse {
 
 export interface PrivacyData {
   address: string;
+  analysisTimestamp?: string;
+  version?: string;
   advancedPrivacyScore: number;
-  grade: "A" | "B" | "C" | "D" | "F";
-  riskLevel: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+  grade: "A+" | "A" | "B" | "C" | "D" | "F";
+  riskLevel: "MINIMAL" | "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
 
   entropy: {
     totalEntropy: number;
+    totalEntropyBits?: number;
     amountEntropy: number;
+    amountEntropyBits?: number;
     temporalEntropy: number;
+    temporalEntropyBits?: number;
     counterpartyEntropy: number;
+    counterpartyEntropyBits?: number;
+    typeEntropy?: number;
+    typeEntropyBits?: number;
+    interpretation?: string;
   };
 
   kAnonymity: {
     kValue: number;
     kAnonymityScore: number;
-    reIdentificationRisk: "LOW" | "MEDIUM" | "HIGH";
+    reIdentificationRisk: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+    quasiIdentifiers?: QuasiIdentifier[];
+    interpretation?: string;
   };
 
   attackSimulation: {
     scenarios: AttackScenario[];
     deAnonymizationProbability: number;
     estimatedTimeToDeAnon: string;
+    topAttackVectors?: string[];
+    interpretation?: string;
   };
 
   temporalAnalysis: {
@@ -34,62 +47,115 @@ export interface PrivacyData {
     timezoneConfidence: number;
     detectedPeriods: DetectedPeriod[];
     autocorrelation: number;
+    periodicityScore?: number;
+    burstinessCoefficient?: number;
+    interArrivalEntropy?: number;
+    interpretation?: string;
   };
 
   graph: {
     degree: number;
     detectedClusters: DetectedCluster[];
     graphPrivacyScore: number;
+    clusteringCoefficient?: number;
+    betweennessCentrality?: number;
+    hopsToExchange?: number | null;
+    hopsToMixer?: number | null;
+    hopsToDeFi?: number | null;
+    interpretation?: string;
   };
 
   dustAttack: {
     dustAttackDetected: boolean;
     dustTransactionsReceived: number;
+    dustTransactionsSent?: number;
     uniqueDustSenders: string[];
     dustVulnerability: number;
+    totalDustReceived?: number;
     linkingRisk: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+    interpretation?: string;
   };
 
   exchangeFingerprint: {
     exchangeInteractionDetected: boolean;
     detectedExchanges: DetectedExchange[];
     kycExposure: number;
+    exchangeDeposits?: number;
+    exchangeWithdrawals?: number;
+    totalExchangeVolume?: number;
+    traceabilityRisk?: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+    interpretation?: string;
   };
 
   networkCentrality: {
     networkVisibility: number;
     pageRank: number;
+    eigenvectorCentrality?: number;
+    closenessCentrality?: number;
+    betweennessCentrality?: number;
+    hubScore?: number;
+    authorityScore?: number;
+    interpretation?: string;
   };
 
   mixerDetection: {
     mixerUsageProbability: number;
+    mixerPatterns?: MixerPattern[];
+    privacyEnhancement?: number;
+    denominatedRatio?: number;
+    equalOutputCount?: number;
+    interpretation?: string;
   };
 
-  recommendations: Recommendation[];
-
-  // Optional fields that may be present
   mutualInformation?: {
     totalMutualInformation: number;
     amountTimeCorrelation?: number;
     amountCounterpartyCorrelation?: number;
     timeCounterpartyCorrelation?: number;
+    typeInformationLeakage?: number;
     privacyPreservationScore?: number;
+    interpretation?: string;
   };
+
   differentialPrivacy?: {
     epsilon: number;
     delta?: number;
     privacyBudgetUsed?: number;
+    sensitivity?: number;
+    requiredLaplaceNoise?: number;
+    dpRiskLevel?: "STRONG" | "MODERATE" | "WEAK" | "NONE";
+    interpretation?: string;
   };
+
   advancedClustering?: {
     clusteringVulnerability: number;
     commonInputClusterSize?: number;
     changeAddressConfidence?: number;
+    depositPatternScore?: number;
+    temporalClusterScore?: number;
+    amountClusterScore?: number;
+    detectedClusters?: AdvancedCluster[];
+    interpretation?: string;
   };
+
   crossChain?: {
     bridgeUsageDetected: boolean;
     bridgeTransactions?: number;
+    crossChainLinkability?: number;
     detectedBridges?: string[];
+    linkedChains?: LinkedChain[];
+    atomicSwapIndicators?: number;
+    interpretation?: string;
   };
+
+  methodology?: string[];
+  recommendations: Recommendation[];
+}
+
+export interface QuasiIdentifier {
+  identifier: string;
+  uniqueness: number;
+  description: string;
 }
 
 export interface AttackScenario {
@@ -97,10 +163,11 @@ export interface AttackScenario {
   probability: number;
   description: string;
   mitigation: string;
+  dataRequired?: string[];
 }
 
 export interface DetectedPeriod {
-  period: "Daily" | "Weekly" | "Monthly";
+  period: "Hourly" | "Daily" | "Weekly" | "Monthly";
   confidence: number;
 }
 
@@ -110,13 +177,34 @@ export interface DetectedCluster {
   reason: string;
 }
 
+export interface AdvancedCluster {
+  addresses: string[];
+  heuristic: string;
+  confidence: number;
+}
+
 export interface DetectedExchange {
   name: string;
   type: "CEX" | "DEX";
+  deposits?: number;
+  withdrawals?: number;
+  kycRequired?: boolean;
+}
+
+export interface MixerPattern {
+  type: "COINJOIN" | "TUMBLER" | "ATOMIC_SWAP" | "PRIVACY_POOL";
+  confidence: number;
+  transactions?: string[];
+}
+
+export interface LinkedChain {
+  chain: string;
+  confidence: number;
 }
 
 export interface Recommendation {
   action: string;
   impact: string;
   priority: "HIGH" | "MEDIUM" | "LOW";
+  entropyGain?: number;
 }

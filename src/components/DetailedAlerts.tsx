@@ -103,13 +103,40 @@ export function DetailedAlerts({ data }: DetailedAlertsProps) {
               </span>
             </div>
 
+            {exchangeFingerprint.exchangeDeposits !== undefined && (
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground text-sm">Deposits</span>
+                <span className="font-mono font-bold">{exchangeFingerprint.exchangeDeposits}</span>
+              </div>
+            )}
+
+            {exchangeFingerprint.exchangeWithdrawals !== undefined && (
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground text-sm">Withdrawals</span>
+                <span className="font-mono font-bold">{exchangeFingerprint.exchangeWithdrawals}</span>
+              </div>
+            )}
+
+            {exchangeFingerprint.traceabilityRisk && (
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground text-sm">Traceability Risk</span>
+                <span className={`px-2 py-0.5 rounded text-xs font-medium ${
+                  exchangeFingerprint.traceabilityRisk === 'CRITICAL' ? 'bg-critical/20 text-critical' :
+                  exchangeFingerprint.traceabilityRisk === 'HIGH' ? 'bg-warning/20 text-warning' :
+                  'bg-success/20 text-success'
+                }`}>
+                  {exchangeFingerprint.traceabilityRisk}
+                </span>
+              </div>
+            )}
+
             {exchangeFingerprint.detectedExchanges.length > 0 && (
               <div>
                 <span className="text-muted-foreground text-sm block mb-2">Detected Exchanges</span>
                 <div className="flex flex-wrap gap-2">
                   {exchangeFingerprint.detectedExchanges.map((exchange, index) => (
-                    <span 
-                      key={index} 
+                    <span
+                      key={index}
                       className={`px-2 py-1 rounded text-xs font-medium ${
                         exchange.type === 'CEX' ? 'bg-warning/20 text-warning' : 'bg-primary/20 text-primary'
                       }`}
