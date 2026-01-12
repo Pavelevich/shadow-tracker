@@ -4,8 +4,8 @@ export const PRIVACY_TOOLS: PrivacyTool[] = [
   {
     id: "light-protocol",
     name: "Light Protocol",
-    url: "https://shield.lightprotocol.com/",
-    description: "ZK compression for private shielded transactions. Break on-chain linkability with zero-knowledge proofs.",
+    url: "https://www.zkcompression.com/",
+    description: "ZK Compression framework for cost-efficient private transactions. Reduce costs by 99% with zero-knowledge proofs.",
     icon: "Shield",
     category: "shielding",
     improvesMetrics: ["entropy", "kAnonymity", "dustProtection", "graphPrivacy"],

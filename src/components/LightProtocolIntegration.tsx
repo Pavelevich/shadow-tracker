@@ -178,7 +178,7 @@ export function LightProtocolIntegration({ data }: LightProtocolIntegrationProps
 
           {/* CTA Button */}
           <motion.a
-            href="https://shield.lightprotocol.com/"
+            href="https://www.zkcompression.com/"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 w-full p-4 rounded-xl bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold hover:from-cyan-400 hover:to-cyan-500 transition-all shadow-lg shadow-cyan-500/25"
@@ -186,7 +186,7 @@ export function LightProtocolIntegration({ data }: LightProtocolIntegrationProps
             whileTap={{ scale: 0.98 }}
           >
             <Shield size={20} />
-            Start Shielding with Light Protocol
+            Explore Light Protocol ZK Compression
             <ExternalLink size={16} />
           </motion.a>
 
