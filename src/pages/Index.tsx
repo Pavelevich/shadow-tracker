@@ -11,6 +11,9 @@ import { DetailedAlerts } from "@/components/DetailedAlerts";
 import { Recommendations } from "@/components/Recommendations";
 import { IdentityFingerprint } from "@/components/IdentityFingerprint";
 import { Methodology } from "@/components/Methodology";
+import { PrivacyScoreComparison } from "@/components/PrivacyScoreComparison";
+import { PrivacyToolsRecommendations } from "@/components/PrivacyToolsRecommendations";
+import { LightProtocolIntegration } from "@/components/LightProtocolIntegration";
 import { Footer } from "@/components/Footer";
 import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 import { usePrivacyAnalysis } from "@/hooks/usePrivacyAnalysis";
@@ -120,7 +123,10 @@ const Index = () => {
 
                 <PrivacyScore data={data.data} />
                 <UrgentAlert data={data.data} />
+                <PrivacyScoreComparison data={data.data} />
                 <AttackSimulation data={data.data} />
+                <PrivacyToolsRecommendations data={data.data} />
+                <LightProtocolIntegration data={data.data} />
                 <IdentityFingerprint data={data.data} />
                 <MetricsGrid data={data.data} />
                 <TemporalFingerprint data={data.data} />

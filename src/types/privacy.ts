@@ -208,3 +208,48 @@ export interface Recommendation {
   priority: "HIGH" | "MEDIUM" | "LOW";
   entropyGain?: number;
 }
+
+// Privacy Tools Types
+export interface PrivacyTool {
+  id: string;
+  name: string;
+  url: string;
+  description: string;
+  icon: string;
+  category: "shielding" | "mixing" | "dex" | "mpc" | "wallet";
+  improvesMetrics: string[];
+  gradient: string;
+  borderColor: string;
+}
+
+export interface ToolRecommendation {
+  tool: PrivacyTool;
+  reason: string;
+  priority: "HIGH" | "MEDIUM" | "LOW";
+  relevantIssue: string;
+  projectedImprovement: number;
+}
+
+// Privacy Projection Types
+export interface PrivacyProjection {
+  currentScore: number;
+  projectedScore: number;
+  improvement: number;
+  metrics: MetricProjection[];
+}
+
+export interface MetricProjection {
+  name: string;
+  current: number;
+  projected: number;
+  improvement: number;
+}
+
+export interface LightProtocolProjection {
+  currentScore: number;
+  projectedScore: number;
+  improvement: number;
+  metrics: MetricProjection[];
+  benefits: string[];
+  shieldingSteps: string[];
+}
