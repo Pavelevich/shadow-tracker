@@ -68,13 +68,27 @@ export interface PrivacyData {
   recommendations: Recommendation[];
 
   // Optional fields that may be present
-  mutualInformation?: number;
+  mutualInformation?: {
+    totalMutualInformation: number;
+    amountTimeCorrelation?: number;
+    amountCounterpartyCorrelation?: number;
+    timeCounterpartyCorrelation?: number;
+    privacyPreservationScore?: number;
+  };
   differentialPrivacy?: {
     epsilon: number;
+    delta?: number;
+    privacyBudgetUsed?: number;
   };
-  advancedClustering?: number;
+  advancedClustering?: {
+    clusteringVulnerability: number;
+    commonInputClusterSize?: number;
+    changeAddressConfidence?: number;
+  };
   crossChain?: {
     bridgeUsageDetected: boolean;
+    bridgeTransactions?: number;
+    detectedBridges?: string[];
   };
 }
 

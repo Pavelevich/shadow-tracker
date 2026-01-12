@@ -29,8 +29,8 @@ export function MetricsGrid({ data }: MetricsGridProps) {
     },
     {
       name: "Data Leakage",
-      value: data.mutualInformation ? (1 - data.mutualInformation) * 100 : 75,
-      displayValue: data.mutualInformation ? `${((1 - data.mutualInformation) * 100).toFixed(0)}%` : "N/A",
+      value: data.mutualInformation ? (1 - data.mutualInformation.totalMutualInformation) * 100 : 75,
+      displayValue: data.mutualInformation ? `${((1 - data.mutualInformation.totalMutualInformation) * 100).toFixed(0)}%` : "N/A",
       icon: Lock,
       interpretation: "Amount of information leaked through transactions",
       inverted: true,
@@ -52,7 +52,7 @@ export function MetricsGrid({ data }: MetricsGridProps) {
     },
     {
       name: "Cluster Resistance",
-      value: data.advancedClustering ? (1 - data.advancedClustering) * 100 : data.graph.graphPrivacyScore,
+      value: data.advancedClustering ? (1 - data.advancedClustering.clusteringVulnerability) * 100 : data.graph.graphPrivacyScore,
       displayValue: `${data.graph.graphPrivacyScore}%`,
       icon: Network,
       interpretation: "Resistance to wallet clustering algorithms",
@@ -82,10 +82,10 @@ export function MetricsGrid({ data }: MetricsGridProps) {
     },
     {
       name: "Cross-chain Privacy",
-      value: data.crossChain?.bridgeUsageDetected ? 70 : 30,
-      displayValue: data.crossChain?.bridgeUsageDetected ? "Detected" : "None",
+      value: data.crossChain?.bridgeUsageDetected ? 40 : 100,
+      displayValue: data.crossChain?.bridgeUsageDetected ? "Bridges Used" : "No Bridges",
       icon: Fingerprint,
-      interpretation: data.crossChain?.bridgeUsageDetected ? "Bridge usage may link identities" : "No cross-chain activity detected",
+      interpretation: data.crossChain?.bridgeUsageDetected ? "Bridge usage may link identities" : "No cross-chain exposure",
     },
     {
       name: "Dust Attack Status",

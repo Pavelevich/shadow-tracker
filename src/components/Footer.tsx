@@ -28,7 +28,7 @@ export function Footer() {
 
           <div className="flex items-center gap-6">
             <a
-              href="https://github.com/solprivacy"
+              href="https://github.com/Pavelevich/solana-privacy-audit"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
@@ -37,7 +37,7 @@ export function Footer() {
               <span>GitHub</span>
               <ExternalLink size={14} />
             </a>
-            <span className="text-muted-foreground text-sm">v1.0.0</span>
+            <span className="text-muted-foreground text-sm">v3.1.0</span>
           </div>
         </div>
       </div>
