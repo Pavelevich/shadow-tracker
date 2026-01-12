@@ -42,7 +42,7 @@ export function getToolRecommendations(data: PrivacyData): ToolRecommendation[] 
 
   // Low entropy -> mixing services
   if (data.entropy.totalEntropy < 0.5) {
-    const tool = getToolById("privacy-cash");
+    const tool = getToolById("cyc-cash");
     if (tool && !addedToolIds.has(tool.id)) {
       recommendations.push({
         tool,
@@ -101,8 +101,8 @@ export function getToolRecommendations(data: PrivacyData): ToolRecommendation[] 
   }
 
   // High network visibility -> Privacy tools
-  if (data.networkCentrality.networkVisibility > 0.6 && !addedToolIds.has("privacy-cash")) {
-    const tool = getToolById("privacy-cash");
+  if (data.networkCentrality.networkVisibility > 0.6 && !addedToolIds.has("cyc-cash")) {
+    const tool = getToolById("cyc-cash");
     if (tool) {
       recommendations.push({
         tool,
