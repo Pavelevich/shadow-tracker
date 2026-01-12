@@ -9,7 +9,8 @@ import {
   Droplets,
   ExternalLink,
   AlertCircle,
-  CheckCircle
+  CheckCircle,
+  TrendingUp
 } from "lucide-react";
 import { PrivacyData, ToolRecommendation } from "@/types/privacy";
 import { getToolRecommendations } from "@/lib/privacyProjections";
@@ -45,11 +46,11 @@ export function PrivacyToolsRecommendations({ data }: PrivacyToolsRecommendation
   const getPriorityIcon = (priority: string) => {
     switch (priority) {
       case "HIGH":
-        return <AlertCircle size={14} />;
+        return <AlertCircle size={12} />;
       case "MEDIUM":
-        return <AlertCircle size={14} />;
+        return <AlertCircle size={12} />;
       default:
-        return <CheckCircle size={14} />;
+        return <CheckCircle size={12} />;
     }
   };
 
@@ -78,59 +79,67 @@ export function PrivacyToolsRecommendations({ data }: PrivacyToolsRecommendation
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 + 0.5 }}
-              className={`glass-card overflow-hidden hover:scale-[1.02] transition-transform`}
+              className="glass-card overflow-hidden hover:border-primary/30 transition-all duration-300 flex flex-col h-full"
             >
               {/* Gradient header */}
               <div className={`p-4 bg-gradient-to-r ${rec.tool.gradient} border-b ${rec.tool.borderColor}`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-lg bg-background/50 ${rec.tool.borderColor} border`}>
-                      <IconComponent className="text-primary" size={20} />
+                    <div className={`p-2.5 rounded-xl bg-background/80 ${rec.tool.borderColor} border shadow-lg`}>
+                      <IconComponent className="text-primary" size={22} />
                     </div>
                     <div>
-                      <h3 className="font-semibold">{rec.tool.name}</h3>
-                      <span className="text-xs text-muted-foreground capitalize">
+                      <h3 className="font-bold text-lg">{rec.tool.name}</h3>
+                      <span className="text-xs text-muted-foreground capitalize font-medium">
                         {rec.tool.category}
                       </span>
                     </div>
                   </div>
-                  <span className={`px-2 py-1 rounded text-xs font-medium border flex items-center gap-1 ${getPriorityStyle(rec.priority)}`}>
+                  <span className={`px-2.5 py-1 rounded-full text-xs font-bold border flex items-center gap-1.5 ${getPriorityStyle(rec.priority)}`}>
                     {getPriorityIcon(rec.priority)}
                     {rec.priority}
                   </span>
                 </div>
               </div>
 
-              {/* Content */}
-              <div className="p-4 space-y-3">
-                <p className="text-sm text-muted-foreground">
+              {/* Content - flex-grow to fill space */}
+              <div className="p-4 flex flex-col flex-grow">
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   {rec.tool.description}
                 </p>
 
                 {/* Why recommended */}
-                <div className="p-3 rounded-lg bg-muted/30 border border-border/30">
-                  <p className="text-xs text-muted-foreground mb-1">Why recommended:</p>
-                  <p className="text-sm font-medium">{rec.reason}</p>
+                <div className="mt-4 p-3 rounded-xl bg-muted/40 border border-border/50">
+                  <p className="text-xs text-muted-foreground mb-1 font-medium uppercase tracking-wider">Why recommended</p>
+                  <p className="text-sm font-medium leading-snug">{rec.reason}</p>
                 </div>
 
                 {/* Issue detected */}
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <AlertCircle size={12} className="text-warning" />
-                  <span>{rec.relevantIssue}</span>
+                <div className="mt-3 flex items-center gap-2 text-xs">
+                  <div className="p-1 rounded bg-warning/20">
+                    <AlertCircle size={10} className="text-warning" />
+                  </div>
+                  <span className="text-muted-foreground">{rec.relevantIssue}</span>
                 </div>
+
+                {/* Spacer to push bottom content down */}
+                <div className="flex-grow min-h-4" />
 
                 {/* Projected improvement */}
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground">Projected improvement</span>
-                  <span className="text-sm font-bold text-success">+{rec.projectedImprovement} pts</span>
+                <div className="mt-4 flex items-center justify-between p-3 rounded-xl bg-success/5 border border-success/20">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp size={14} className="text-success" />
+                    <span className="text-xs text-muted-foreground">Projected improvement</span>
+                  </div>
+                  <span className="text-lg font-bold text-success">+{rec.projectedImprovement} pts</span>
                 </div>
 
-                {/* CTA Button */}
+                {/* CTA Button - always at bottom */}
                 <motion.a
                   href={rec.tool.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full p-3 rounded-lg bg-primary/10 border border-primary/30 text-primary font-medium text-sm hover:bg-primary/20 transition-colors"
+                  className="mt-4 flex items-center justify-center gap-2 w-full p-3.5 rounded-xl bg-primary/10 border border-primary/30 text-primary font-semibold text-sm hover:bg-primary/20 hover:border-primary/50 transition-all"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -144,7 +153,7 @@ export function PrivacyToolsRecommendations({ data }: PrivacyToolsRecommendation
       </div>
 
       {/* Disclaimer */}
-      <p className="text-xs text-muted-foreground mt-4 text-center">
+      <p className="text-xs text-muted-foreground mt-6 text-center opacity-70">
         Projected improvements are estimates based on typical usage patterns. Actual results may vary.
       </p>
     </motion.section>
