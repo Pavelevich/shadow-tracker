@@ -88,7 +88,7 @@ export default function Home() {
   };
 
   const copyCliCommand = () => {
-    navigator.clipboard.writeText("npm install -g solprivacy-cli");
+    navigator.clipboard.writeText("npx solprivacy");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -313,13 +313,13 @@ export default function Home() {
 
               <div className="p-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Install Command */}
+                  {/* Run Command */}
                   <div>
-                    <p className="text-[11px] text-muted-foreground mb-2">Install globally:</p>
+                    <p className="text-[11px] text-muted-foreground mb-2">Run instantly (no install):</p>
                     <div className="relative">
                       <div className="bg-black/50 rounded-lg p-3 font-mono text-xs">
                         <span className="text-muted-foreground">$ </span>
-                        <span className="text-green-400">npm install -g solprivacy-cli</span>
+                        <span className="text-green-400">npx solprivacy</span>
                       </div>
                       <Button
                         size="sm"
@@ -336,21 +336,21 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* Commands */}
+                  {/* Features */}
                   <div>
-                    <p className="text-[11px] text-muted-foreground mb-2">Available commands:</p>
+                    <p className="text-[11px] text-muted-foreground mb-2">Features:</p>
                     <div className="space-y-1.5">
                       <div className="flex items-center gap-2 text-[11px]">
                         <code className="px-1.5 py-0.5 rounded bg-muted/30 text-primary font-mono">
-                          dust scan
+                          /analyze
                         </code>
-                        <span className="text-muted-foreground">Scan for closeable accounts</span>
+                        <span className="text-muted-foreground">Full privacy analysis</span>
                       </div>
                       <div className="flex items-center gap-2 text-[11px]">
                         <code className="px-1.5 py-0.5 rounded bg-muted/30 text-amber-400 font-mono">
-                          dust clean
+                          /agent
                         </code>
-                        <span className="text-muted-foreground">Close accounts & recover SOL</span>
+                        <span className="text-muted-foreground">AI-powered recommendations</span>
                       </div>
                     </div>
                   </div>
@@ -373,13 +373,13 @@ export default function Home() {
                     </span>
                   </div>
                   <a
-                    href="https://github.com/pchm-solprivacy/solprivacy-cli"
+                    href="https://www.npmjs.com/package/solprivacy"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 text-xs text-primary hover:underline"
                   >
-                    <Github size={14} />
-                    View on GitHub
+                    <Terminal size={14} />
+                    View on npm
                     <ExternalLink size={10} />
                   </a>
                 </div>

@@ -10,7 +10,6 @@ import {
   Terminal,
   Copy,
   Check,
-  Github,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PrivacyData } from "@/types/privacy";
@@ -43,8 +42,7 @@ export function DustCleaner({ data }: DustCleanerProps) {
 
   const risk = getRiskLevel();
 
-  const scanCommand = `solprivacy dust scan ${data.address}`;
-  const cleanCommand = `solprivacy dust clean ${data.address} --keypair ~/.config/solana/id.json`;
+  const cliCommand = `npx solprivacy`;
 
   const copyCommand = (cmd: string) => {
     navigator.clipboard.writeText(cmd);
@@ -148,26 +146,21 @@ export function DustCleaner({ data }: DustCleanerProps) {
         </div>
 
         <div className="p-4 space-y-3">
-          {/* Install */}
-          <div className="text-[11px] text-muted-foreground mb-2">
-            <span className="text-white">1.</span> Install: <code className="text-primary">npm i -g solprivacy-cli</code>
-          </div>
-
-          {/* Scan Command */}
+          {/* Run Command */}
           <div>
             <div className="text-[11px] text-muted-foreground mb-1">
-              <span className="text-white">2.</span> Scan for dust tokens:
+              Run the CLI and paste your wallet:
             </div>
             <div className="relative">
               <div className="bg-black/50 rounded-lg p-2 font-mono text-[11px] overflow-x-auto">
                 <span className="text-muted-foreground">$ </span>
-                <span className="text-green-400 break-all">{scanCommand}</span>
+                <span className="text-green-400 break-all">{cliCommand}</span>
               </div>
               <Button
                 size="sm"
                 variant="ghost"
                 className="absolute top-0.5 right-0.5 h-6 w-6 p-0"
-                onClick={() => copyCommand(scanCommand)}
+                onClick={() => copyCommand(cliCommand)}
               >
                 {copied ? (
                   <Check size={12} className="text-green-400" />
@@ -178,21 +171,20 @@ export function DustCleaner({ data }: DustCleanerProps) {
             </div>
           </div>
 
-          {/* Clean Command */}
+          {/* Wallet to paste */}
           <div>
             <div className="text-[11px] text-muted-foreground mb-1">
-              <span className="text-white">3.</span> Clean and recover SOL:
+              Then paste this wallet address:
             </div>
             <div className="relative">
               <div className="bg-black/50 rounded-lg p-2 font-mono text-[11px] overflow-x-auto">
-                <span className="text-muted-foreground">$ </span>
-                <span className="text-amber-400 break-all">{cleanCommand}</span>
+                <span className="text-primary break-all">{data.address}</span>
               </div>
               <Button
                 size="sm"
                 variant="ghost"
                 className="absolute top-0.5 right-0.5 h-6 w-6 p-0"
-                onClick={() => copyCommand(cleanCommand)}
+                onClick={() => copyCommand(data.address)}
               >
                 <Copy size={12} />
               </Button>
@@ -215,15 +207,15 @@ export function DustCleaner({ data }: DustCleanerProps) {
             </div>
           </div>
 
-          {/* GitHub Link */}
+          {/* NPM Link */}
           <a
-            href="https://github.com/pchm-solprivacy/solprivacy-cli"
+            href="https://www.npmjs.com/package/solprivacy"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 w-full p-2 rounded-lg bg-muted/20 border border-border/30 hover:border-primary/30 transition-colors text-xs"
           >
-            <Github size={14} />
-            View on GitHub
+            <Terminal size={14} />
+            View on npm
             <ExternalLink size={10} />
           </a>
         </div>
