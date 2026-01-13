@@ -1,171 +1,133 @@
-# SolPrivacy - Solana Wallet Privacy Analyzer
+<p align="center">
+  <img src="https://img.shields.io/badge/Solana-Privacy-9945FF?style=for-the-badge&logo=solana&logoColor=white" alt="Solana Privacy"/>
+  <img src="https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React 18"/>
+  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript"/>
+  <img src="https://img.shields.io/npm/v/solprivacy?style=for-the-badge&logo=npm&logoColor=white&label=CLI&color=CB3837" alt="npm"/>
+</p>
 
-> **"Your wallet is talking. We show you what it's saying."**
+<h1 align="center">SolPrivacy</h1>
 
-Advanced privacy analysis tool for Solana wallets using information theory, graph analysis, and blockchain forensics techniques from academic research.
+<p align="center">
+  <strong>Your wallet is talking. We show you what it's saying.</strong>
+</p>
 
-**Live Demo:** [https://solprivacy.xyz](https://solprivacy.xyz)
+<p align="center">
+  Advanced privacy analysis for Solana wallets using information theory,<br/>
+  graph analysis, and blockchain forensics from academic research.
+</p>
+
+<p align="center">
+  <a href="https://solprivacy.xyz"><strong>Live Demo</strong></a> ·
+  <a href="https://www.npmjs.com/package/solprivacy"><strong>CLI Tool</strong></a> ·
+  <a href="#api-reference"><strong>API Docs</strong></a>
+</p>
 
 ---
 
-## Overview
+## The Problem
 
-SolPrivacy analyzes any Solana wallet address and reveals how much information it leaks to blockchain observers, exchanges, and potential adversaries. Using the same techniques employed by Chainalysis, Elliptic, and academic researchers, we show users their true privacy posture.
+Every Solana transaction is **permanently recorded** on a public ledger. While addresses appear anonymous, patterns in your transactions can reveal:
 
-### The Problem
-
-Every Solana transaction is permanently recorded on a public ledger. While addresses are pseudonymous, patterns in your transactions can reveal:
-- Your real-world identity
-- Your financial habits and net worth
-- Your timezone and location
-- Your connections to other wallets
-- Your exchange accounts (KYC exposure)
+| What's Exposed | How It's Detected |
+|----------------|-------------------|
+| Your real identity | Exchange KYC correlation |
+| Net worth & holdings | Token balance analysis |
+| Geographic location | Transaction timing patterns |
+| Social connections | Counterparty graph analysis |
+| Trading strategies | Behavioral fingerprinting |
 
 **Most users have no idea how exposed they are.**
 
-### Our Solution
+---
 
-SolPrivacy provides:
-1. **Comprehensive Privacy Score** - Single metric (0-100) summarizing your privacy
-2. **Attack Simulation** - Shows how adversaries could de-anonymize you
-3. **Actionable Recommendations** - Links to privacy tools that can help
-4. **Educational Content** - Explains what makes you vulnerable
+## How It Works
+
+SolPrivacy uses the same techniques employed by **Chainalysis**, **Elliptic**, and academic researchers to analyze your wallet's privacy posture.
+
+### Privacy Score (0-100)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  CRITICAL   │   HIGH    │  MODERATE  │   LOW    │  MINIMAL  │
+│    0-20     │   21-40   │   41-60    │  61-80   │   81-100  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Attack Simulations
+
+| Attack Vector | Description |
+|---------------|-------------|
+| **Temporal Fingerprinting** | Infer timezone from transaction timing |
+| **Dust Attack Tracking** | Detect malicious micro-deposits |
+| **Graph Topology** | Cluster wallets via network analysis |
+| **Exchange Correlation** | Match to KYC'd exchange accounts |
+| **Amount Heuristics** | Identify patterns in transaction amounts |
+
+### Scientific Metrics
+
+| Metric | What It Measures |
+|--------|------------------|
+| **Shannon Entropy** | Transaction randomness/predictability |
+| **K-Anonymity** | How many wallets share your fingerprint |
+| **Clustering Coefficient** | Network interconnectedness |
+| **Differential Privacy (ε)** | Privacy guarantees against inference |
 
 ---
 
-## Scientific Methodology
+## Quick Start
 
-Our analysis is grounded in peer-reviewed academic research:
+### Option 1: CLI with AI Agent (Recommended)
 
-### Information Theory Metrics
+```bash
+npm install -g solprivacy
+```
 
-| Metric | Formula | What It Measures |
-|--------|---------|------------------|
-| **Shannon Entropy** | H(X) = -Σ p(x) log₂ p(x) | Transaction randomness/predictability |
-| **Mutual Information** | I(X;Y) = H(X) - H(X\|Y) | Correlation between transaction features |
-| **Differential Privacy (ε)** | Pr[M(D)∈S] ≤ eᵋ × Pr[M(D')∈S] | Privacy guarantees against inference |
+```bash
+solprivacy
+```
 
-### K-Anonymity Analysis
+The CLI includes an **AI-powered agent** that can:
+- Analyze wallets with natural language queries
+- Simulate attacks on your wallet
+- Compare privacy between wallets
+- Generate detailed reports
 
-Based on Sweeney's k-anonymity model, we identify **quasi-identifiers** - combinations of attributes that can uniquely identify your wallet:
+### Option 2: Web Interface
 
-- Transaction amounts (round numbers are distinctive)
-- Transaction timing (reveals timezone)
-- Counterparty patterns (who you transact with)
-- Token preferences (what you hold/trade)
+Visit **[solprivacy.xyz](https://solprivacy.xyz)** and paste any Solana wallet address.
 
-**k-value** represents how many other wallets share your behavioral fingerprint. Lower k = easier to identify.
+### Option 3: Self-Host
 
-### Graph Topology Analysis
-
-Using network science techniques:
-
-| Metric | Description |
-|--------|-------------|
-| **Degree Centrality** | Number of unique counterparties |
-| **Clustering Coefficient** | How interconnected your contacts are |
-| **Betweenness Centrality** | Your position in transaction flows |
-| **PageRank** | Your "importance" in the network |
-
-### Attack Vector Simulation
-
-We simulate real-world de-anonymization attacks:
-
-1. **Temporal Fingerprinting** - Timezone inference from transaction timing
-2. **Dust Attack Tracking** - Malicious small deposits to track spending
-3. **Graph Topology Attack** - Network analysis to cluster wallets
-4. **Exchange Correlation** - Matching deposits/withdrawals to KYC'd accounts
-5. **Amount Heuristics** - Round number and change address analysis
+```bash
+git clone https://github.com/Pavelevich/shadow-tracker.git
+cd shadow-tracker
+npm install
+npm run dev
+```
 
 ---
 
 ## Features
 
 ### Privacy Score Dashboard
-- Overall score (0-100) with letter grade
-- Risk level indicator (MINIMAL → CRITICAL)
-- Before/after comparison showing improvement potential
+- Overall score with letter grade (A-F)
+- Risk level classification
+- Before/after improvement projections
 
 ### Attack Simulation
-- Probability of de-anonymization by attack type
-- Estimated time for adversary to identify you
-- Specific vulnerabilities in your wallet
+- Probability of de-anonymization per attack type
+- Estimated time for adversary identification
+- Specific vulnerability breakdown
 
 ### Identity Fingerprint
-- K-anonymity value (how unique you are)
-- Quasi-identifiers making you distinctive
-- Graph statistics (connections, clustering)
+- K-anonymity value
+- Quasi-identifiers analysis
+- Graph topology statistics
 
-### Detailed Alerts
-- Dust attack detection and sender analysis
-- Exchange/KYC exposure measurement
-- Traceability risk assessment
-
-### Privacy Tools Recommendations
-- Personalized tool suggestions based on your issues
-- Links to: Light Protocol, Arcium, Dust Protocol, Jupiter, Raydium
-- Projected improvement scores for each tool
-
-### Protocol Integrations
-- **Light Protocol** - ZK compression for shielded transactions
-- **Arcium** - MPC for confidential computing
-
----
-
-## Tech Stack
-
-| Layer | Technology |
-|-------|------------|
-| Frontend | React 18, TypeScript, Vite |
-| Styling | TailwindCSS, Framer Motion |
-| UI Components | shadcn/ui |
-| API | Express.js, Node.js |
-| Blockchain | Solana Web3.js, Helius RPC |
-| Hosting | Digital Ocean, Nginx |
-
----
-
-## Getting Started
-
-### Prerequisites
-- Node.js 18+
-- npm or yarn
-
-### Option 1: CLI Tool (Recommended)
-
-```bash
-# Install globally
-npm install -g solprivacy
-
-# Run the CLI
-solprivacy
-```
-
-The CLI includes an AI-powered agent with attack simulations, wallet comparison, and more.
-
-**npm:** [npmjs.com/package/solprivacy](https://www.npmjs.com/package/solprivacy)
-
-### Option 2: Web Frontend
-
-```bash
-# Clone the repository
-git clone https://github.com/Pavelevich/shadow-tracker.git
-
-# Navigate to project
-cd shadow-tracker
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-```
-
-### Environment Variables
-
-```env
-VITE_API_URL=https://solprivacy.xyz/api/v3
-```
+### Actionable Recommendations
+- Personalized privacy tool suggestions
+- Direct integration with Light Protocol, Arcium
+- Projected score improvements
 
 ---
 
@@ -174,70 +136,91 @@ VITE_API_URL=https://solprivacy.xyz/api/v3
 ### Analyze Wallet
 
 ```
-GET /api/v3/analyze/:walletAddress
+GET https://solprivacy.xyz/api/v3/analyze/:walletAddress
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
-  "cached": false,
   "data": {
     "address": "...",
     "advancedPrivacyScore": 42,
     "grade": "D",
     "riskLevel": "HIGH",
-    "entropy": { ... },
-    "kAnonymity": { ... },
-    "attackSimulation": { ... },
-    "temporalAnalysis": { ... },
-    "graph": { ... },
-    "dustAttack": { ... },
-    "exchangeFingerprint": { ... },
-    "recommendations": [ ... ]
+    "entropy": {
+      "totalEntropy": 0.73,
+      "amountEntropy": 0.65,
+      "temporalEntropy": 0.81
+    },
+    "kAnonymity": {
+      "kValue": 12,
+      "quasiIdentifiers": ["timing", "amounts"]
+    },
+    "attackSimulation": {
+      "temporalAttack": { "probability": 0.78 },
+      "graphAttack": { "probability": 0.45 }
+    },
+    "recommendations": [...]
   }
 }
 ```
 
 ---
 
-## Academic References
+## Tech Stack
 
-1. Meiklejohn, S. et al. (2013). "A Fistful of Bitcoins: Characterizing Payments Among Men with No Names." *IMC '13*
-
-2. Ron, D. & Shamir, A. (2013). "Quantitative Analysis of the Full Bitcoin Transaction Graph." *Financial Cryptography*
-
-3. Sweeney, L. (2002). "k-Anonymity: A Model for Protecting Privacy." *International Journal of Uncertainty*
-
-4. Narayanan, A. & Shmatikov, V. (2009). "De-anonymizing Social Networks." *IEEE S&P*
-
-5. Möser, M. et al. (2018). "An Empirical Analysis of Traceability in the Monero Blockchain." *PoPETs*
-
-6. Biryukov, A. et al. (2014). "Deanonymisation of Clients in Bitcoin P2P Network." *CCS '14*
+| Layer | Technology |
+|-------|------------|
+| **Frontend** | React 18, TypeScript, Vite |
+| **Styling** | TailwindCSS, Framer Motion |
+| **Components** | shadcn/ui |
+| **Backend** | Express.js, Node.js |
+| **Blockchain** | Helius Enhanced API |
+| **Hosting** | Digital Ocean |
 
 ---
 
-## Hackathon Submission
+## Research Foundation
 
-**Solana Privacy Hackathon (January 2026)**
+Our methodology is grounded in peer-reviewed academic research:
 
-### Bounties Targeted
+- Meiklejohn et al. (2013) - *"A Fistful of Bitcoins"* - IMC '13
+- Ron & Shamir (2013) - *"Quantitative Analysis of Bitcoin Transaction Graph"*
+- Sweeney (2002) - *"k-Anonymity: A Model for Protecting Privacy"*
+- Narayanan & Shmatikov (2009) - *"De-anonymizing Social Networks"* - IEEE S&P
+- Möser et al. (2018) - *"Traceability in the Monero Blockchain"* - PoPETs
 
-| Bounty | Prize | Fit |
-|--------|-------|-----|
-| Encrypt.trade - Educate about Privacy | $1,000 | Educational tool showing privacy risks |
-| Open Track | $18,000 | Privacy-focused analysis tooling |
-| Helius - Best Privacy Project | $5,000 | Comprehensive privacy solution |
-| Light Protocol | Sponsor | Dedicated integration section |
-| Arcium | Sponsor | MPC integration section |
+---
 
-### Why SolPrivacy?
+## Integrations
 
-1. **Educational Impact** - Users learn exactly how they're vulnerable
-2. **Actionable** - Direct links to tools that can help
-3. **Scientific Rigor** - Based on peer-reviewed research
-4. **Beautiful UX** - Makes complex data accessible
-5. **Real Data** - Analyzes actual mainnet transactions
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <a href="https://lightprotocol.com">
+        <strong>Light Protocol</strong>
+      </a>
+      <br/>
+      ZK Compression
+    </td>
+    <td align="center" width="33%">
+      <a href="https://helius.dev">
+        <strong>Helius</strong>
+      </a>
+      <br/>
+      Enhanced RPC
+    </td>
+    <td align="center" width="33%">
+      <a href="https://arcium.com">
+        <strong>Arcium</strong>
+      </a>
+      <br/>
+      Confidential MPC
+    </td>
+  </tr>
+</table>
 
 ---
 
@@ -247,11 +230,12 @@ MIT License - See [LICENSE](LICENSE) for details.
 
 ---
 
-## Contact
+<p align="center">
+  <a href="https://solprivacy.xyz">Website</a> ·
+  <a href="https://www.npmjs.com/package/solprivacy">npm</a> ·
+  <a href="https://github.com/Pavelevich/solprivacy-cli">CLI Repo</a>
+</p>
 
-- **Website:** [solprivacy.xyz](https://solprivacy.xyz)
-- **GitHub:** [github.com/Pavelevich/shadow-tracker](https://github.com/Pavelevich/shadow-tracker)
-
----
-
-Built with privacy in mind for the Solana Privacy Hackathon 2026.
+<p align="center">
+  <sub>Built for the Solana ecosystem</sub>
+</p>
