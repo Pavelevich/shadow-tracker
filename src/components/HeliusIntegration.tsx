@@ -65,20 +65,13 @@ export function HeliusIntegration({ data }: HeliusIntegrationProps) {
                 </svg>
               </div>
               <div>
-                <h2 className="text-xl font-bold flex items-center gap-2">
+                <h2 className="text-xl font-bold">
                   Powered by Helius
-                  <span className="px-2 py-0.5 rounded text-xs bg-orange-500/20 text-orange-400 border border-orange-500/30">
-                    Core Infrastructure
-                  </span>
                 </h2>
                 <p className="text-muted-foreground text-sm">
                   100% of privacy analysis data sourced from Helius Enhanced API
                 </p>
               </div>
-            </div>
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-orange-500/10 border border-orange-500/30">
-              <span className="text-2xl font-bold text-orange-400">$5,000</span>
-              <span className="text-xs text-orange-300">Bounty</span>
             </div>
           </div>
         </div>
@@ -185,7 +178,7 @@ export function HeliusIntegration({ data }: HeliusIntegrationProps) {
           </div>
 
           <p className="text-xs text-muted-foreground text-center">
-            Helius offers a <span className="text-orange-400 font-semibold">$5,000 bounty</span> for the Best Privacy Project. SolPrivacy is built 100% on Helius infrastructure.
+            SolPrivacy is built 100% on <span className="text-orange-400 font-semibold">Helius infrastructure</span> for reliable, real-time blockchain data.
           </p>
         </div>
       </div>

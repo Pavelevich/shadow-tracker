@@ -33,20 +33,13 @@ export function LightProtocolIntegration({ data }: LightProtocolIntegrationProps
                 <Shield className="text-cyan-400" size={28} />
               </div>
               <div>
-                <h2 className="text-xl font-bold flex items-center gap-2">
+                <h2 className="text-xl font-bold">
                   Light Protocol Integration
-                  <span className="px-2 py-0.5 rounded text-xs bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
-                    Open Track Sponsor
-                  </span>
                 </h2>
                 <p className="text-muted-foreground text-sm">
                   ZK shielding can dramatically improve your privacy score
                 </p>
               </div>
-            </div>
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
-              <span className="text-2xl font-bold text-cyan-400">$18,000</span>
-              <span className="text-xs text-cyan-300">Bounty</span>
             </div>
           </div>
         </div>
@@ -185,7 +178,7 @@ export function LightProtocolIntegration({ data }: LightProtocolIntegrationProps
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-3">
             <motion.a
-              href="https://shield.lightprotocol.com/"
+              href="https://lightprotocol.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex-1 flex items-center justify-center gap-2 p-4 rounded-xl bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold hover:from-cyan-400 hover:to-cyan-500 transition-all shadow-lg shadow-cyan-500/25"
@@ -193,7 +186,7 @@ export function LightProtocolIntegration({ data }: LightProtocolIntegrationProps
               whileTap={{ scale: 0.98 }}
             >
               <Shield size={20} />
-              Shield Your Assets Now
+              Explore Light Protocol
               <ExternalLink size={16} />
             </motion.a>
             <motion.a
@@ -210,7 +203,7 @@ export function LightProtocolIntegration({ data }: LightProtocolIntegrationProps
           </div>
 
           <p className="text-xs text-muted-foreground text-center">
-            Light Protocol sponsors the <span className="text-cyan-400 font-semibold">$18,000 Open Track</span> bounty. Start shielding to improve your privacy score.
+            Light Protocol enables ZK shielded transactions on Solana. Start shielding to improve your privacy score.
           </p>
         </div>
       </div>
