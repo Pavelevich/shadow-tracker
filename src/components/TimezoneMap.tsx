@@ -172,28 +172,28 @@ export function TimezoneMap({ data }: TimezoneMapProps) {
 
             {/* Timezone label */}
             <div
-              className="absolute top-1/2 -translate-y-1/2 bg-black/80 backdrop-blur-sm rounded-lg px-4 py-3 border-2"
+              className="absolute top-1/2 -translate-y-1/2 bg-black/80 backdrop-blur-sm rounded-md md:rounded-lg px-2 py-1 md:px-4 md:py-3 border-2"
               style={{
                 left: `${((tzData.center + 180) / 360) * 100}%`,
                 transform: 'translate(-50%, -50%)',
                 borderColor: getConfidenceColor()
               }}
             >
-              <p className="text-2xl font-bold text-center" style={{ color: getConfidenceColor() }}>
+              <p className="text-xs sm:text-base md:text-2xl font-bold text-center whitespace-nowrap" style={{ color: getConfidenceColor() }}>
                 {timezone}
               </p>
             </div>
 
             {/* Confidence badge */}
             <div
-              className="absolute top-4 right-4 px-3 py-2 rounded-lg border"
+              className="absolute top-2 right-2 md:top-4 md:right-4 px-2 py-1 md:px-3 md:py-2 rounded-md md:rounded-lg border"
               style={{
                 backgroundColor: `${getConfidenceColor()}20`,
                 borderColor: `${getConfidenceColor()}50`
               }}
             >
-              <p className="text-xs text-muted-foreground">Detection Confidence</p>
-              <p className="text-xl font-bold" style={{ color: getConfidenceColor() }}>
+              <p className="text-[10px] md:text-xs text-muted-foreground">Confidence</p>
+              <p className="text-sm md:text-xl font-bold" style={{ color: getConfidenceColor() }}>
                 {(confidence * 100).toFixed(0)}%
               </p>
             </div>
