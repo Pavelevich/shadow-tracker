@@ -1,46 +1,44 @@
 import { motion } from "framer-motion";
-import { Globe, MapPin, AlertTriangle, Clock } from "lucide-react";
+import { Globe, AlertTriangle, Clock } from "lucide-react";
 import { PrivacyData } from "@/types/privacy";
 import {
   ComposableMap,
   Geographies,
   Geography,
-  Marker,
-  ZoomableGroup,
 } from "react-simple-maps";
 
 interface TimezoneMapProps {
   data: PrivacyData;
 }
 
-// Timezone to coordinates mapping (longitude, latitude)
-const timezoneToCoords: Record<string, { coords: [number, number]; city: string; region: string }> = {
-  "UTC-12": { coords: [-176.6, -1.0], city: "Baker Island", region: "Pacific" },
-  "UTC-11": { coords: [-171.0, -14.3], city: "Pago Pago", region: "American Samoa" },
-  "UTC-10": { coords: [-155.5, 19.9], city: "Honolulu", region: "Hawaii, USA" },
-  "UTC-9": { coords: [-149.9, 61.2], city: "Anchorage", region: "Alaska, USA" },
-  "UTC-8": { coords: [-118.2, 34.1], city: "Los Angeles", region: "US Pacific" },
-  "UTC-7": { coords: [-104.9, 39.7], city: "Denver", region: "US Mountain" },
-  "UTC-6": { coords: [-87.6, 41.9], city: "Chicago", region: "US Central" },
-  "UTC-5": { coords: [-74.0, 40.7], city: "New York", region: "US Eastern" },
-  "UTC-4": { coords: [-66.1, 18.5], city: "San Juan", region: "Puerto Rico" },
-  "UTC-3": { coords: [-43.2, -22.9], city: "Rio de Janeiro", region: "Brazil" },
-  "UTC-2": { coords: [-30.0, -20.0], city: "Mid-Atlantic", region: "Atlantic Ocean" },
-  "UTC-1": { coords: [-25.7, 37.7], city: "Azores", region: "Portugal" },
-  "UTC+0": { coords: [-0.1, 51.5], city: "London", region: "United Kingdom" },
-  "UTC+1": { coords: [2.3, 48.9], city: "Paris", region: "France" },
-  "UTC+2": { coords: [30.5, 50.5], city: "Kyiv", region: "Ukraine" },
-  "UTC+3": { coords: [37.6, 55.8], city: "Moscow", region: "Russia" },
-  "UTC+4": { coords: [55.3, 25.3], city: "Dubai", region: "UAE" },
-  "UTC+5": { coords: [67.0, 24.9], city: "Karachi", region: "Pakistan" },
-  "UTC+5:30": { coords: [77.2, 28.6], city: "New Delhi", region: "India" },
-  "UTC+6": { coords: [90.4, 23.8], city: "Dhaka", region: "Bangladesh" },
-  "UTC+7": { coords: [100.5, 13.8], city: "Bangkok", region: "Thailand" },
-  "UTC+8": { coords: [121.5, 31.2], city: "Shanghai", region: "China" },
-  "UTC+9": { coords: [139.7, 35.7], city: "Tokyo", region: "Japan" },
-  "UTC+10": { coords: [151.2, -33.9], city: "Sydney", region: "Australia" },
-  "UTC+11": { coords: [160.0, -9.4], city: "Honiara", region: "Solomon Islands" },
-  "UTC+12": { coords: [174.8, -41.3], city: "Wellington", region: "New Zealand" },
+// Timezone to longitude range (for highlighting the band)
+const timezoneToLongitude: Record<string, { center: number; label: string }> = {
+  "UTC-12": { center: -180, label: "UTC-12" },
+  "UTC-11": { center: -165, label: "UTC-11" },
+  "UTC-10": { center: -150, label: "UTC-10" },
+  "UTC-9": { center: -135, label: "UTC-9" },
+  "UTC-8": { center: -120, label: "UTC-8" },
+  "UTC-7": { center: -105, label: "UTC-7" },
+  "UTC-6": { center: -90, label: "UTC-6" },
+  "UTC-5": { center: -75, label: "UTC-5" },
+  "UTC-4": { center: -60, label: "UTC-4" },
+  "UTC-3": { center: -45, label: "UTC-3" },
+  "UTC-2": { center: -30, label: "UTC-2" },
+  "UTC-1": { center: -15, label: "UTC-1" },
+  "UTC+0": { center: 0, label: "UTC+0" },
+  "UTC+1": { center: 15, label: "UTC+1" },
+  "UTC+2": { center: 30, label: "UTC+2" },
+  "UTC+3": { center: 45, label: "UTC+3" },
+  "UTC+4": { center: 60, label: "UTC+4" },
+  "UTC+5": { center: 75, label: "UTC+5" },
+  "UTC+5:30": { center: 82.5, label: "UTC+5:30" },
+  "UTC+6": { center: 90, label: "UTC+6" },
+  "UTC+7": { center: 105, label: "UTC+7" },
+  "UTC+8": { center: 120, label: "UTC+8" },
+  "UTC+9": { center: 135, label: "UTC+9" },
+  "UTC+10": { center: 150, label: "UTC+10" },
+  "UTC+11": { center: 165, label: "UTC+11" },
+  "UTC+12": { center: 180, label: "UTC+12" },
 };
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
@@ -50,17 +48,12 @@ export function TimezoneMap({ data }: TimezoneMapProps) {
   const timezone = temporalAnalysis.estimatedTimezone;
   const confidence = temporalAnalysis.timezoneConfidence;
 
-  // Find coordinates for the detected timezone
-  const location = timezoneToCoords[timezone] || {
-    coords: [0, 0] as [number, number],
-    city: "Unknown",
-    region: "Unknown"
-  };
+  const tzData = timezoneToLongitude[timezone] || { center: 0, label: timezone };
 
   const getConfidenceColor = () => {
-    if (confidence >= 0.8) return "#ef4444"; // red
-    if (confidence >= 0.5) return "#f59e0b"; // amber
-    return "#22c55e"; // green
+    if (confidence >= 0.8) return "#ef4444";
+    if (confidence >= 0.5) return "#f59e0b";
+    return "#22c55e";
   };
 
   const getRiskLevel = () => {
@@ -68,6 +61,10 @@ export function TimezoneMap({ data }: TimezoneMapProps) {
     if (confidence >= 0.5) return "HIGH";
     return "LOW";
   };
+
+  // Calculate the timezone band boundaries (each zone is 15 degrees wide)
+  const bandStart = tzData.center - 7.5;
+  const bandEnd = tzData.center + 7.5;
 
   return (
     <motion.section
@@ -86,7 +83,7 @@ export function TimezoneMap({ data }: TimezoneMapProps) {
             <div>
               <h2 className="text-xl font-bold">Geographic Fingerprint</h2>
               <p className="text-muted-foreground text-sm">
-                Your transaction timing reveals your probable location
+                Your transaction timing reveals your probable timezone
               </p>
             </div>
           </div>
@@ -97,7 +94,7 @@ export function TimezoneMap({ data }: TimezoneMapProps) {
           <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-4 flex items-start gap-3">
             <AlertTriangle className="text-amber-400 shrink-0 mt-0.5" size={20} />
             <div>
-              <p className="text-sm text-amber-400 font-medium">Location Privacy Risk: {getRiskLevel()}</p>
+              <p className="text-sm text-amber-400 font-medium">Timezone Detection Risk: {getRiskLevel()}</p>
               <p className="text-xs text-muted-foreground mt-1">
                 Adversaries can analyze your transaction timestamps to determine your timezone with{" "}
                 <span className="font-semibold text-amber-400">{(confidence * 100).toFixed(0)}% confidence</span>.
@@ -105,17 +102,53 @@ export function TimezoneMap({ data }: TimezoneMapProps) {
             </div>
           </div>
 
-          {/* World Map */}
+          {/* World Map with Timezone Band */}
           <div className="relative bg-slate-900/50 rounded-xl border border-border/30 overflow-hidden">
-            <ComposableMap
-              projection="geoMercator"
-              projectionConfig={{
-                scale: 120,
-                center: [0, 30],
-              }}
-              style={{ width: "100%", height: "auto" }}
-            >
-              <ZoomableGroup>
+            <svg width="100%" viewBox="0 0 800 400" style={{ display: 'block' }}>
+              {/* Timezone band highlight */}
+              <defs>
+                <linearGradient id="bandGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor={getConfidenceColor()} stopOpacity="0" />
+                  <stop offset="30%" stopColor={getConfidenceColor()} stopOpacity="0.3" />
+                  <stop offset="50%" stopColor={getConfidenceColor()} stopOpacity="0.4" />
+                  <stop offset="70%" stopColor={getConfidenceColor()} stopOpacity="0.3" />
+                  <stop offset="100%" stopColor={getConfidenceColor()} stopOpacity="0" />
+                </linearGradient>
+              </defs>
+
+              {/* Highlighted timezone band */}
+              <rect
+                x={((bandStart + 180) / 360) * 800}
+                y="0"
+                width={(15 / 360) * 800}
+                height="400"
+                fill="url(#bandGradient)"
+              />
+
+              {/* Animated pulse lines at band edges */}
+              <motion.line
+                x1={((tzData.center + 180) / 360) * 800}
+                y1="0"
+                x2={((tzData.center + 180) / 360) * 800}
+                y2="400"
+                stroke={getConfidenceColor()}
+                strokeWidth="2"
+                initial={{ opacity: 0.3 }}
+                animate={{ opacity: [0.3, 0.8, 0.3] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+            </svg>
+
+            {/* Map overlay */}
+            <div className="absolute inset-0">
+              <ComposableMap
+                projection="geoEquirectangular"
+                projectionConfig={{
+                  scale: 130,
+                  center: [0, 20],
+                }}
+                style={{ width: "100%", height: "100%" }}
+              >
                 <Geographies geography={geoUrl}>
                   {({ geographies }) =>
                     geographies.map((geo) => (
@@ -127,50 +160,28 @@ export function TimezoneMap({ data }: TimezoneMapProps) {
                         strokeWidth={0.5}
                         style={{
                           default: { outline: "none" },
-                          hover: { fill: "#334155", outline: "none" },
+                          hover: { outline: "none" },
                           pressed: { outline: "none" },
                         }}
                       />
                     ))
                   }
                 </Geographies>
+              </ComposableMap>
+            </div>
 
-                {/* Animated marker at detected location */}
-                <Marker coordinates={location.coords}>
-                  {/* Pulse rings */}
-                  <motion.circle
-                    r={20}
-                    fill="none"
-                    stroke={getConfidenceColor()}
-                    strokeWidth={1}
-                    initial={{ r: 5, opacity: 1 }}
-                    animate={{ r: 25, opacity: 0 }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
-                  />
-                  <motion.circle
-                    r={15}
-                    fill="none"
-                    stroke={getConfidenceColor()}
-                    strokeWidth={1}
-                    initial={{ r: 5, opacity: 1 }}
-                    animate={{ r: 20, opacity: 0 }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeOut", delay: 0.5 }}
-                  />
-                  {/* Center dot */}
-                  <circle r={6} fill={getConfidenceColor()} />
-                  <circle r={3} fill="white" />
-                </Marker>
-              </ZoomableGroup>
-            </ComposableMap>
-
-            {/* Location label */}
-            <div className="absolute bottom-4 left-4 bg-black/80 backdrop-blur-sm rounded-lg px-4 py-3 border border-amber-500/30">
-              <div className="flex items-center gap-2 mb-1">
-                <MapPin size={14} className="text-amber-400" />
-                <span className="text-amber-400 font-bold">{timezone}</span>
-              </div>
-              <p className="text-white text-sm font-medium">{location.city}</p>
-              <p className="text-muted-foreground text-xs">{location.region}</p>
+            {/* Timezone label */}
+            <div
+              className="absolute top-1/2 -translate-y-1/2 bg-black/80 backdrop-blur-sm rounded-lg px-4 py-3 border-2"
+              style={{
+                left: `${((tzData.center + 180) / 360) * 100}%`,
+                transform: 'translate(-50%, -50%)',
+                borderColor: getConfidenceColor()
+              }}
+            >
+              <p className="text-2xl font-bold text-center" style={{ color: getConfidenceColor() }}>
+                {timezone}
+              </p>
             </div>
 
             {/* Confidence badge */}
@@ -189,24 +200,15 @@ export function TimezoneMap({ data }: TimezoneMapProps) {
           </div>
 
           {/* Details Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="p-4 rounded-xl bg-muted/20 border border-border/30">
               <div className="flex items-center gap-2 mb-2">
                 <Clock className="text-amber-400" size={16} />
                 <span className="text-xs text-muted-foreground">Detected Timezone</span>
               </div>
-              <p className="text-xl font-bold">{timezone}</p>
-              <p className="text-xs text-muted-foreground">{location.city}, {location.region}</p>
-            </div>
-
-            <div className="p-4 rounded-xl bg-muted/20 border border-border/30">
-              <div className="flex items-center gap-2 mb-2">
-                <MapPin className="text-amber-400" size={16} />
-                <span className="text-xs text-muted-foreground">Coordinates</span>
-              </div>
-              <p className="text-lg font-mono">
-                {location.coords[1].toFixed(1)}°{location.coords[1] >= 0 ? "N" : "S"},{" "}
-                {Math.abs(location.coords[0]).toFixed(1)}°{location.coords[0] >= 0 ? "E" : "W"}
+              <p className="text-2xl font-bold">{timezone}</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Based on transaction timing patterns
               </p>
             </div>
 
@@ -215,18 +217,18 @@ export function TimezoneMap({ data }: TimezoneMapProps) {
                 <AlertTriangle className="text-amber-400" size={16} />
                 <span className="text-xs text-muted-foreground">Risk Level</span>
               </div>
-              <p className="text-xl font-bold" style={{ color: getConfidenceColor() }}>
+              <p className="text-2xl font-bold" style={{ color: getConfidenceColor() }}>
                 {getRiskLevel()}
               </p>
-              <p className="text-xs text-muted-foreground">
-                {confidence >= 0.7 ? "Location highly exposed" : confidence >= 0.4 ? "Moderate exposure" : "Low exposure"}
+              <p className="text-xs text-muted-foreground mt-1">
+                {confidence >= 0.7 ? "Timezone highly exposed" : confidence >= 0.4 ? "Moderate exposure" : "Low exposure"}
               </p>
             </div>
           </div>
 
           {/* Mitigation Tips */}
           <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/20">
-            <h3 className="text-sm font-semibold mb-2">How to Hide Your Location</h3>
+            <h3 className="text-sm font-semibold mb-2">How to Hide Your Timezone</h3>
             <ul className="text-xs text-muted-foreground space-y-1">
               <li>• Schedule transactions at random times using automated tools</li>
               <li>• Use Light Protocol to batch and delay transactions</li>
