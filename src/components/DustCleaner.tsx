@@ -198,7 +198,7 @@ export function DustCleaner({ data }: DustCleanerProps) {
               <span className="text-muted-foreground">Keys never leave your machine</span>
             </div>
             <div className="flex items-center gap-2 text-[11px]">
-              <Github size={12} className="text-primary shrink-0" />
+              <Terminal size={12} className="text-primary shrink-0" />
               <span className="text-muted-foreground">Open source - inspect the code</span>
             </div>
             <div className="flex items-center gap-2 text-[11px]">
