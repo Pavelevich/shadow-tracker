@@ -76,11 +76,8 @@ export function ArciumIntegration({ data }: ArciumIntegrationProps) {
               <Lock className="text-purple-400" size={28} />
             </div>
             <div>
-              <h2 className="text-xl font-bold flex items-center gap-2">
+              <h2 className="text-xl font-bold">
                 Arcium Integration
-                <span className="px-2 py-0.5 rounded text-xs bg-purple-500/20 text-purple-400 border border-purple-500/30">
-                  Hackathon Sponsor
-                </span>
               </h2>
               <p className="text-muted-foreground text-sm">
                 Multi-Party Computation for truly confidential transactions
@@ -187,6 +184,45 @@ export function ArciumIntegration({ data }: ArciumIntegrationProps) {
             </div>
           </div>
 
+          {/* SDK Code Example */}
+          <div className="p-4 rounded-xl bg-purple-500/5 border border-purple-500/20">
+            <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
+              <Cpu size={16} className="text-purple-400" />
+              Quick Start - Confidential Token Transfer
+            </h3>
+            <div className="bg-black/40 rounded-lg p-4 overflow-x-auto">
+              <pre className="text-xs font-mono text-purple-300">
+{`import { ArciumProvider, ConfidentialToken } from "@arcium/sdk";
+
+// Initialize Arcium MPC provider
+const arcium = new ArciumProvider({
+  cluster: "mainnet-beta",
+  wallet: walletAdapter
+});
+
+// Create confidential token account
+const ctAccount = await arcium.createConfidentialAccount(
+  mint,
+  owner.publicKey
+);
+
+// Transfer with encrypted amount (hidden from observers)
+const tx = await arcium.confidentialTransfer({
+  source: ctAccount,
+  destination: recipientCT,
+  amount: 1000,        // encrypted on-chain
+  memo: "private tx"   // optional encrypted memo
+});
+
+// Verify balance (only owner can decrypt)
+const balance = await arcium.decryptBalance(ctAccount);`}
+              </pre>
+            </div>
+            <p className="text-xs text-muted-foreground mt-3">
+              Learn more: <code className="bg-black/30 px-2 py-0.5 rounded text-purple-400">docs.arcium.com/sdk</code>
+            </p>
+          </div>
+
           {/* CTA Button */}
           <motion.a
             href="https://arcium.com/"
@@ -202,7 +238,7 @@ export function ArciumIntegration({ data }: ArciumIntegrationProps) {
           </motion.a>
 
           <p className="text-xs text-muted-foreground text-center">
-            Arcium is a hackathon sponsor offering $10,000 for End-to-End Private DeFi.
+            Arcium enables <span className="text-purple-400 font-semibold">confidential DeFi</span> on Solana using Multi-Party Computation.
           </p>
         </div>
       </div>

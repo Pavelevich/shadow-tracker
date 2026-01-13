@@ -154,25 +154,42 @@ export function LightProtocolIntegration({ data }: LightProtocolIntegrationProps
             </div>
           </div>
 
-          {/* How to Shield */}
+          {/* SDK Code Example */}
           <div className="p-4 rounded-xl bg-cyan-500/5 border border-cyan-500/20">
-            <h3 className="text-sm font-semibold mb-3">How to Shield Your Assets</h3>
-            <div className="space-y-2">
-              {projection.shieldingSteps.map((step, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 + 0.8 }}
-                  className="flex items-center gap-3 text-sm"
-                >
-                  <span className="w-6 h-6 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-xs font-bold text-cyan-400">
-                    {index + 1}
-                  </span>
-                  <span className="text-muted-foreground">{step}</span>
-                </motion.div>
-              ))}
+            <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
+              <Zap size={16} className="text-cyan-400" />
+              Quick Start - Shield Your SOL
+            </h3>
+            <div className="bg-black/40 rounded-lg p-4 overflow-x-auto">
+              <pre className="text-xs font-mono text-cyan-300">
+{`import { createRpc, Rpc } from "@lightprotocol/stateless.js";
+import { createMint, mintTo, transfer } from "@lightprotocol/compressed-token";
+
+// Connect to Light Protocol RPC
+const connection: Rpc = createRpc(RPC_ENDPOINT, COMPRESSION_RPC);
+
+// Create compressed token (private)
+const { mint, transactionSignature } = await createMint(
+  connection,
+  payer,
+  payer.publicKey,  // mint authority
+  9                 // decimals
+);
+
+// Transfer privately (shielded)
+await transfer(
+  connection,
+  payer,
+  mint,
+  amount,           // amount to transfer
+  owner,            // current owner
+  recipient         // destination (shielded)
+);`}
+              </pre>
             </div>
+            <p className="text-xs text-muted-foreground mt-3">
+              Install: <code className="bg-black/30 px-2 py-0.5 rounded text-cyan-400">npm i @lightprotocol/stateless.js @lightprotocol/compressed-token</code>
+            </p>
           </div>
 
           {/* CTA Buttons */}

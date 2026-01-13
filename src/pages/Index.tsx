@@ -17,6 +17,8 @@ import { LightProtocolIntegration } from "@/components/LightProtocolIntegration"
 import { ArciumIntegration } from "@/components/ArciumIntegration";
 import { HeliusIntegration } from "@/components/HeliusIntegration";
 import { EncryptTradeSection } from "@/components/EncryptTradeSection";
+import { WalletComparison } from "@/components/WalletComparison";
+import { TimezoneMap } from "@/components/TimezoneMap";
 import { Footer } from "@/components/Footer";
 import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 import { usePrivacyAnalysis } from "@/hooks/usePrivacyAnalysis";
@@ -136,6 +138,8 @@ const Index = () => {
                 <IdentityFingerprint data={data.data} />
                 <MetricsGrid data={data.data} />
                 <TemporalFingerprint data={data.data} />
+                <TimezoneMap data={data.data} />
+                <WalletComparison />
                 <DetailedAlerts data={data.data} />
                 <Recommendations data={data.data} />
                 <Methodology data={data.data} />
