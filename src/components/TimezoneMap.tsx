@@ -1,56 +1,73 @@
 import { motion } from "framer-motion";
 import { Globe, MapPin, AlertTriangle, Clock } from "lucide-react";
 import { PrivacyData } from "@/types/privacy";
+import {
+  ComposableMap,
+  Geographies,
+  Geography,
+  Marker,
+  ZoomableGroup,
+} from "react-simple-maps";
 
 interface TimezoneMapProps {
   data: PrivacyData;
 }
 
-// Timezone to approximate longitude mapping
-const timezoneToPosition: Record<string, { x: number; y: number; region: string }> = {
-  "UTC-12": { x: 5, y: 50, region: "Baker Island" },
-  "UTC-11": { x: 8, y: 50, region: "American Samoa" },
-  "UTC-10": { x: 12, y: 45, region: "Hawaii" },
-  "UTC-9": { x: 15, y: 40, region: "Alaska" },
-  "UTC-8": { x: 18, y: 42, region: "US Pacific (LA, SF)" },
-  "UTC-7": { x: 21, y: 42, region: "US Mountain (Denver)" },
-  "UTC-6": { x: 24, y: 45, region: "US Central (Chicago)" },
-  "UTC-5": { x: 27, y: 45, region: "US Eastern (NYC)" },
-  "UTC-4": { x: 30, y: 50, region: "Atlantic (Puerto Rico)" },
-  "UTC-3": { x: 35, y: 60, region: "South America (Brazil)" },
-  "UTC-2": { x: 40, y: 55, region: "Mid-Atlantic" },
-  "UTC-1": { x: 45, y: 50, region: "Azores" },
-  "UTC+0": { x: 50, y: 48, region: "UK, Portugal" },
-  "UTC+1": { x: 52, y: 47, region: "Central Europe (Paris)" },
-  "UTC+2": { x: 55, y: 45, region: "Eastern Europe (Kiev)" },
-  "UTC+3": { x: 58, y: 43, region: "Moscow, Dubai" },
-  "UTC+4": { x: 62, y: 45, region: "UAE, Azerbaijan" },
-  "UTC+5": { x: 66, y: 48, region: "Pakistan, Uzbekistan" },
-  "UTC+5:30": { x: 68, y: 52, region: "India" },
-  "UTC+6": { x: 70, y: 50, region: "Bangladesh" },
-  "UTC+7": { x: 74, y: 52, region: "Thailand, Vietnam" },
-  "UTC+8": { x: 78, y: 48, region: "China, Singapore" },
-  "UTC+9": { x: 82, y: 42, region: "Japan, Korea" },
-  "UTC+10": { x: 86, y: 55, region: "Australia East" },
-  "UTC+11": { x: 90, y: 58, region: "Solomon Islands" },
-  "UTC+12": { x: 94, y: 55, region: "New Zealand" },
+// Timezone to coordinates mapping (longitude, latitude)
+const timezoneToCoords: Record<string, { coords: [number, number]; city: string; region: string }> = {
+  "UTC-12": { coords: [-176.6, -1.0], city: "Baker Island", region: "Pacific" },
+  "UTC-11": { coords: [-171.0, -14.3], city: "Pago Pago", region: "American Samoa" },
+  "UTC-10": { coords: [-155.5, 19.9], city: "Honolulu", region: "Hawaii, USA" },
+  "UTC-9": { coords: [-149.9, 61.2], city: "Anchorage", region: "Alaska, USA" },
+  "UTC-8": { coords: [-118.2, 34.1], city: "Los Angeles", region: "US Pacific" },
+  "UTC-7": { coords: [-104.9, 39.7], city: "Denver", region: "US Mountain" },
+  "UTC-6": { coords: [-87.6, 41.9], city: "Chicago", region: "US Central" },
+  "UTC-5": { coords: [-74.0, 40.7], city: "New York", region: "US Eastern" },
+  "UTC-4": { coords: [-66.1, 18.5], city: "San Juan", region: "Puerto Rico" },
+  "UTC-3": { coords: [-43.2, -22.9], city: "Rio de Janeiro", region: "Brazil" },
+  "UTC-2": { coords: [-30.0, -20.0], city: "Mid-Atlantic", region: "Atlantic Ocean" },
+  "UTC-1": { coords: [-25.7, 37.7], city: "Azores", region: "Portugal" },
+  "UTC+0": { coords: [-0.1, 51.5], city: "London", region: "United Kingdom" },
+  "UTC+1": { coords: [2.3, 48.9], city: "Paris", region: "France" },
+  "UTC+2": { coords: [30.5, 50.5], city: "Kyiv", region: "Ukraine" },
+  "UTC+3": { coords: [37.6, 55.8], city: "Moscow", region: "Russia" },
+  "UTC+4": { coords: [55.3, 25.3], city: "Dubai", region: "UAE" },
+  "UTC+5": { coords: [67.0, 24.9], city: "Karachi", region: "Pakistan" },
+  "UTC+5:30": { coords: [77.2, 28.6], city: "New Delhi", region: "India" },
+  "UTC+6": { coords: [90.4, 23.8], city: "Dhaka", region: "Bangladesh" },
+  "UTC+7": { coords: [100.5, 13.8], city: "Bangkok", region: "Thailand" },
+  "UTC+8": { coords: [121.5, 31.2], city: "Shanghai", region: "China" },
+  "UTC+9": { coords: [139.7, 35.7], city: "Tokyo", region: "Japan" },
+  "UTC+10": { coords: [151.2, -33.9], city: "Sydney", region: "Australia" },
+  "UTC+11": { coords: [160.0, -9.4], city: "Honiara", region: "Solomon Islands" },
+  "UTC+12": { coords: [174.8, -41.3], city: "Wellington", region: "New Zealand" },
 };
+
+const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
 export function TimezoneMap({ data }: TimezoneMapProps) {
   const { temporalAnalysis } = data;
   const timezone = temporalAnalysis.estimatedTimezone;
   const confidence = temporalAnalysis.timezoneConfidence;
 
-  // Find position for the detected timezone
-  const position = timezoneToPosition[timezone] || { x: 50, y: 50, region: "Unknown" };
-
-  const getConfidenceColor = () => {
-    if (confidence >= 0.8) return { ring: "rgba(239, 68, 68, 0.6)", pulse: "rgba(239, 68, 68, 0.3)" };
-    if (confidence >= 0.5) return { ring: "rgba(245, 158, 11, 0.6)", pulse: "rgba(245, 158, 11, 0.3)" };
-    return { ring: "rgba(34, 197, 94, 0.6)", pulse: "rgba(34, 197, 94, 0.3)" };
+  // Find coordinates for the detected timezone
+  const location = timezoneToCoords[timezone] || {
+    coords: [0, 0] as [number, number],
+    city: "Unknown",
+    region: "Unknown"
   };
 
-  const colors = getConfidenceColor();
+  const getConfidenceColor = () => {
+    if (confidence >= 0.8) return "#ef4444"; // red
+    if (confidence >= 0.5) return "#f59e0b"; // amber
+    return "#22c55e"; // green
+  };
+
+  const getRiskLevel = () => {
+    if (confidence >= 0.8) return "CRITICAL";
+    if (confidence >= 0.5) return "HIGH";
+    return "LOW";
+  };
 
   return (
     <motion.section
@@ -80,147 +97,94 @@ export function TimezoneMap({ data }: TimezoneMapProps) {
           <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-4 flex items-start gap-3">
             <AlertTriangle className="text-amber-400 shrink-0 mt-0.5" size={20} />
             <div>
-              <p className="text-sm text-amber-400 font-medium">Location Privacy Risk</p>
+              <p className="text-sm text-amber-400 font-medium">Location Privacy Risk: {getRiskLevel()}</p>
               <p className="text-xs text-muted-foreground mt-1">
                 Adversaries can analyze your transaction timestamps to determine your timezone with{" "}
                 <span className="font-semibold text-amber-400">{(confidence * 100).toFixed(0)}% confidence</span>.
-                This reveals your geographic region.
               </p>
             </div>
           </div>
 
-          {/* World Map SVG */}
-          <div className="relative bg-muted/20 rounded-xl border border-border/30 overflow-hidden">
-            <svg
-              viewBox="0 0 100 60"
-              className="w-full h-auto"
-              style={{ minHeight: "200px" }}
+          {/* World Map */}
+          <div className="relative bg-slate-900/50 rounded-xl border border-border/30 overflow-hidden">
+            <ComposableMap
+              projection="geoMercator"
+              projectionConfig={{
+                scale: 120,
+                center: [0, 30],
+              }}
+              style={{ width: "100%", height: "auto" }}
             >
-              {/* Simplified world map outline */}
-              <defs>
-                <linearGradient id="mapGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="rgba(255,255,255,0.05)" />
-                  <stop offset="100%" stopColor="rgba(255,255,255,0.02)" />
-                </linearGradient>
-              </defs>
+              <ZoomableGroup>
+                <Geographies geography={geoUrl}>
+                  {({ geographies }) =>
+                    geographies.map((geo) => (
+                      <Geography
+                        key={geo.rsmKey}
+                        geography={geo}
+                        fill="#1e293b"
+                        stroke="#334155"
+                        strokeWidth={0.5}
+                        style={{
+                          default: { outline: "none" },
+                          hover: { fill: "#334155", outline: "none" },
+                          pressed: { outline: "none" },
+                        }}
+                      />
+                    ))
+                  }
+                </Geographies>
 
-              {/* Background grid */}
-              {[...Array(10)].map((_, i) => (
-                <line
-                  key={`v-${i}`}
-                  x1={i * 10 + 5}
-                  y1="0"
-                  x2={i * 10 + 5}
-                  y2="60"
-                  stroke="rgba(255,255,255,0.05)"
-                  strokeWidth="0.2"
-                />
-              ))}
-              {[...Array(6)].map((_, i) => (
-                <line
-                  key={`h-${i}`}
-                  x1="0"
-                  y1={i * 10 + 5}
-                  x2="100"
-                  y2={i * 10 + 5}
-                  stroke="rgba(255,255,255,0.05)"
-                  strokeWidth="0.2"
-                />
-              ))}
+                {/* Animated marker at detected location */}
+                <Marker coordinates={location.coords}>
+                  {/* Pulse rings */}
+                  <motion.circle
+                    r={20}
+                    fill="none"
+                    stroke={getConfidenceColor()}
+                    strokeWidth={1}
+                    initial={{ r: 5, opacity: 1 }}
+                    animate={{ r: 25, opacity: 0 }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+                  />
+                  <motion.circle
+                    r={15}
+                    fill="none"
+                    stroke={getConfidenceColor()}
+                    strokeWidth={1}
+                    initial={{ r: 5, opacity: 1 }}
+                    animate={{ r: 20, opacity: 0 }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeOut", delay: 0.5 }}
+                  />
+                  {/* Center dot */}
+                  <circle r={6} fill={getConfidenceColor()} />
+                  <circle r={3} fill="white" />
+                </Marker>
+              </ZoomableGroup>
+            </ComposableMap>
 
-              {/* Simplified continents */}
-              {/* North America */}
-              <path
-                d="M10,20 Q15,15 25,18 L28,25 Q30,35 25,40 L15,42 Q8,35 10,20"
-                fill="rgba(255,255,255,0.1)"
-                stroke="rgba(255,255,255,0.2)"
-                strokeWidth="0.3"
-              />
-              {/* South America */}
-              <path
-                d="M25,42 Q30,45 32,55 L28,58 Q22,55 20,48 L25,42"
-                fill="rgba(255,255,255,0.1)"
-                stroke="rgba(255,255,255,0.2)"
-                strokeWidth="0.3"
-              />
-              {/* Europe */}
-              <path
-                d="M45,20 Q55,18 58,25 L55,32 Q48,35 45,28 L45,20"
-                fill="rgba(255,255,255,0.1)"
-                stroke="rgba(255,255,255,0.2)"
-                strokeWidth="0.3"
-              />
-              {/* Africa */}
-              <path
-                d="M48,35 Q55,32 60,38 L58,52 Q52,58 48,50 L48,35"
-                fill="rgba(255,255,255,0.1)"
-                stroke="rgba(255,255,255,0.2)"
-                strokeWidth="0.3"
-              />
-              {/* Asia */}
-              <path
-                d="M58,18 Q75,15 88,22 L90,35 Q85,45 75,42 L65,38 Q58,30 58,18"
-                fill="rgba(255,255,255,0.1)"
-                stroke="rgba(255,255,255,0.2)"
-                strokeWidth="0.3"
-              />
-              {/* Australia */}
-              <path
-                d="M80,48 Q88,45 92,52 L90,58 Q82,58 80,52 L80,48"
-                fill="rgba(255,255,255,0.1)"
-                stroke="rgba(255,255,255,0.2)"
-                strokeWidth="0.3"
-              />
+            {/* Location label */}
+            <div className="absolute bottom-4 left-4 bg-black/80 backdrop-blur-sm rounded-lg px-4 py-3 border border-amber-500/30">
+              <div className="flex items-center gap-2 mb-1">
+                <MapPin size={14} className="text-amber-400" />
+                <span className="text-amber-400 font-bold">{timezone}</span>
+              </div>
+              <p className="text-white text-sm font-medium">{location.city}</p>
+              <p className="text-muted-foreground text-xs">{location.region}</p>
+            </div>
 
-              {/* Animated pulse at detected location */}
-              <motion.circle
-                cx={position.x}
-                cy={position.y}
-                r="8"
-                fill="none"
-                stroke={colors.pulse}
-                strokeWidth="0.5"
-                initial={{ r: 2, opacity: 1 }}
-                animate={{ r: 8, opacity: 0 }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
-              />
-              <motion.circle
-                cx={position.x}
-                cy={position.y}
-                r="5"
-                fill="none"
-                stroke={colors.pulse}
-                strokeWidth="0.5"
-                initial={{ r: 2, opacity: 1 }}
-                animate={{ r: 5, opacity: 0 }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeOut", delay: 0.5 }}
-              />
-
-              {/* Location marker */}
-              <circle
-                cx={position.x}
-                cy={position.y}
-                r="2"
-                fill={colors.ring}
-                stroke="white"
-                strokeWidth="0.3"
-              />
-            </svg>
-
-            {/* Location label overlay */}
+            {/* Confidence badge */}
             <div
-              className="absolute bg-black/80 backdrop-blur-sm rounded-lg px-3 py-2 text-xs border border-amber-500/30"
+              className="absolute top-4 right-4 px-3 py-2 rounded-lg border"
               style={{
-                left: `${Math.min(Math.max(position.x, 15), 85)}%`,
-                top: `${Math.min(position.y + 8, 80)}%`,
-                transform: "translateX(-50%)",
+                backgroundColor: `${getConfidenceColor()}20`,
+                borderColor: `${getConfidenceColor()}50`
               }}
             >
-              <div className="flex items-center gap-2">
-                <MapPin size={12} className="text-amber-400" />
-                <span className="text-amber-400 font-semibold">{timezone}</span>
-              </div>
-              <p className="text-muted-foreground mt-0.5">{position.region}</p>
+              <p className="text-xs text-muted-foreground">Detection Confidence</p>
+              <p className="text-xl font-bold" style={{ color: getConfidenceColor() }}>
+                {(confidence * 100).toFixed(0)}%
+              </p>
             </div>
           </div>
 
@@ -232,44 +196,41 @@ export function TimezoneMap({ data }: TimezoneMapProps) {
                 <span className="text-xs text-muted-foreground">Detected Timezone</span>
               </div>
               <p className="text-xl font-bold">{timezone}</p>
-              <p className="text-xs text-muted-foreground">{position.region}</p>
+              <p className="text-xs text-muted-foreground">{location.city}, {location.region}</p>
+            </div>
+
+            <div className="p-4 rounded-xl bg-muted/20 border border-border/30">
+              <div className="flex items-center gap-2 mb-2">
+                <MapPin className="text-amber-400" size={16} />
+                <span className="text-xs text-muted-foreground">Coordinates</span>
+              </div>
+              <p className="text-lg font-mono">
+                {location.coords[1].toFixed(1)}°{location.coords[1] >= 0 ? "N" : "S"},{" "}
+                {Math.abs(location.coords[0]).toFixed(1)}°{location.coords[0] >= 0 ? "E" : "W"}
+              </p>
             </div>
 
             <div className="p-4 rounded-xl bg-muted/20 border border-border/30">
               <div className="flex items-center gap-2 mb-2">
                 <AlertTriangle className="text-amber-400" size={16} />
-                <span className="text-xs text-muted-foreground">Detection Confidence</span>
+                <span className="text-xs text-muted-foreground">Risk Level</span>
               </div>
-              <p className={`text-xl font-bold ${confidence >= 0.7 ? "text-critical" : confidence >= 0.4 ? "text-warning" : "text-success"}`}>
-                {(confidence * 100).toFixed(0)}%
+              <p className="text-xl font-bold" style={{ color: getConfidenceColor() }}>
+                {getRiskLevel()}
               </p>
               <p className="text-xs text-muted-foreground">
-                {confidence >= 0.7 ? "High risk" : confidence >= 0.4 ? "Medium risk" : "Low risk"}
-              </p>
-            </div>
-
-            <div className="p-4 rounded-xl bg-muted/20 border border-border/30">
-              <div className="flex items-center gap-2 mb-2">
-                <Globe className="text-amber-400" size={16} />
-                <span className="text-xs text-muted-foreground">Privacy Impact</span>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {confidence >= 0.7
-                  ? "Your location is highly exposed. Consider varying transaction times."
-                  : confidence >= 0.4
-                  ? "Moderate location exposure. Some timing patterns detected."
-                  : "Good location privacy. Transaction times appear random."}
+                {confidence >= 0.7 ? "Location highly exposed" : confidence >= 0.4 ? "Moderate exposure" : "Low exposure"}
               </p>
             </div>
           </div>
 
           {/* Mitigation Tips */}
           <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/20">
-            <h3 className="text-sm font-semibold mb-2">How to Hide Your Timezone</h3>
+            <h3 className="text-sm font-semibold mb-2">How to Hide Your Location</h3>
             <ul className="text-xs text-muted-foreground space-y-1">
               <li>• Schedule transactions at random times using automated tools</li>
-              <li>• Use privacy protocols like Light Protocol that batch transactions</li>
-              <li>• Vary your transaction times across different hours of the day</li>
+              <li>• Use Light Protocol to batch and delay transactions</li>
+              <li>• Vary your transaction times across different hours</li>
               <li>• Consider using Arcium for confidential transaction timing</li>
             </ul>
           </div>
