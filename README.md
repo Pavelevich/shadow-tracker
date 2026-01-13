@@ -131,14 +131,28 @@ We simulate real-world de-anonymization attacks:
 - Node.js 18+
 - npm or yarn
 
-### Installation
+### Option 1: CLI Tool (Recommended)
+
+```bash
+# Install globally
+npm install -g solprivacy
+
+# Run the CLI
+solprivacy
+```
+
+The CLI includes an AI-powered agent with attack simulations, wallet comparison, and more.
+
+**npm:** [npmjs.com/package/solprivacy](https://www.npmjs.com/package/solprivacy)
+
+### Option 2: Web Frontend
 
 ```bash
 # Clone the repository
-git clone https://github.com/Pavelevich/solana-privacy-audit.git
+git clone https://github.com/Pavelevich/shadow-tracker.git
 
 # Navigate to project
-cd solana-privacy-audit
+cd shadow-tracker
 
 # Install dependencies
 npm install
@@ -236,7 +250,7 @@ MIT License - See [LICENSE](LICENSE) for details.
 ## Contact
 
 - **Website:** [solprivacy.xyz](https://solprivacy.xyz)
-- **GitHub:** [github.com/Pavelevich/solana-privacy-audit](https://github.com/Pavelevich/solana-privacy-audit)
+- **GitHub:** [github.com/Pavelevich/shadow-tracker](https://github.com/Pavelevich/shadow-tracker)
 
 ---
 
