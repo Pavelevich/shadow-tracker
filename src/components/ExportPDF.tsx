@@ -3,175 +3,362 @@ import { motion } from "framer-motion";
 import { FileDown, Loader2, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PrivacyData } from "@/types/privacy";
-import jsPDF from "jspdf";
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  pdf,
+} from "@react-pdf/renderer";
 
 interface ExportPDFProps {
   data: PrivacyData;
 }
 
+// PDF Styles
+const styles = StyleSheet.create({
+  page: {
+    backgroundColor: "#0f172a",
+    padding: 40,
+    fontFamily: "Helvetica",
+  },
+  header: {
+    marginBottom: 30,
+    borderBottomWidth: 2,
+    borderBottomColor: "#14f195",
+    paddingBottom: 20,
+  },
+  logo: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#14f195",
+    marginBottom: 5,
+  },
+  subtitle: {
+    fontSize: 12,
+    color: "#94a3b8",
+  },
+  walletSection: {
+    marginBottom: 25,
+  },
+  walletLabel: {
+    fontSize: 10,
+    color: "#64748b",
+    marginBottom: 4,
+  },
+  walletAddress: {
+    fontSize: 11,
+    color: "#e2e8f0",
+    fontFamily: "Courier",
+  },
+  scoreSection: {
+    backgroundColor: "#1e293b",
+    borderRadius: 8,
+    padding: 20,
+    marginBottom: 25,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  scoreLeft: {
+    flex: 1,
+  },
+  scoreLabel: {
+    fontSize: 10,
+    color: "#64748b",
+    marginBottom: 5,
+  },
+  scoreValue: {
+    fontSize: 48,
+    fontWeight: "bold",
+  },
+  scoreRight: {
+    alignItems: "flex-end",
+  },
+  grade: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  riskLevel: {
+    fontSize: 12,
+    padding: "4 10",
+    borderRadius: 4,
+  },
+  sectionTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#e2e8f0",
+    marginBottom: 15,
+    marginTop: 10,
+  },
+  attackGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+    marginBottom: 25,
+  },
+  attackCard: {
+    backgroundColor: "#1e293b",
+    borderRadius: 6,
+    padding: 12,
+    width: "48%",
+    marginBottom: 8,
+  },
+  attackName: {
+    fontSize: 10,
+    color: "#e2e8f0",
+    marginBottom: 6,
+  },
+  attackProb: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  attackBar: {
+    height: 4,
+    backgroundColor: "#334155",
+    borderRadius: 2,
+    marginTop: 6,
+  },
+  attackBarFill: {
+    height: 4,
+    borderRadius: 2,
+  },
+  metricsGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+    marginBottom: 25,
+  },
+  metricCard: {
+    backgroundColor: "#1e293b",
+    borderRadius: 6,
+    padding: 12,
+    width: "31%",
+  },
+  metricLabel: {
+    fontSize: 8,
+    color: "#64748b",
+    marginBottom: 4,
+  },
+  metricValue: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#e2e8f0",
+  },
+  recommendation: {
+    backgroundColor: "#1e293b",
+    borderRadius: 6,
+    padding: 12,
+    marginBottom: 8,
+    flexDirection: "row",
+    alignItems: "flex-start",
+  },
+  recPriority: {
+    fontSize: 8,
+    fontWeight: "bold",
+    padding: "2 6",
+    borderRadius: 3,
+    marginRight: 10,
+  },
+  recText: {
+    fontSize: 10,
+    color: "#e2e8f0",
+    flex: 1,
+  },
+  footer: {
+    marginTop: 30,
+    paddingTop: 20,
+    borderTopWidth: 1,
+    borderTopColor: "#334155",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  footerText: {
+    fontSize: 8,
+    color: "#64748b",
+  },
+  footerLink: {
+    fontSize: 8,
+    color: "#14f195",
+  },
+});
+
+// Helper functions
+const getScoreColor = (score: number): string => {
+  if (score >= 80) return "#22c55e";
+  if (score >= 60) return "#14f195";
+  if (score >= 40) return "#f59e0b";
+  return "#ef4444";
+};
+
+const getPriorityColor = (priority: string): string => {
+  switch (priority) {
+    case "HIGH": return "#ef4444";
+    case "MEDIUM": return "#f59e0b";
+    default: return "#22c55e";
+  }
+};
+
+const getRiskBgColor = (risk: string): string => {
+  switch (risk) {
+    case "CRITICAL": return "#7f1d1d";
+    case "HIGH": return "#78350f";
+    case "MEDIUM": return "#713f12";
+    case "LOW": return "#14532d";
+    default: return "#1e293b";
+  }
+};
+
+// PDF Document Component
+const PrivacyReportPDF = ({ data }: { data: PrivacyData }) => {
+  const scoreColor = getScoreColor(data.advancedPrivacyScore);
+  const date = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.logo}>SOLPRIVACY</Text>
+          <Text style={styles.subtitle}>Wallet Privacy Analysis Report</Text>
+        </View>
+
+        {/* Wallet Address */}
+        <View style={styles.walletSection}>
+          <Text style={styles.walletLabel}>WALLET ADDRESS</Text>
+          <Text style={styles.walletAddress}>{data.address}</Text>
+        </View>
+
+        {/* Privacy Score */}
+        <View style={styles.scoreSection}>
+          <View style={styles.scoreLeft}>
+            <Text style={styles.scoreLabel}>PRIVACY SCORE</Text>
+            <Text style={[styles.scoreValue, { color: scoreColor }]}>
+              {data.advancedPrivacyScore}
+            </Text>
+          </View>
+          <View style={styles.scoreRight}>
+            <Text style={[styles.grade, { color: scoreColor }]}>
+              Grade {data.grade}
+            </Text>
+            <Text
+              style={[
+                styles.riskLevel,
+                {
+                  backgroundColor: getRiskBgColor(data.riskLevel),
+                  color: scoreColor,
+                },
+              ]}
+            >
+              {data.riskLevel} RISK
+            </Text>
+          </View>
+        </View>
+
+        {/* Attack Simulation */}
+        <Text style={styles.sectionTitle}>Attack Simulation Results</Text>
+        <View style={styles.attackGrid}>
+          {data.attackSimulation.scenarios.slice(0, 6).map((attack, i) => {
+            const prob = attack.probability * 100;
+            const color = prob >= 70 ? "#ef4444" : prob >= 40 ? "#f59e0b" : "#22c55e";
+            return (
+              <View key={i} style={styles.attackCard}>
+                <Text style={styles.attackName}>{attack.name}</Text>
+                <Text style={[styles.attackProb, { color }]}>{prob.toFixed(0)}%</Text>
+                <View style={styles.attackBar}>
+                  <View
+                    style={[
+                      styles.attackBarFill,
+                      { width: `${prob}%`, backgroundColor: color },
+                    ]}
+                  />
+                </View>
+              </View>
+            );
+          })}
+        </View>
+
+        {/* Key Metrics */}
+        <Text style={styles.sectionTitle}>Key Privacy Metrics</Text>
+        <View style={styles.metricsGrid}>
+          <View style={styles.metricCard}>
+            <Text style={styles.metricLabel}>TOTAL ENTROPY</Text>
+            <Text style={styles.metricValue}>{data.entropy.totalEntropy.toFixed(3)}</Text>
+          </View>
+          <View style={styles.metricCard}>
+            <Text style={styles.metricLabel}>K-ANONYMITY</Text>
+            <Text style={styles.metricValue}>{data.kAnonymity.kValue}</Text>
+          </View>
+          <View style={styles.metricCard}>
+            <Text style={styles.metricLabel}>EXCHANGE EXPOSURE</Text>
+            <Text style={styles.metricValue}>{(data.exchangeFingerprint.kycExposure * 100).toFixed(0)}%</Text>
+          </View>
+          <View style={styles.metricCard}>
+            <Text style={styles.metricLabel}>DUST VULNERABILITY</Text>
+            <Text style={styles.metricValue}>{(data.dustAttack.dustVulnerability * 100).toFixed(0)}%</Text>
+          </View>
+          <View style={styles.metricCard}>
+            <Text style={styles.metricLabel}>TIMEZONE</Text>
+            <Text style={styles.metricValue}>{data.temporalAnalysis.estimatedTimezone}</Text>
+          </View>
+          <View style={styles.metricCard}>
+            <Text style={styles.metricLabel}>TZ CONFIDENCE</Text>
+            <Text style={styles.metricValue}>{(data.temporalAnalysis.timezoneConfidence * 100).toFixed(0)}%</Text>
+          </View>
+        </View>
+
+        {/* Recommendations */}
+        <Text style={styles.sectionTitle}>Recommendations</Text>
+        {data.recommendations.slice(0, 4).map((rec, i) => (
+          <View key={i} style={styles.recommendation}>
+            <Text
+              style={[
+                styles.recPriority,
+                {
+                  backgroundColor: getPriorityColor(rec.priority) + "30",
+                  color: getPriorityColor(rec.priority),
+                },
+              ]}
+            >
+              {rec.priority}
+            </Text>
+            <Text style={styles.recText}>{rec.action}</Text>
+          </View>
+        ))}
+
+        {/* Footer */}
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>Generated on {date}</Text>
+          <Text style={styles.footerLink}>https://solprivacy.xyz</Text>
+        </View>
+      </Page>
+    </Document>
+  );
+};
+
 export function ExportPDF({ data }: ExportPDFProps) {
   const [isExporting, setIsExporting] = useState(false);
   const [exported, setExported] = useState(false);
-
-  const getGradeColor = (grade: string): [number, number, number] => {
-    switch (grade) {
-      case "A+":
-      case "A":
-        return [34, 197, 94]; // green
-      case "B":
-        return [20, 241, 149]; // primary
-      case "C":
-        return [245, 158, 11]; // amber
-      case "D":
-      case "F":
-        return [239, 68, 68]; // red
-      default:
-        return [148, 163, 184]; // gray
-    }
-  };
 
   const exportToPDF = async () => {
     setIsExporting(true);
 
     try {
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      const margin = 20;
-      let yPos = margin;
-
-      // Helper functions
-      const addText = (text: string, size: number, color: [number, number, number] = [255, 255, 255], bold = false) => {
-        pdf.setFontSize(size);
-        pdf.setTextColor(...color);
-        if (bold) pdf.setFont("helvetica", "bold");
-        else pdf.setFont("helvetica", "normal");
-        pdf.text(text, margin, yPos);
-        yPos += size * 0.5;
-      };
-
-      const addLine = () => {
-        pdf.setDrawColor(60, 60, 80);
-        pdf.line(margin, yPos, pageWidth - margin, yPos);
-        yPos += 5;
-      };
-
-      const checkPageBreak = (needed: number) => {
-        if (yPos + needed > pageHeight - margin) {
-          pdf.addPage();
-          yPos = margin;
-        }
-      };
-
-      // Background
-      pdf.setFillColor(15, 23, 42);
-      pdf.rect(0, 0, pageWidth, pageHeight, "F");
-
-      // Header
-      addText("SOLPRIVACY", 24, [20, 241, 149], true);
-      addText("Wallet Privacy Analysis Report", 12, [148, 163, 184]);
-      yPos += 5;
-      addLine();
-      yPos += 5;
-
-      // Wallet Address
-      addText("Wallet Address", 10, [148, 163, 184]);
-      addText(data.address, 11, [255, 255, 255], true);
-      yPos += 5;
-
-      // Privacy Score
-      checkPageBreak(40);
-      addText("Privacy Score", 10, [148, 163, 184]);
-      const gradeColor = getGradeColor(data.grade);
-      addText(`${data.advancedPrivacyScore}/100`, 28, gradeColor, true);
-      addText(`Grade: ${data.grade} | Risk Level: ${data.riskLevel}`, 12, gradeColor);
-      yPos += 10;
-      addLine();
-      yPos += 5;
-
-      // Attack Simulation
-      checkPageBreak(60);
-      addText("Attack Simulation Results", 14, [255, 255, 255], true);
-      yPos += 3;
-
-      data.attackSimulation.scenarios.forEach((scenario) => {
-        checkPageBreak(15);
-        const prob = (scenario.probability * 100).toFixed(0);
-        const color: [number, number, number] = scenario.probability >= 0.7 ? [239, 68, 68] :
-                       scenario.probability >= 0.4 ? [245, 158, 11] : [34, 197, 94];
-        pdf.setFontSize(10);
-        pdf.setTextColor(...color);
-        pdf.text(`${prob}%`, margin, yPos);
-        pdf.setTextColor(255, 255, 255);
-        pdf.text(scenario.name, margin + 15, yPos);
-        yPos += 6;
-      });
-
-      yPos += 5;
-      addLine();
-      yPos += 5;
-
-      // Key Metrics
-      checkPageBreak(50);
-      addText("Key Privacy Metrics", 14, [255, 255, 255], true);
-      yPos += 3;
-
-      const metrics = [
-        { label: "Total Entropy", value: data.entropy.totalEntropy.toFixed(3) },
-        { label: "K-Anonymity", value: data.kAnonymity.kValue.toString() },
-        { label: "Exchange Exposure", value: `${(data.exchangeFingerprint.kycExposure * 100).toFixed(0)}%` },
-        { label: "Dust Vulnerability", value: `${(data.dustAttack.dustVulnerability * 100).toFixed(0)}%` },
-        { label: "Estimated Timezone", value: data.temporalAnalysis.estimatedTimezone },
-        { label: "Timezone Confidence", value: `${(data.temporalAnalysis.timezoneConfidence * 100).toFixed(0)}%` },
-      ];
-
-      metrics.forEach((metric) => {
-        checkPageBreak(10);
-        pdf.setFontSize(10);
-        pdf.setTextColor(148, 163, 184);
-        pdf.text(metric.label + ":", margin, yPos);
-        pdf.setTextColor(255, 255, 255);
-        pdf.text(metric.value, margin + 50, yPos);
-        yPos += 6;
-      });
-
-      yPos += 5;
-      addLine();
-      yPos += 5;
-
-      // Recommendations
-      checkPageBreak(40);
-      addText("Recommendations", 14, [255, 255, 255], true);
-      yPos += 3;
-
-      data.recommendations.slice(0, 5).forEach((rec) => {
-        checkPageBreak(15);
-        const priorityColor: [number, number, number] = rec.priority === "HIGH" ? [239, 68, 68] :
-                              rec.priority === "MEDIUM" ? [245, 158, 11] : [34, 197, 94];
-        pdf.setFontSize(9);
-        pdf.setTextColor(...priorityColor);
-        pdf.text(`[${rec.priority}]`, margin, yPos);
-        pdf.setTextColor(255, 255, 255);
-        const actionText = pdf.splitTextToSize(rec.action, pageWidth - margin * 2 - 25);
-        pdf.text(actionText, margin + 25, yPos);
-        yPos += actionText.length * 5 + 3;
-      });
-
-      yPos += 5;
-      addLine();
-      yPos += 5;
-
-      // Footer
-      checkPageBreak(20);
-      pdf.setFontSize(8);
-      pdf.setTextColor(100, 116, 139);
-      pdf.text(`Generated by SolPrivacy - ${new Date().toISOString().split("T")[0]}`, margin, yPos);
-      yPos += 4;
-      pdf.text("https://solprivacy.xyz", margin, yPos);
-
-      // Save
-      const filename = `solprivacy-report-${data.address.slice(0, 8)}.pdf`;
-      pdf.save(filename);
+      const blob = await pdf(<PrivacyReportPDF data={data} />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `solprivacy-report-${data.address.slice(0, 8)}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
 
       setExported(true);
       setTimeout(() => setExported(false), 3000);
