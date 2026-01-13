@@ -117,16 +117,27 @@ const Index = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="space-y-6"
+                className="max-w-4xl mx-auto w-full"
               >
-                {/* Wallet address display */}
+                {/* Header */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-center mb-4"
+                  className="text-center mb-6"
                 >
-                  <span className="text-muted-foreground text-sm">Analyzing wallet</span>
-                  <p className="font-mono text-lg text-primary mt-1">
+                  <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-primary/20 border border-primary/30 mb-3">
+                    <Shield className="text-primary" size={24} />
+                  </div>
+                  <h1 className="text-2xl md:text-3xl font-bold mb-2">Privacy Analyzer</h1>
+                  <p className="text-muted-foreground text-sm md:text-base">
+                    Complete wallet privacy analysis
+                  </p>
+                </motion.div>
+
+                {/* Wallet address display */}
+                <div className="text-center mb-6">
+                  <span className="text-muted-foreground text-sm">Analyzing</span>
+                  <p className="font-mono text-primary">
                     {data.data.address.slice(0, 12)}...{data.data.address.slice(-8)}
                   </p>
                   {data.cached && (
@@ -134,16 +145,15 @@ const Index = () => {
                       Cached result
                     </span>
                   )}
-                </motion.div>
-
-                {/* Export & New Analysis */}
-                <div className="flex justify-center gap-3">
-                  <ExportPDF data={data.data} />
-                  <Button variant="outline" onClick={handleNewAnalysis} className="gap-2">
-                    <ArrowLeft size={16} />
-                    New Analysis
-                  </Button>
                 </div>
+
+                {/* Export PDF */}
+                <div className="flex justify-center mb-6">
+                  <ExportPDF data={data.data} />
+                </div>
+
+                {/* Content */}
+                <div className="space-y-4">
 
                 {/* SECTION 1: Summary (Always visible) */}
                 <PrivacyScore data={data.data} />
@@ -235,6 +245,19 @@ const Index = () => {
                     <Methodology data={data.data} />
                   </div>
                 </CollapsibleSection>
+                </div>
+
+                {/* Back button */}
+                <div className="text-center mt-8">
+                  <Button
+                    variant="outline"
+                    onClick={handleNewAnalysis}
+                    className="gap-2"
+                  >
+                    <ArrowLeft size={16} />
+                    Analyze Another Wallet
+                  </Button>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
