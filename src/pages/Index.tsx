@@ -19,6 +19,7 @@ import { HeliusIntegration } from "@/components/HeliusIntegration";
 import { EncryptTradeSection } from "@/components/EncryptTradeSection";
 import { WalletComparison } from "@/components/WalletComparison";
 import { TimezoneMap } from "@/components/TimezoneMap";
+import { ExportPDF } from "@/components/ExportPDF";
 import { Footer } from "@/components/Footer";
 import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 import { usePrivacyAnalysis } from "@/hooks/usePrivacyAnalysis";
@@ -126,6 +127,7 @@ const Index = () => {
                   )}
                 </motion.div>
 
+                <ExportPDF data={data.data} />
                 <PrivacyScore data={data.data} />
                 <UrgentAlert data={data.data} />
                 <EncryptTradeSection />
