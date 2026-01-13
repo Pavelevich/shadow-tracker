@@ -8,15 +8,15 @@ export function Footer() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 1.2, duration: 0.6 }}
-      className="border-t border-border/30 mt-16 py-8"
+      className="border-t border-border/30 mt-auto py-6"
     >
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <span className="text-muted-foreground text-sm">Powered by</span>
-            <a 
-              href="https://tetsuo.ai" 
-              target="_blank" 
+            <a
+              href="https://dexscreener.com/solana/8i51xnnpgakaj4g4nddmqh95v4fkaxw8mhtarokd9te8"
+              target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 hover:opacity-80 transition-opacity"
             >
@@ -28,7 +28,7 @@ export function Footer() {
 
           <div className="flex items-center gap-6">
             <a
-              href="https://github.com/Pavelevich/solana-privacy-audit"
+              href="https://github.com/Pavelevich/shadow-tracker"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"

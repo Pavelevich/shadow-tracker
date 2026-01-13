@@ -14,6 +14,9 @@ import { Methodology } from "@/components/Methodology";
 import { PrivacyScoreComparison } from "@/components/PrivacyScoreComparison";
 import { PrivacyToolsRecommendations } from "@/components/PrivacyToolsRecommendations";
 import { LightProtocolIntegration } from "@/components/LightProtocolIntegration";
+import { ArciumIntegration } from "@/components/ArciumIntegration";
+import { HeliusIntegration } from "@/components/HeliusIntegration";
+import { EncryptTradeSection } from "@/components/EncryptTradeSection";
 import { Footer } from "@/components/Footer";
 import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 import { usePrivacyAnalysis } from "@/hooks/usePrivacyAnalysis";
@@ -30,11 +33,11 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen relative flex flex-col">
       <GridBackground />
-      
-      <div className="relative z-10">
-        <div className="container mx-auto px-4 py-8">
+
+      <div className="relative z-10 flex-1 flex flex-col">
+        <div className="container mx-auto px-4 py-8 flex-1 flex flex-col">
           {/* Header when results are shown */}
           {data && (
             <motion.div
@@ -123,10 +126,13 @@ const Index = () => {
 
                 <PrivacyScore data={data.data} />
                 <UrgentAlert data={data.data} />
+                <EncryptTradeSection />
                 <PrivacyScoreComparison data={data.data} />
                 <AttackSimulation data={data.data} />
                 <PrivacyToolsRecommendations data={data.data} />
                 <LightProtocolIntegration data={data.data} />
+                <HeliusIntegration data={data.data} />
+                <ArciumIntegration data={data.data} />
                 <IdentityFingerprint data={data.data} />
                 <MetricsGrid data={data.data} />
                 <TemporalFingerprint data={data.data} />

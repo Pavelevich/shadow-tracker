@@ -15,10 +15,11 @@ interface Metric {
   displayValue: string;
   icon: React.ElementType;
   interpretation: string;
-  inverted?: boolean;
 }
 
 export function MetricsGrid({ data }: MetricsGridProps) {
+  // All metrics follow: higher value = better privacy = green
+  // Progress bar fills more = better
   const metrics: Metric[] = [
     {
       name: "Transaction Randomness",
@@ -28,20 +29,22 @@ export function MetricsGrid({ data }: MetricsGridProps) {
       interpretation: data.entropy.totalEntropy > 0.7 ? "High randomness makes patterns hard to detect" : "Low randomness reveals behavioral patterns",
     },
     {
-      name: "Data Leakage",
+      name: "Data Protection",
       value: data.mutualInformation ? (1 - data.mutualInformation.totalMutualInformation) * 100 : 75,
       displayValue: data.mutualInformation ? `${((1 - data.mutualInformation.totalMutualInformation) * 100).toFixed(0)}%` : "N/A",
       icon: Lock,
-      interpretation: "Amount of information leaked through transactions",
-      inverted: true,
+      interpretation: data.mutualInformation && data.mutualInformation.totalMutualInformation > 0.5
+        ? "High information leakage detected"
+        : "Good data protection level",
     },
     {
       name: "Privacy Strength",
       value: data.differentialPrivacy ? Math.max(0, 100 - data.differentialPrivacy.epsilon * 10) : 60,
       displayValue: data.differentialPrivacy ? `ε=${data.differentialPrivacy.epsilon.toFixed(2)}` : "N/A",
       icon: Lock,
-      interpretation: "Lower epsilon means stronger privacy guarantees",
-      inverted: true,
+      interpretation: data.differentialPrivacy && data.differentialPrivacy.epsilon < 5
+        ? "Strong privacy guarantees (low epsilon)"
+        : "Weak privacy guarantees (high epsilon)",
     },
     {
       name: "Crowd Blending",
@@ -55,8 +58,9 @@ export function MetricsGrid({ data }: MetricsGridProps) {
       value: data.advancedClustering ? (1 - data.advancedClustering.clusteringVulnerability) * 100 : data.graph.graphPrivacyScore,
       displayValue: `${data.graph.graphPrivacyScore}%`,
       icon: Network,
-      interpretation: "Resistance to wallet clustering algorithms",
-      inverted: true,
+      interpretation: data.graph.graphPrivacyScore > 60
+        ? "Good resistance to clustering attacks"
+        : "Vulnerable to wallet clustering algorithms",
     },
     {
       name: "Timing Privacy",
@@ -66,12 +70,13 @@ export function MetricsGrid({ data }: MetricsGridProps) {
       interpretation: Math.abs(data.temporalAnalysis.autocorrelation) < 0.3 ? "No detectable timing patterns" : "Regular timing patterns detected",
     },
     {
-      name: "Network Visibility",
+      name: "Network Anonymity",
       value: Math.max(0, 100 - data.networkCentrality.networkVisibility * 50),
-      displayValue: `${data.networkCentrality.networkVisibility.toFixed(2)}`,
+      displayValue: `${Math.max(0, 100 - data.networkCentrality.networkVisibility * 50).toFixed(0)}%`,
       icon: Eye,
-      interpretation: "How visible you are in the transaction graph",
-      inverted: true,
+      interpretation: data.networkCentrality.networkVisibility < 1
+        ? "Low visibility in transaction graph"
+        : "High visibility makes you easy to track",
     },
     {
       name: "Privacy Tool Usage",
@@ -83,38 +88,36 @@ export function MetricsGrid({ data }: MetricsGridProps) {
     {
       name: "Cross-chain Privacy",
       value: data.crossChain?.bridgeUsageDetected ? 40 : 100,
-      displayValue: data.crossChain?.bridgeUsageDetected ? "Bridges Used" : "No Bridges",
+      displayValue: data.crossChain?.bridgeUsageDetected ? "At Risk" : "Protected",
       icon: Fingerprint,
       interpretation: data.crossChain?.bridgeUsageDetected ? "Bridge usage may link identities" : "No cross-chain exposure",
     },
     {
-      name: "Dust Attack Status",
+      name: "Dust Protection",
       value: data.dustAttack.dustAttackDetected ? 20 : 100,
-      displayValue: data.dustAttack.dustAttackDetected ? `${data.dustAttack.dustTransactionsReceived} txns` : "Clean",
+      displayValue: data.dustAttack.dustAttackDetected ? `${data.dustAttack.dustTransactionsReceived} attacks` : "Clean",
       icon: AlertTriangle,
       interpretation: data.dustAttack.dustAttackDetected ? "You've received dust attack transactions" : "No dust attacks detected",
     },
     {
-      name: "Exchange Exposure",
+      name: "Exchange Privacy",
       value: (1 - data.exchangeFingerprint.kycExposure) * 100,
-      displayValue: `${(data.exchangeFingerprint.kycExposure * 100).toFixed(0)}%`,
+      displayValue: `${((1 - data.exchangeFingerprint.kycExposure) * 100).toFixed(0)}%`,
       icon: Building,
       interpretation: data.exchangeFingerprint.kycExposure > 0.5 ? "High KYC exposure through exchanges" : "Low exchange exposure",
-      inverted: true,
     },
   ];
 
-  const getStatusIcon = (value: number, inverted?: boolean) => {
-    const score = inverted ? 100 - value : value;
-    if (score >= 70) return <CheckCircle className="text-success" size={16} />;
-    if (score >= 40) return <AlertCircle className="text-warning" size={16} />;
+  // Higher value = better privacy = green
+  const getStatusIcon = (value: number) => {
+    if (value >= 70) return <CheckCircle className="text-success" size={16} />;
+    if (value >= 40) return <AlertCircle className="text-warning" size={16} />;
     return <XCircle className="text-critical" size={16} />;
   };
 
-  const getProgressColor = (value: number, inverted?: boolean) => {
-    const score = inverted ? 100 - value : value;
-    if (score >= 70) return "bg-success";
-    if (score >= 40) return "bg-warning";
+  const getProgressColor = (value: number) => {
+    if (value >= 70) return "bg-success";
+    if (value >= 40) return "bg-warning";
     return "bg-critical";
   };
 
@@ -144,14 +147,14 @@ export function MetricsGrid({ data }: MetricsGridProps) {
                 <metric.icon className="text-primary" size={20} />
                 <span className="font-medium text-sm">{metric.name}</span>
               </div>
-              {getStatusIcon(metric.value, metric.inverted)}
+              {getStatusIcon(metric.value)}
             </div>
 
             <div className="text-3xl font-bold mb-3">{metric.displayValue}</div>
 
             <div className="h-1.5 bg-muted rounded-full overflow-hidden mb-3">
               <motion.div
-                className={`h-full ${getProgressColor(metric.value, metric.inverted)}`}
+                className={`h-full ${getProgressColor(metric.value)}`}
                 initial={{ width: 0 }}
                 animate={{ width: `${Math.min(metric.value, 100)}%` }}
                 transition={{ delay: index * 0.05 + 0.7, duration: 0.8, ease: "easeOut" }}

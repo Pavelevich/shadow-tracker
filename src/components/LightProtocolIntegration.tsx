@@ -27,20 +27,26 @@ export function LightProtocolIntegration({ data }: LightProtocolIntegrationProps
       <div className="glass-card overflow-hidden">
         {/* Header with Light Protocol branding */}
         <div className="bg-gradient-to-r from-cyan-500/20 via-cyan-500/10 to-transparent p-6 border-b border-cyan-500/20">
-          <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-cyan-500/20 border border-cyan-500/30">
-              <Shield className="text-cyan-400" size={28} />
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-xl bg-cyan-500/20 border border-cyan-500/30">
+                <Shield className="text-cyan-400" size={28} />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold flex items-center gap-2">
+                  Light Protocol Integration
+                  <span className="px-2 py-0.5 rounded text-xs bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
+                    Open Track Sponsor
+                  </span>
+                </h2>
+                <p className="text-muted-foreground text-sm">
+                  ZK shielding can dramatically improve your privacy score
+                </p>
+              </div>
             </div>
-            <div>
-              <h2 className="text-xl font-bold flex items-center gap-2">
-                Light Protocol Integration
-                <span className="px-2 py-0.5 rounded text-xs bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
-                  Hackathon Sponsor
-                </span>
-              </h2>
-              <p className="text-muted-foreground text-sm">
-                See how ZK shielding can dramatically improve your privacy
-              </p>
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
+              <span className="text-2xl font-bold text-cyan-400">$18,000</span>
+              <span className="text-xs text-cyan-300">Bounty</span>
             </div>
           </div>
         </div>
@@ -176,22 +182,35 @@ export function LightProtocolIntegration({ data }: LightProtocolIntegrationProps
             </div>
           </div>
 
-          {/* CTA Button */}
-          <motion.a
-            href="https://www.zkcompression.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full p-4 rounded-xl bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold hover:from-cyan-400 hover:to-cyan-500 transition-all shadow-lg shadow-cyan-500/25"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <Shield size={20} />
-            Explore Light Protocol ZK Compression
-            <ExternalLink size={16} />
-          </motion.a>
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <motion.a
+              href="https://shield.lightprotocol.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 flex items-center justify-center gap-2 p-4 rounded-xl bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold hover:from-cyan-400 hover:to-cyan-500 transition-all shadow-lg shadow-cyan-500/25"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Shield size={20} />
+              Shield Your Assets Now
+              <ExternalLink size={16} />
+            </motion.a>
+            <motion.a
+              href="https://www.zkcompression.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 flex items-center justify-center gap-2 p-4 rounded-xl bg-muted/30 border border-cyan-500/30 text-cyan-400 font-semibold hover:bg-cyan-500/10 transition-all"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Learn About ZK Compression
+              <ExternalLink size={16} />
+            </motion.a>
+          </div>
 
           <p className="text-xs text-muted-foreground text-center">
-            Light Protocol is a hackathon sponsor. Projections are estimates based on typical ZK compression benefits.
+            Light Protocol sponsors the <span className="text-cyan-400 font-semibold">$18,000 Open Track</span> bounty. Start shielding to improve your privacy score.
           </p>
         </div>
       </div>
