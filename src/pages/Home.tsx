@@ -312,12 +312,23 @@ export default function Home() {
               </div>
 
               <div className="p-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* Install Command */}
+                  <div>
+                    <p className="text-[11px] text-muted-foreground mb-2">Install globally:</p>
+                    <div className="relative">
+                      <div className="bg-black/50 rounded-lg p-3 font-mono text-[11px]">
+                        <span className="text-muted-foreground">$ </span>
+                        <span className="text-amber-400">npm i -g solprivacy</span>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Run Command */}
                   <div>
-                    <p className="text-[11px] text-muted-foreground mb-2">Run instantly (no install):</p>
+                    <p className="text-[11px] text-muted-foreground mb-2">Or run instantly:</p>
                     <div className="relative">
-                      <div className="bg-black/50 rounded-lg p-3 font-mono text-xs">
+                      <div className="bg-black/50 rounded-lg p-3 font-mono text-[11px]">
                         <span className="text-muted-foreground">$ </span>
                         <span className="text-green-400">npx solprivacy</span>
                       </div>
@@ -338,19 +349,19 @@ export default function Home() {
 
                   {/* Features */}
                   <div>
-                    <p className="text-[11px] text-muted-foreground mb-2">Features:</p>
+                    <p className="text-[11px] text-muted-foreground mb-2">Commands:</p>
                     <div className="space-y-1.5">
                       <div className="flex items-center gap-2 text-[11px]">
                         <code className="px-1.5 py-0.5 rounded bg-muted/30 text-primary font-mono">
                           /analyze
                         </code>
-                        <span className="text-muted-foreground">Full privacy analysis</span>
+                        <span className="text-muted-foreground">Privacy analysis</span>
                       </div>
                       <div className="flex items-center gap-2 text-[11px]">
                         <code className="px-1.5 py-0.5 rounded bg-muted/30 text-amber-400 font-mono">
                           /agent
                         </code>
-                        <span className="text-muted-foreground">AI-powered recommendations</span>
+                        <span className="text-muted-foreground">AI recommendations</span>
                       </div>
                     </div>
                   </div>
