@@ -209,7 +209,7 @@ export function DustCleaner({ data }: DustCleanerProps) {
 
           {/* NPM Link */}
           <a
-            href="https://www.npmjs.com/package/solprivacy"
+            href="https://www.npmjs.com/package/privatepussy"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 w-full p-2 rounded-lg bg-muted/20 border border-border/30 hover:border-primary/30 transition-colors text-xs"
