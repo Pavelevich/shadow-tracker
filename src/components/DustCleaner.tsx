@@ -42,7 +42,7 @@ export function DustCleaner({ data }: DustCleanerProps) {
 
   const risk = getRiskLevel();
 
-  const cliCommand = `npx solprivacy`;
+  const cliCommand = `npx privatepussy`;
 
   const copyCommand = (cmd: string) => {
     navigator.clipboard.writeText(cmd);
