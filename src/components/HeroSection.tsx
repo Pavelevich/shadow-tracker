@@ -48,8 +48,9 @@ export function HeroSection({ onAnalyze, isLoading }: HeroSectionProps) {
     <section className="relative flex-1 flex flex-col items-center justify-center px-4 py-8 sm:py-12">
       {/* Background glow effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-critical/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/8 rounded-full blur-[100px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-critical/8 rounded-full blur-[80px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px]" />
       </div>
 
       <motion.div
@@ -207,12 +208,12 @@ export function HeroSection({ onAnalyze, isLoading }: HeroSectionProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1 + index * 0.1, duration: 0.4 }}
-            className="text-center"
+            className="text-center group"
           >
-            <p className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/70">
+            <p className="text-3xl md:text-4xl font-black text-gradient-primary transition-transform duration-300 group-hover:scale-110">
               {stat.value}
             </p>
-            <p className="text-xs md:text-sm text-muted-foreground mt-1">{stat.label}</p>
+            <p className="text-xs md:text-sm text-muted-foreground mt-1 group-hover:text-foreground/70 transition-colors">{stat.label}</p>
           </motion.div>
         ))}
       </motion.div>
@@ -222,17 +223,17 @@ export function HeroSection({ onAnalyze, isLoading }: HeroSectionProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.6 }}
-        className="mt-12 flex flex-wrap justify-center items-center gap-6 text-muted-foreground text-sm"
+        className="mt-12 flex flex-wrap justify-center items-center gap-4 text-muted-foreground text-sm"
       >
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/50 border border-border/30">
+        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-card/50 border border-border/30 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 cursor-default">
           <Eye size={14} className="text-primary" />
           <span>See what adversaries see</span>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/50 border border-border/30">
+        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-card/50 border border-border/30 hover:border-warning/40 hover:bg-warning/5 transition-all duration-300 cursor-default">
           <AlertTriangle size={14} className="text-warning" />
           <span>Attack simulation</span>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/50 border border-border/30">
+        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-card/50 border border-border/30 hover:border-success/40 hover:bg-success/5 transition-all duration-300 cursor-default">
           <Lock size={14} className="text-success" />
           <span>Privacy recommendations</span>
         </div>

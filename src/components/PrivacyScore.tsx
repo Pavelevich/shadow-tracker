@@ -114,14 +114,14 @@ export function PrivacyScore({ data }: PrivacyScoreProps) {
             {/* Center content */}
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <motion.span
-                className={`text-6xl font-bold ${getScoreColor(advancedPrivacyScore)}`}
+                className={`text-7xl font-black ${getScoreColor(advancedPrivacyScore)} score-highlight`}
                 initial={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.5 }}
+                transition={{ delay: 0.5, duration: 0.5, type: "spring" }}
               >
                 {animatedScore}
               </motion.span>
-              <span className="text-muted-foreground text-sm uppercase tracking-wider mt-1">
+              <span className="text-muted-foreground text-xs uppercase tracking-widest mt-2 font-medium">
                 Privacy Score
               </span>
             </div>
