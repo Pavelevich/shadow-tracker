@@ -125,6 +125,12 @@ const styles = StyleSheet.create({
     height: 4,
     borderRadius: 2,
   },
+  attackExplanation: {
+    fontSize: 7,
+    color: "#94a3b8",
+    marginTop: 4,
+    lineHeight: 1.3,
+  },
   metricsGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -168,8 +174,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   footer: {
-    marginTop: 30,
-    paddingTop: 20,
+    position: "absolute",
+    bottom: 30,
+    left: 40,
+    right: 40,
+    paddingTop: 15,
     borderTopWidth: 1,
     borderTopColor: "#334155",
     flexDirection: "row",
@@ -184,6 +193,16 @@ const styles = StyleSheet.create({
     color: "#14f195",
   },
 });
+
+// Attack explanations for PDF
+const ATTACK_EXPLANATIONS: Record<string, string> = {
+  "Dust Tracking Attack": "Attackers send tiny amounts (dust) to trace your wallet activity and link your addresses together.",
+  "Amount Fingerprinting": "Unique transaction amounts can be used to identify you across different wallets and platforms.",
+  "Graph Topology Attack": "Analysis of your transaction network patterns to identify your main wallet and related addresses.",
+  "Exchange KYC Correlation": "Your CEX deposits/withdrawals can be linked to your identity through exchange KYC records.",
+  "Temporal Fingerprinting": "Your transaction timing patterns can reveal your timezone and daily habits.",
+  "Quasi-Identifier Correlation": "Combining multiple weak identifiers to uniquely identify you with high confidence.",
+};
 
 // Helper functions
 const getScoreColor = (score: number): string => {
@@ -222,6 +241,7 @@ const PrivacyReportPDF = ({ data }: { data: PrivacyData }) => {
 
   return (
     <Document>
+      {/* PAGE 1: Score & Attack Simulation */}
       <Page size="A4" style={styles.page}>
         {/* Header */}
         <View style={styles.header}>
@@ -267,6 +287,7 @@ const PrivacyReportPDF = ({ data }: { data: PrivacyData }) => {
           {data.attackSimulation.scenarios.slice(0, 6).map((attack, i) => {
             const prob = attack.probability * 100;
             const color = prob >= 70 ? "#ef4444" : prob >= 40 ? "#f59e0b" : "#22c55e";
+            const explanation = ATTACK_EXPLANATIONS[attack.name] || "";
             return (
               <View key={i} style={styles.attackCard}>
                 <Text style={styles.attackName}>{attack.name}</Text>
@@ -279,9 +300,36 @@ const PrivacyReportPDF = ({ data }: { data: PrivacyData }) => {
                     ]}
                   />
                 </View>
+                {explanation && (
+                  <Text style={styles.attackExplanation}>{explanation}</Text>
+                )}
               </View>
             );
           })}
+        </View>
+
+        {/* Page 1 Footer */}
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>Page 1 of 3</Text>
+          <Text style={styles.footerLink}>https://solprivacy.xyz</Text>
+        </View>
+      </Page>
+
+      {/* PAGE 2: Metrics & Recommendations */}
+      <Page size="A4" style={styles.page}>
+        {/* Mini Header */}
+        <View style={{ marginBottom: 20 }}>
+          <Text style={[styles.logo, { fontSize: 18 }]}>SOLPRIVACY</Text>
+          <Text style={[styles.walletAddress, { fontSize: 9 }]}>{data.address}</Text>
+        </View>
+
+        {/* Privacy Solution CTA - Top of Page */}
+        <View style={{ marginBottom: 20, padding: 15, backgroundColor: "#1e293b", borderRadius: 8, borderLeftWidth: 4, borderLeftColor: "#a855f7" }}>
+          <Text style={{ fontSize: 12, fontWeight: "bold", color: "#a855f7", marginBottom: 6 }}>Improve Your Privacy</Text>
+          <Text style={{ fontSize: 9, color: "#94a3b8", marginBottom: 8 }}>
+            Use encrypt.trade for truly private swaps and transfers on Solana. Break on-chain links completely.
+          </Text>
+          <Text style={{ fontSize: 10, color: "#a855f7" }}>https://encrypt.trade</Text>
         </View>
 
         {/* Key Metrics */}
@@ -296,12 +344,32 @@ const PrivacyReportPDF = ({ data }: { data: PrivacyData }) => {
             <Text style={styles.metricValue}>{data.kAnonymity.kValue}</Text>
           </View>
           <View style={styles.metricCard}>
+            <Text style={styles.metricLabel}>GRAPH PRIVACY</Text>
+            <Text style={styles.metricValue}>{data.graph?.graphPrivacyScore || 0}%</Text>
+          </View>
+          <View style={styles.metricCard}>
             <Text style={styles.metricLabel}>EXCHANGE EXPOSURE</Text>
             <Text style={styles.metricValue}>{(data.exchangeFingerprint.kycExposure * 100).toFixed(0)}%</Text>
           </View>
           <View style={styles.metricCard}>
             <Text style={styles.metricLabel}>DUST VULNERABILITY</Text>
             <Text style={styles.metricValue}>{(data.dustAttack.dustVulnerability * 100).toFixed(0)}%</Text>
+          </View>
+          <View style={styles.metricCard}>
+            <Text style={styles.metricLabel}>NETWORK VISIBILITY</Text>
+            <Text style={styles.metricValue}>{((data.networkCentrality?.networkVisibility || 0) * 100).toFixed(0)}%</Text>
+          </View>
+          <View style={styles.metricCard}>
+            <Text style={styles.metricLabel}>CLUSTERING RISK</Text>
+            <Text style={styles.metricValue}>{((data.advancedClustering?.clusteringVulnerability || 0) * 100).toFixed(0)}%</Text>
+          </View>
+          <View style={styles.metricCard}>
+            <Text style={styles.metricLabel}>DIFFERENTIAL PRIVACY</Text>
+            <Text style={styles.metricValue}>ε={data.differentialPrivacy?.epsilon?.toFixed(1) || "N/A"}</Text>
+          </View>
+          <View style={styles.metricCard}>
+            <Text style={styles.metricLabel}>MIXER DETECTION</Text>
+            <Text style={styles.metricValue}>{((data.mixerDetection?.mixerUsageProbability || 0) * 100).toFixed(0)}%</Text>
           </View>
           <View style={styles.metricCard}>
             <Text style={styles.metricLabel}>TIMEZONE</Text>
@@ -311,11 +379,15 @@ const PrivacyReportPDF = ({ data }: { data: PrivacyData }) => {
             <Text style={styles.metricLabel}>TZ CONFIDENCE</Text>
             <Text style={styles.metricValue}>{(data.temporalAnalysis.timezoneConfidence * 100).toFixed(0)}%</Text>
           </View>
+          <View style={styles.metricCard}>
+            <Text style={styles.metricLabel}>DUST RECEIVED</Text>
+            <Text style={styles.metricValue}>{data.dustAttack.dustTransactionsReceived}</Text>
+          </View>
         </View>
 
         {/* Recommendations */}
         <Text style={styles.sectionTitle}>Recommendations</Text>
-        {data.recommendations.slice(0, 4).map((rec, i) => (
+        {data.recommendations.slice(0, 5).map((rec, i) => (
           <View key={i} style={styles.recommendation}>
             <Text
               style={[
@@ -332,9 +404,81 @@ const PrivacyReportPDF = ({ data }: { data: PrivacyData }) => {
           </View>
         ))}
 
-        {/* Footer */}
+        {/* Page 2 Footer */}
         <View style={styles.footer}>
-          <Text style={styles.footerText}>Generated on {date}</Text>
+          <Text style={styles.footerText}>Page 2 of 3</Text>
+          <Text style={styles.footerLink}>https://solprivacy.xyz</Text>
+        </View>
+      </Page>
+
+      {/* PAGE 3: Attack Explanations & Glossary */}
+      <Page size="A4" style={styles.page}>
+        {/* Mini Header */}
+        <View style={{ marginBottom: 20 }}>
+          <Text style={[styles.logo, { fontSize: 18 }]}>SOLPRIVACY</Text>
+          <Text style={{ fontSize: 10, color: "#94a3b8" }}>Privacy Threats Glossary</Text>
+        </View>
+
+        {/* Attack Explanations */}
+        <Text style={styles.sectionTitle}>Understanding Privacy Threats</Text>
+
+        <View style={{ marginBottom: 12, padding: 12, backgroundColor: "#1e293b", borderRadius: 6, borderLeftWidth: 3, borderLeftColor: "#ef4444" }}>
+          <Text style={{ fontSize: 11, fontWeight: "bold", color: "#ef4444", marginBottom: 4 }}>Dust Tracking Attack</Text>
+          <Text style={{ fontSize: 9, color: "#94a3b8", lineHeight: 1.4 }}>
+            Attackers send tiny amounts of tokens ("dust") to your wallet to trace your activity. When you move these tokens, they can link your addresses together and track your transaction flow. Never interact with unexpected small deposits.
+          </Text>
+        </View>
+
+        <View style={{ marginBottom: 12, padding: 12, backgroundColor: "#1e293b", borderRadius: 6, borderLeftWidth: 3, borderLeftColor: "#f59e0b" }}>
+          <Text style={{ fontSize: 11, fontWeight: "bold", color: "#f59e0b", marginBottom: 4 }}>Amount Fingerprinting</Text>
+          <Text style={{ fontSize: 9, color: "#94a3b8", lineHeight: 1.4 }}>
+            Unique transaction amounts (like 1.23456789 SOL) act as fingerprints that can identify you across different wallets. Use rounded amounts or common values to blend in with other users.
+          </Text>
+        </View>
+
+        <View style={{ marginBottom: 12, padding: 12, backgroundColor: "#1e293b", borderRadius: 6, borderLeftWidth: 3, borderLeftColor: "#a855f7" }}>
+          <Text style={{ fontSize: 11, fontWeight: "bold", color: "#a855f7", marginBottom: 4 }}>Graph Topology Attack</Text>
+          <Text style={{ fontSize: 9, color: "#94a3b8", lineHeight: 1.4 }}>
+            Analysis of your transaction network patterns reveals connections between addresses. Tools like Chainalysis and Arkham Intelligence use graph analysis to identify wallet clusters and link them to real identities.
+          </Text>
+        </View>
+
+        <View style={{ marginBottom: 12, padding: 12, backgroundColor: "#1e293b", borderRadius: 6, borderLeftWidth: 3, borderLeftColor: "#3b82f6" }}>
+          <Text style={{ fontSize: 11, fontWeight: "bold", color: "#3b82f6", marginBottom: 4 }}>Exchange KYC Correlation</Text>
+          <Text style={{ fontSize: 9, color: "#94a3b8", lineHeight: 1.4 }}>
+            Centralized exchanges (CEXs) require identity verification. Any deposits or withdrawals create a link between your wallet and your real identity. This data can be shared with authorities or leaked in breaches.
+          </Text>
+        </View>
+
+        <View style={{ marginBottom: 12, padding: 12, backgroundColor: "#1e293b", borderRadius: 6, borderLeftWidth: 3, borderLeftColor: "#14f195" }}>
+          <Text style={{ fontSize: 11, fontWeight: "bold", color: "#14f195", marginBottom: 4 }}>Temporal Fingerprinting</Text>
+          <Text style={{ fontSize: 9, color: "#94a3b8", lineHeight: 1.4 }}>
+            Your transaction times reveal your timezone and daily routine. Consistent patterns (like trading at 9 AM EST) can narrow down your location and identity. Randomize your transaction timing.
+          </Text>
+        </View>
+
+        <View style={{ marginBottom: 12, padding: 12, backgroundColor: "#1e293b", borderRadius: 6, borderLeftWidth: 3, borderLeftColor: "#ec4899" }}>
+          <Text style={{ fontSize: 11, fontWeight: "bold", color: "#ec4899", marginBottom: 4 }}>Quasi-Identifier Correlation</Text>
+          <Text style={{ fontSize: 9, color: "#94a3b8", lineHeight: 1.4 }}>
+            Combining multiple weak identifiers (timezone + transaction amounts + counterparties + timing) creates a unique fingerprint. Even if no single data point identifies you, the combination often does.
+          </Text>
+        </View>
+
+        {/* How to protect yourself */}
+        <View style={{ marginTop: 10, padding: 15, backgroundColor: "#14532d", borderRadius: 8 }}>
+          <Text style={{ fontSize: 11, fontWeight: "bold", color: "#22c55e", marginBottom: 6 }}>How to Protect Yourself</Text>
+          <Text style={{ fontSize: 9, color: "#86efac", lineHeight: 1.5 }}>
+            • Use privacy tools like encrypt.trade for private swaps{"\n"}
+            • Never interact with dust/unknown tokens{"\n"}
+            • Use DEXs instead of CEXs when possible{"\n"}
+            • Randomize transaction times and amounts{"\n"}
+            • Use separate wallets for different purposes
+          </Text>
+        </View>
+
+        {/* Page 3 Footer */}
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>Generated on {date} • Page 3 of 3</Text>
           <Text style={styles.footerLink}>https://solprivacy.xyz</Text>
         </View>
       </Page>

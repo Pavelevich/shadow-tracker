@@ -23,6 +23,7 @@ import { WalletComparison } from "@/components/WalletComparison";
 import { TimezoneMap } from "@/components/TimezoneMap";
 import { ExportPDF } from "@/components/ExportPDF";
 import { CollapsibleSection } from "@/components/CollapsibleSection";
+import { FinancialSurveillance } from "@/components/FinancialSurveillance";
 import { Footer } from "@/components/Footer";
 import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 import { usePrivacyAnalysis } from "@/hooks/usePrivacyAnalysis";
@@ -34,6 +35,7 @@ import {
   BarChart3,
   Link as LinkIcon,
   BookOpen,
+  Eye,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -202,6 +204,17 @@ const Index = () => {
                     <PrivacyScoreComparison data={data.data} />
                     <PrivacyToolsRecommendations data={data.data} />
                   </div>
+                </CollapsibleSection>
+
+                {/* SECTION 2.5: Financial Surveillance */}
+                <CollapsibleSection
+                  title="Financial Surveillance"
+                  icon={<Eye size={18} />}
+                  defaultOpen={false}
+                  badge="New"
+                  badgeColor="#ef4444"
+                >
+                  <FinancialSurveillance data={data.data} />
                 </CollapsibleSection>
 
                 {/* SECTION 3: Detailed Analysis */}

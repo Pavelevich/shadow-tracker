@@ -69,7 +69,7 @@ export function PrivacyToolsRecommendations({ data }: PrivacyToolsRecommendation
         Based on your analysis, these tools can significantly improve your privacy
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch">
         {recommendations.map((rec, index) => {
           const IconComponent = iconMap[rec.tool.icon] || Shield;
 
@@ -79,59 +79,58 @@ export function PrivacyToolsRecommendations({ data }: PrivacyToolsRecommendation
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 + 0.5 }}
-              className="glass-card overflow-hidden hover:border-primary/30 transition-all duration-300 flex flex-col h-full"
+              className="glass-card overflow-hidden hover:border-primary/30 transition-all duration-300 flex flex-col"
             >
-              {/* Gradient header */}
+              {/* Gradient header - fixed height */}
               <div className={`p-4 bg-gradient-to-r ${rec.tool.gradient} border-b ${rec.tool.borderColor}`}>
-                <div className="flex items-center justify-between">
+                <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-3">
-                    <div className={`p-2.5 rounded-xl bg-background/80 ${rec.tool.borderColor} border shadow-lg`}>
-                      <IconComponent className="text-primary" size={22} />
+                    <div className={`p-2 rounded-lg bg-background/80 ${rec.tool.borderColor} border shadow-lg shrink-0`}>
+                      <IconComponent className="text-primary" size={20} />
                     </div>
-                    <div>
-                      <h3 className="font-bold text-lg">{rec.tool.name}</h3>
-                      <span className="text-xs text-muted-foreground capitalize font-medium">
+                    <div className="min-w-0">
+                      <h3 className="font-bold text-base leading-tight">{rec.tool.name}</h3>
+                      <span className="text-[10px] text-muted-foreground capitalize font-medium">
                         {rec.tool.category}
                       </span>
                     </div>
                   </div>
-                  <span className={`px-2.5 py-1 rounded-full text-xs font-bold border flex items-center gap-1.5 ${getPriorityStyle(rec.priority)}`}>
-                    {getPriorityIcon(rec.priority)}
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold border shrink-0 ${getPriorityStyle(rec.priority)}`}>
                     {rec.priority}
                   </span>
                 </div>
               </div>
 
               {/* Content - flex-grow to fill space */}
-              <div className="p-4 flex flex-col flex-grow">
-                <p className="text-sm text-muted-foreground leading-relaxed">
+              <div className="p-4 flex flex-col flex-1">
+                <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
                   {rec.tool.description}
                 </p>
 
                 {/* Why recommended */}
-                <div className="mt-4 p-3 rounded-xl bg-muted/40 border border-border/50">
-                  <p className="text-xs text-muted-foreground mb-1 font-medium uppercase tracking-wider">Why recommended</p>
-                  <p className="text-sm font-medium leading-snug">{rec.reason}</p>
+                <div className="mt-3 p-2.5 rounded-lg bg-muted/40 border border-border/50">
+                  <p className="text-[10px] text-muted-foreground mb-1 font-medium uppercase tracking-wider">Why recommended</p>
+                  <p className="text-xs font-medium leading-snug line-clamp-2">{rec.reason}</p>
                 </div>
 
                 {/* Issue detected */}
-                <div className="mt-3 flex items-center gap-2 text-xs">
-                  <div className="p-1 rounded bg-warning/20">
+                <div className="mt-2 flex items-center gap-2 text-[10px]">
+                  <div className="p-0.5 rounded bg-warning/20 shrink-0">
                     <AlertCircle size={10} className="text-warning" />
                   </div>
-                  <span className="text-muted-foreground">{rec.relevantIssue}</span>
+                  <span className="text-muted-foreground truncate">{rec.relevantIssue}</span>
                 </div>
 
                 {/* Spacer to push bottom content down */}
-                <div className="flex-grow min-h-4" />
+                <div className="flex-1 min-h-2" />
 
                 {/* Projected improvement */}
-                <div className="mt-4 flex items-center justify-between p-3 rounded-xl bg-success/5 border border-success/20">
-                  <div className="flex items-center gap-2">
-                    <TrendingUp size={14} className="text-success" />
-                    <span className="text-xs text-muted-foreground">Projected improvement</span>
+                <div className="mt-3 flex items-center justify-between p-2.5 rounded-lg bg-success/5 border border-success/20">
+                  <div className="flex items-center gap-1.5">
+                    <TrendingUp size={12} className="text-success" />
+                    <span className="text-[10px] text-muted-foreground">Improvement</span>
                   </div>
-                  <span className="text-lg font-bold text-success">+{rec.projectedImprovement} pts</span>
+                  <span className="text-sm font-bold text-success">+{rec.projectedImprovement} pts</span>
                 </div>
 
                 {/* CTA Button - always at bottom */}
@@ -139,12 +138,12 @@ export function PrivacyToolsRecommendations({ data }: PrivacyToolsRecommendation
                   href={rec.tool.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-4 flex items-center justify-center gap-2 w-full p-3.5 rounded-xl bg-primary/10 border border-primary/30 text-primary font-semibold text-sm hover:bg-primary/20 hover:border-primary/50 transition-all"
+                  className="mt-3 flex items-center justify-center gap-2 w-full p-2.5 rounded-lg bg-primary/10 border border-primary/30 text-primary font-semibold text-xs hover:bg-primary/20 hover:border-primary/50 transition-all"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   Use {rec.tool.name}
-                  <ExternalLink size={14} />
+                  <ExternalLink size={12} />
                 </motion.a>
               </div>
             </motion.div>

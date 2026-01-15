@@ -253,3 +253,56 @@ export interface LightProtocolProjection {
   benefits: string[];
   shieldingSteps: string[];
 }
+
+// Jupiter Portfolio Types
+export interface JupiterPosition {
+  type: "multiple" | "liquidity" | "leverage" | "borrowlend" | "trade" | "staked";
+  label: string;
+  platformId: string;
+  value: number;
+  data: Record<string, unknown>;
+}
+
+export interface JupiterPortfolioResponse {
+  elements: JupiterPosition[];
+  tokenInfo: Record<string, TokenInfo>;
+  fetcherReports: Record<string, { status: string }>;
+}
+
+export interface TokenInfo {
+  name: string;
+  symbol: string;
+  decimals: number;
+  logoURI?: string;
+}
+
+// Financial Surveillance Types
+export interface SurveillanceData {
+  arkhamUrl: string;
+  protocolsUsed: ProtocolUsage[];
+  surveillanceRisks: SurveillanceRisk[];
+  defiPositions: DeFiPosition[];
+  totalDeFiValue: number;
+}
+
+export interface ProtocolUsage {
+  name: string;
+  category: "DEX" | "Lending" | "Staking" | "NFT" | "Bridge" | "Other";
+  interactionCount: number;
+  lastUsed?: string;
+  icon?: string;
+}
+
+export interface SurveillanceRisk {
+  source: string;
+  description: string;
+  severity: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+  dataExposed: string[];
+}
+
+export interface DeFiPosition {
+  protocol: string;
+  type: string;
+  value: number;
+  tokens: string[];
+}

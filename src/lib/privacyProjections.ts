@@ -8,6 +8,32 @@ export function getToolRecommendations(data: PrivacyData): ToolRecommendation[] 
   const recommendations: ToolRecommendation[] = [];
   const addedToolIds = new Set<string>();
 
+  // PRIORITY 1: encrypt.trade - True privacy solution for breaking links
+  // Recommend when user needs to start fresh or break existing links
+  const hasSignificantIssues =
+    data.advancedPrivacyScore < 60 ||
+    data.exchangeFingerprint.kycExposure > 0.3 ||
+    data.dustAttack.dustAttackDetected ||
+    data.graph.graphPrivacyScore < 50;
+
+  if (hasSignificantIssues) {
+    const tool = getToolById("encrypt-trade");
+    if (tool && !addedToolIds.has(tool.id)) {
+      recommendations.push({
+        tool,
+        reason: "Start fresh with a completely unlinked wallet - truly break the chain of transaction history",
+        priority: "HIGH",
+        relevantIssue: data.advancedPrivacyScore < 60
+          ? `Low privacy score: ${data.advancedPrivacyScore}/100`
+          : data.exchangeFingerprint.kycExposure > 0.3
+          ? `${(data.exchangeFingerprint.kycExposure * 100).toFixed(0)}% KYC exposure detected`
+          : "Multiple privacy vulnerabilities detected",
+        projectedImprovement: 35,
+      });
+      addedToolIds.add(tool.id);
+    }
+  }
+
   // High dust attack vulnerability -> Light Protocol shielding
   if (data.dustAttack.dustAttackDetected || data.dustAttack.dustVulnerability > 0.5) {
     const tool = getToolById("light-protocol");
@@ -20,36 +46,6 @@ export function getToolRecommendations(data: PrivacyData): ToolRecommendation[] 
           ? `${data.dustAttack.dustTransactionsReceived} dust transactions detected`
           : `High dust vulnerability: ${(data.dustAttack.dustVulnerability * 100).toFixed(0)}%`,
         projectedImprovement: 25,
-      });
-      addedToolIds.add(tool.id);
-    }
-  }
-
-  // High exchange/KYC exposure -> DEX usage
-  if (data.exchangeFingerprint.kycExposure > 0.5 || data.exchangeFingerprint.exchangeInteractionDetected) {
-    const tool = getToolById("jupiter");
-    if (tool && !addedToolIds.has(tool.id)) {
-      recommendations.push({
-        tool,
-        reason: "Use decentralized exchanges to avoid KYC and reduce traceability",
-        priority: "HIGH",
-        relevantIssue: `${(data.exchangeFingerprint.kycExposure * 100).toFixed(0)}% KYC exposure detected`,
-        projectedImprovement: 20,
-      });
-      addedToolIds.add(tool.id);
-    }
-  }
-
-  // Low entropy -> mixing services
-  if (data.entropy.totalEntropy < 0.5) {
-    const tool = getToolById("dust-protocol");
-    if (tool && !addedToolIds.has(tool.id)) {
-      recommendations.push({
-        tool,
-        reason: "Increase transaction randomness through privacy-preserving mixing",
-        priority: "MEDIUM",
-        relevantIssue: `Low entropy score: ${(data.entropy.totalEntropy * 100).toFixed(0)}%`,
-        projectedImprovement: 15,
       });
       addedToolIds.add(tool.id);
     }
@@ -85,15 +81,15 @@ export function getToolRecommendations(data: PrivacyData): ToolRecommendation[] 
     }
   }
 
-  // Low graph privacy -> Raydium for breaking graph patterns
-  if (data.graph.graphPrivacyScore < 50) {
-    const tool = getToolById("raydium");
-    if (tool && !addedToolIds.has(tool.id)) {
+  // Low entropy -> mixing services
+  if (data.entropy.totalEntropy < 0.5 && !addedToolIds.has("dust-protocol")) {
+    const tool = getToolById("dust-protocol");
+    if (tool) {
       recommendations.push({
         tool,
-        reason: "Trade through DEX pools to obscure transaction graph",
+        reason: "Increase transaction randomness through privacy-preserving mixing",
         priority: "MEDIUM",
-        relevantIssue: `Low graph privacy: ${data.graph.graphPrivacyScore}%`,
+        relevantIssue: `Low entropy score: ${(data.entropy.totalEntropy * 100).toFixed(0)}%`,
         projectedImprovement: 15,
       });
       addedToolIds.add(tool.id);

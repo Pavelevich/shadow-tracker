@@ -22,3 +22,24 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment and secrets
+.env
+.env.*
+*.env
+
+# Keypairs and secrets
+*-keypair.json
+*keypair*.json
+*secret*.json
+*-secreta.json
+*.pem
+*.key
+
+# Solana/Anchor build artifacts
+target/
+sdk/program/target/
+sdk/cli/mi-nota-secreta.json
+
+# Test outputs
+*.test.json
