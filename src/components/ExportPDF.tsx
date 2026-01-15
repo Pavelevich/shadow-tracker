@@ -255,6 +255,15 @@ const PrivacyReportPDF = ({ data }: { data: PrivacyData }) => {
           <Text style={styles.walletAddress}>{data.address}</Text>
         </View>
 
+        {/* Privacy Solution CTA */}
+        <View style={{ marginBottom: 20, padding: 15, backgroundColor: "#1e293b", borderRadius: 8, borderLeftWidth: 4, borderLeftColor: "#a855f7" }}>
+          <Text style={{ fontSize: 12, fontWeight: "bold", color: "#a855f7", marginBottom: 6 }}>Improve Your Privacy</Text>
+          <Text style={{ fontSize: 9, color: "#94a3b8", marginBottom: 8 }}>
+            Use encrypt.trade for truly private swaps and transfers on Solana. Break on-chain links completely.
+          </Text>
+          <Text style={{ fontSize: 10, color: "#a855f7" }}>https://encrypt.trade</Text>
+        </View>
+
         {/* Privacy Score */}
         <View style={styles.scoreSection}>
           <View style={styles.scoreLeft}>
@@ -321,15 +330,6 @@ const PrivacyReportPDF = ({ data }: { data: PrivacyData }) => {
         <View style={{ marginBottom: 20 }}>
           <Text style={[styles.logo, { fontSize: 18 }]}>SOLPRIVACY</Text>
           <Text style={[styles.walletAddress, { fontSize: 9 }]}>{data.address}</Text>
-        </View>
-
-        {/* Privacy Solution CTA - Top of Page */}
-        <View style={{ marginBottom: 20, padding: 15, backgroundColor: "#1e293b", borderRadius: 8, borderLeftWidth: 4, borderLeftColor: "#a855f7" }}>
-          <Text style={{ fontSize: 12, fontWeight: "bold", color: "#a855f7", marginBottom: 6 }}>Improve Your Privacy</Text>
-          <Text style={{ fontSize: 9, color: "#94a3b8", marginBottom: 8 }}>
-            Use encrypt.trade for truly private swaps and transfers on Solana. Break on-chain links completely.
-          </Text>
-          <Text style={{ fontSize: 10, color: "#a855f7" }}>https://encrypt.trade</Text>
         </View>
 
         {/* Key Metrics */}
