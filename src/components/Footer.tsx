@@ -1,46 +1,32 @@
-import { motion } from "framer-motion";
-import { Github, ExternalLink } from "lucide-react";
-import tetsuoLogo from "@/assets/tetsuo-logo.jpg";
+import { GithubLogo } from "@phosphor-icons/react";
+import { Logo } from "./Logo";
 
 export function Footer() {
   return (
-    <motion.footer
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1.2, duration: 0.6 }}
-      className="border-t border-border/30 mt-auto py-6"
-    >
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <span className="text-muted-foreground text-sm">Powered by</span>
-            <a
-              href="https://dexscreener.com/solana/8i51xnnpgakaj4g4nddmqh95v4fkaxw8mhtarokd9te8"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-            >
-              <img src={tetsuoLogo} alt="TETSUO" className="w-8 h-8 rounded-full" />
-              <span className="font-semibold">TETSUO</span>
-              <span className="text-muted-foreground">on Solana</span>
-            </a>
-          </div>
-
-          <div className="flex items-center gap-6">
-            <a
-              href="https://github.com/Pavelevich/shadow-tracker"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
-            >
-              <Github size={18} />
-              <span>GitHub</span>
-              <ExternalLink size={14} />
-            </a>
-            <span className="text-muted-foreground text-sm">v3.1.0</span>
-          </div>
-        </div>
+    <footer className="w-full px-4 sm:px-8 lg:px-20 py-4 sm:py-0 sm:h-20 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-[#2A2A2A] bg-[#141414] safe-bottom">
+      <div className="flex items-center gap-3 sm:gap-6">
+        <Logo size="sm" showText={false} />
+        <span className="text-xs sm:text-sm font-bold tracking-[0.1em] sm:tracking-[0.15em] text-white">SOLPRIVACY</span>
+        <span className="text-[10px] sm:text-xs text-[#5A5A5A]">© 2026</span>
       </div>
-    </motion.footer>
+      <div className="flex items-center gap-4 sm:gap-8">
+        {/* Hide partners on mobile, show on desktop */}
+        <div className="hidden md:flex items-center gap-8">
+          {["HELIUS", "LIGHT PROTOCOL", "ARCIUM"].map((partner) => (
+            <span key={partner} className="text-[11px] font-medium tracking-[0.15em] text-[#5A5A5A]">
+              {partner}
+            </span>
+          ))}
+        </div>
+        <a
+          href="https://github.com/Pavelevich/solprivacy-cli"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-2 touch-feedback"
+        >
+          <GithubLogo size={20} className="text-[#8A8A8A] hover:text-white transition-colors" weight="bold" />
+        </a>
+      </div>
+    </footer>
   );
 }

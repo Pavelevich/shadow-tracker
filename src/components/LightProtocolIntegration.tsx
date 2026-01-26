@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { Shield, ArrowRight, Check, ExternalLink, Zap, TrendingUp } from "lucide-react";
+import { Shield, ArrowRight, Check, ArrowSquareOut, Lightning, TrendUp } from "@phosphor-icons/react";
 import { PrivacyData } from "@/types/privacy";
 import { calculateLightProtocolProjection } from "@/lib/privacyProjections";
 
@@ -29,8 +29,8 @@ export function LightProtocolIntegration({ data }: LightProtocolIntegrationProps
         <div className="bg-gradient-to-r from-cyan-500/20 via-cyan-500/10 to-transparent p-6 border-b border-cyan-500/20">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="p-3 rounded-xl bg-cyan-500/20 border border-cyan-500/30">
-                <Shield className="text-cyan-400" size={28} />
+              <div className="p-3 bg-cyan-500/20 border border-cyan-500/30">
+                <Shield className="text-cyan-400" size={28} weight="duotone" />
               </div>
               <div>
                 <h2 className="text-xl font-bold">
@@ -46,7 +46,7 @@ export function LightProtocolIntegration({ data }: LightProtocolIntegrationProps
 
         <div className="p-6 space-y-6">
           {/* Score Comparison Mini */}
-          <div className="flex items-center justify-center gap-4 md:gap-8 p-6 rounded-xl bg-muted/20 border border-border/30">
+          <div className="flex items-center justify-center gap-4 md:gap-8 p-6 bg-muted/20 border border-border/30">
             <div className="text-center">
               <p className="text-muted-foreground text-xs uppercase tracking-wider mb-2">Current</p>
               <motion.p
@@ -86,7 +86,7 @@ export function LightProtocolIntegration({ data }: LightProtocolIntegrationProps
           {/* Metrics Improvement */}
           <div>
             <h3 className="text-sm font-semibold text-muted-foreground mb-4 flex items-center gap-2">
-              <TrendingUp size={16} className="text-primary" />
+              <TrendUp size={16} className="text-primary" weight="bold" />
               Projected Metric Improvements
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -96,7 +96,7 @@ export function LightProtocolIntegration({ data }: LightProtocolIntegrationProps
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 + 0.4 }}
-                  className="p-3 rounded-lg bg-muted/20 border border-border/30"
+                  className="p-3 bg-muted/20 border border-border/30"
                 >
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm">{metric.name}</span>
@@ -105,7 +105,7 @@ export function LightProtocolIntegration({ data }: LightProtocolIntegrationProps
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                    <div className="flex-1 h-2 bg-muted overflow-hidden">
                       <motion.div
                         className="h-full bg-muted-foreground/50"
                         initial={{ width: 0 }}
@@ -113,8 +113,8 @@ export function LightProtocolIntegration({ data }: LightProtocolIntegrationProps
                         transition={{ delay: index * 0.1 + 0.5, duration: 0.6 }}
                       />
                     </div>
-                    <ArrowRight size={12} className="text-muted-foreground" />
-                    <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                    <ArrowRight size={12} className="text-muted-foreground" weight="bold" />
+                    <div className="flex-1 h-2 bg-muted overflow-hidden">
                       <motion.div
                         className="h-full bg-success"
                         initial={{ width: 0 }}
@@ -135,7 +135,7 @@ export function LightProtocolIntegration({ data }: LightProtocolIntegrationProps
           {/* Benefits */}
           <div>
             <h3 className="text-sm font-semibold text-muted-foreground mb-4 flex items-center gap-2">
-              <Zap size={16} className="text-primary" />
+              <Lightning size={16} className="text-primary" weight="bold" />
               Key Benefits
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -147,7 +147,7 @@ export function LightProtocolIntegration({ data }: LightProtocolIntegrationProps
                   transition={{ delay: index * 0.05 + 0.6 }}
                   className="flex items-start gap-2 text-sm"
                 >
-                  <Check size={16} className="text-success shrink-0 mt-0.5" />
+                  <Check size={16} className="text-success shrink-0 mt-0.5" weight="bold" />
                   <span className="text-muted-foreground">{benefit}</span>
                 </motion.div>
               ))}
@@ -155,12 +155,12 @@ export function LightProtocolIntegration({ data }: LightProtocolIntegrationProps
           </div>
 
           {/* SDK Code Example */}
-          <div className="p-4 rounded-xl bg-cyan-500/5 border border-cyan-500/20">
+          <div className="p-4 bg-cyan-500/5 border border-cyan-500/20">
             <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-              <Zap size={16} className="text-cyan-400" />
+              <Lightning size={16} className="text-cyan-400" weight="bold" />
               Quick Start - Shield Your SOL
             </h3>
-            <div className="bg-black/40 rounded-lg p-4 overflow-x-auto">
+            <div className="bg-black/40 p-4 overflow-x-auto">
               <pre className="text-xs font-mono text-cyan-300">
 {`import { createRpc, Rpc } from "@lightprotocol/stateless.js";
 import { createMint, mintTo, transfer } from "@lightprotocol/compressed-token";
@@ -198,24 +198,24 @@ await transfer(
               href="https://lightprotocol.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-2 p-4 rounded-xl bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold hover:from-cyan-400 hover:to-cyan-500 transition-all shadow-lg shadow-cyan-500/25"
+              className="flex-1 flex items-center justify-center gap-2 p-4 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold hover:from-cyan-400 hover:to-cyan-500 transition-all shadow-lg shadow-cyan-500/25"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <Shield size={20} />
+              <Shield size={20} weight="bold" />
               Explore Light Protocol
-              <ExternalLink size={16} />
+              <ArrowSquareOut size={16} weight="bold" />
             </motion.a>
             <motion.a
               href="https://www.zkcompression.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-2 p-4 rounded-xl bg-muted/30 border border-cyan-500/30 text-cyan-400 font-semibold hover:bg-cyan-500/10 transition-all"
+              className="flex-1 flex items-center justify-center gap-2 p-4 bg-muted/30 border border-cyan-500/30 text-cyan-400 font-semibold hover:bg-cyan-500/10 transition-all"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
               Learn About ZK Compression
-              <ExternalLink size={16} />
+              <ArrowSquareOut size={16} weight="bold" />
             </motion.a>
           </div>
 

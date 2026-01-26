@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Eye, Terminal, Shield, Clock, Users } from "lucide-react";
+import { Eye, Terminal, Shield, Clock, Users } from "@phosphor-icons/react";
 import { PrivacyData, AttackScenario } from "@/types/privacy";
 
 interface AttackSimulationProps {
@@ -35,12 +35,12 @@ export function AttackSimulation({ data }: AttackSimulationProps) {
         {/* Terminal header */}
         <div className="bg-gradient-to-r from-muted/50 to-transparent border-b border-border/50 p-4 flex items-center gap-3">
           <div className="flex gap-2">
-            <div className="w-3 h-3 rounded-full bg-critical/80" />
-            <div className="w-3 h-3 rounded-full bg-warning/80" />
-            <div className="w-3 h-3 rounded-full bg-success/80" />
+            <div className="w-3 h-3 bg-critical/80" />
+            <div className="w-3 h-3 bg-warning/80" />
+            <div className="w-3 h-3 bg-success/80" />
           </div>
           <div className="flex items-center gap-2 text-muted-foreground">
-            <Terminal size={16} />
+            <Terminal size={16} weight="bold" />
             <span className="font-mono text-sm">attack_simulator.exe</span>
           </div>
         </div>
@@ -48,8 +48,8 @@ export function AttackSimulation({ data }: AttackSimulationProps) {
         {/* Header content */}
         <div className="p-6 border-b border-border/30">
           <div className="flex items-center gap-4 mb-4">
-            <div className="p-3 rounded-xl bg-critical/10 border border-critical/20">
-              <Eye className="text-critical" size={24} />
+            <div className="p-3 bg-critical/10 border border-critical/20">
+              <Eye className="text-critical" size={24} weight="bold" />
             </div>
             <div>
               <h2 className="text-2xl font-bold">What Attackers See</h2>
@@ -59,18 +59,18 @@ export function AttackSimulation({ data }: AttackSimulationProps) {
 
           {/* Key metrics */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-            <div className="p-4 rounded-xl bg-muted/30 border border-border/30">
+            <div className="p-4 bg-muted/30 border border-border/30">
               <div className="flex items-center gap-3">
-                <Clock className="text-warning" size={20} />
+                <Clock className="text-warning" size={20} weight="bold" />
                 <span className="text-muted-foreground text-sm">Time to De-anonymize</span>
               </div>
               <p className="text-2xl font-bold mt-2 text-warning">
                 {attackSimulation.estimatedTimeToDeAnon}
               </p>
             </div>
-            <div className="p-4 rounded-xl bg-muted/30 border border-border/30">
+            <div className="p-4 bg-muted/30 border border-border/30">
               <div className="flex items-center gap-3">
-                <Eye className="text-critical" size={20} />
+                <Eye className="text-critical" size={20} weight="bold" />
                 <span className="text-muted-foreground text-sm">De-anonymization Probability</span>
               </div>
               <p className="text-2xl font-bold mt-2 text-critical">
@@ -85,7 +85,7 @@ export function AttackSimulation({ data }: AttackSimulationProps) {
           <h3 className="font-mono text-sm text-muted-foreground mb-4 flex items-center gap-2">
             <span className="text-primary">$</span> scanning attack vectors...
           </h3>
-          
+
           <div className="space-y-4">
             {scenarios.map((scenario, index) => {
               const risk = getRiskBadge(scenario.probability);
@@ -95,13 +95,13 @@ export function AttackSimulation({ data }: AttackSimulationProps) {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 + 0.4 }}
-                  className="p-4 rounded-xl bg-muted/20 border border-border/30"
+                  className="p-4 bg-muted/20 border border-border/30"
                 >
                   <div className="flex items-start justify-between gap-4 mb-3">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-1">
                         <h4 className="font-semibold">{scenario.name}</h4>
-                        <span className={`px-2 py-0.5 rounded text-xs font-medium border ${risk.class}`}>
+                        <span className={`px-2 py-0.5 text-xs font-medium border ${risk.class}`}>
                           {risk.text}
                         </span>
                       </div>
@@ -111,9 +111,9 @@ export function AttackSimulation({ data }: AttackSimulationProps) {
                       {(scenario.probability * 100).toFixed(0)}%
                     </span>
                   </div>
-                  
+
                   {/* Progress bar */}
-                  <div className="h-2 bg-muted rounded-full overflow-hidden mb-3">
+                  <div className="h-2 bg-muted overflow-hidden mb-3">
                     <motion.div
                       className={`h-full ${getRiskColor(scenario.probability)}`}
                       initial={{ width: 0 }}
@@ -124,7 +124,7 @@ export function AttackSimulation({ data }: AttackSimulationProps) {
 
                   {/* Mitigation */}
                   <div className="flex items-start gap-2 text-sm">
-                    <Shield className="text-success shrink-0 mt-0.5" size={14} />
+                    <Shield className="text-success shrink-0 mt-0.5" size={14} weight="bold" />
                     <span className="text-success/90">{scenario.mitigation}</span>
                   </div>
                 </motion.div>
@@ -137,16 +137,16 @@ export function AttackSimulation({ data }: AttackSimulationProps) {
         {graph.detectedClusters.length > 0 && (
           <div className="p-6 border-t border-border/30">
             <div className="flex items-center gap-3 mb-4">
-              <Users className="text-warning" size={20} />
+              <Users className="text-warning" size={20} weight="bold" />
               <h3 className="font-semibold text-warning">Linked Wallets Detected</h3>
             </div>
             <div className="space-y-3">
               {graph.detectedClusters.map((cluster, index) => (
-                <div key={index} className="p-3 rounded-lg bg-warning/10 border border-warning/20">
+                <div key={index} className="p-3 bg-warning/10 border border-warning/20">
                   <p className="text-sm text-muted-foreground mb-2">{cluster.reason}</p>
                   <div className="flex flex-wrap gap-2">
                     {cluster.wallets.slice(0, 3).map((wallet) => (
-                      <span key={wallet} className="font-mono text-xs bg-muted px-2 py-1 rounded">
+                      <span key={wallet} className="font-mono text-xs bg-muted px-2 py-1">
                         {wallet.slice(0, 8)}...{wallet.slice(-4)}
                       </span>
                     ))}

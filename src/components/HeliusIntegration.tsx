@@ -1,6 +1,15 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { Database, Zap, Code, Activity, Shield, ExternalLink, Check, Server } from "lucide-react";
+import {
+  Database,
+  Lightning,
+  Code,
+  Pulse,
+  Shield,
+  ArrowSquareOut,
+  Check,
+  HardDrives
+} from "@phosphor-icons/react";
 import { PrivacyData } from "@/types/privacy";
 
 interface HeliusIntegrationProps {
@@ -16,7 +25,7 @@ export function HeliusIntegration({ data }: HeliusIntegrationProps) {
       dataPoint: `${data.transactionCount} transactions analyzed`,
     },
     {
-      icon: Activity,
+      icon: Pulse,
       title: "Real-time Data",
       description: "Live blockchain data with sub-second latency for accurate privacy scoring",
       dataPoint: "< 500ms response time",
@@ -28,7 +37,7 @@ export function HeliusIntegration({ data }: HeliusIntegrationProps) {
       dataPoint: `${data.graph.uniqueCounterparties} counterparties identified`,
     },
     {
-      icon: Server,
+      icon: HardDrives,
       title: "Reliable Infrastructure",
       description: "99.9% uptime RPC infrastructure ensures consistent analysis availability",
       dataPoint: "Enterprise-grade reliability",
@@ -80,7 +89,7 @@ export function HeliusIntegration({ data }: HeliusIntegrationProps) {
           {/* Why Helius */}
           <div className="p-4 rounded-xl bg-orange-500/5 border border-orange-500/20">
             <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
-              <Zap size={16} className="text-orange-400" />
+              <Lightning size={16} weight="fill" className="text-orange-400" />
               Why Helius is Essential
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -160,9 +169,9 @@ export function HeliusIntegration({ data }: HeliusIntegrationProps) {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <Zap size={20} />
+              <Lightning size={20} weight="fill" />
               Get Free API Key
-              <ExternalLink size={16} />
+              <ArrowSquareOut size={16} weight="bold" />
             </motion.a>
             <motion.a
               href="https://docs.helius.dev"
@@ -173,7 +182,7 @@ export function HeliusIntegration({ data }: HeliusIntegrationProps) {
               whileTap={{ scale: 0.98 }}
             >
               Read Documentation
-              <ExternalLink size={16} />
+              <ArrowSquareOut size={16} weight="bold" />
             </motion.a>
           </div>
 

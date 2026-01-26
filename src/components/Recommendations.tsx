@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Lightbulb, ArrowRight, AlertCircle, CheckCircle } from "lucide-react";
+import { Lightbulb, ArrowRight, WarningCircle, CheckCircle } from "@phosphor-icons/react";
 import { PrivacyData, Recommendation } from "@/types/privacy";
 
 interface RecommendationsProps {
@@ -28,11 +28,11 @@ export function Recommendations({ data }: RecommendationsProps) {
   const getPriorityIcon = (priority: string) => {
     switch (priority) {
       case "HIGH":
-        return <AlertCircle size={16} className="text-critical" />;
+        return <WarningCircle size={16} className="text-critical" weight="bold" />;
       case "MEDIUM":
-        return <AlertCircle size={16} className="text-warning" />;
+        return <WarningCircle size={16} className="text-warning" weight="bold" />;
       default:
-        return <CheckCircle size={16} className="text-success" />;
+        return <CheckCircle size={16} className="text-success" weight="bold" />;
     }
   };
 
@@ -44,7 +44,7 @@ export function Recommendations({ data }: RecommendationsProps) {
       className="py-8"
     >
       <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-        <Lightbulb className="text-primary" size={24} />
+        <Lightbulb className="text-primary" size={24} weight="bold" />
         Recommendations
       </h2>
 
@@ -64,13 +64,13 @@ export function Recommendations({ data }: RecommendationsProps) {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className={`px-2 py-0.5 rounded text-xs font-medium border ${getPriorityStyle(rec.priority)}`}>
+                    <span className={`px-2 py-0.5 text-xs font-medium border ${getPriorityStyle(rec.priority)}`}>
                       {rec.priority}
                     </span>
                   </div>
                   <h4 className="font-medium mb-1">{rec.action}</h4>
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <ArrowRight size={14} className="text-primary" />
+                    <ArrowRight size={14} className="text-primary" weight="bold" />
                     <span>{rec.impact}</span>
                   </div>
                 </div>

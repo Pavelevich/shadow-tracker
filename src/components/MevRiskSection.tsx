@@ -2,14 +2,14 @@ import { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   Shield,
-  AlertTriangle,
-  TrendingUp,
+  Warning,
+  TrendUp,
   Clock,
   Target,
-  ExternalLink,
-  ChevronRight,
-  Zap,
-} from "lucide-react";
+  ArrowSquareOut,
+  CaretRight,
+  Lightning,
+} from "@phosphor-icons/react";
 import { PrivacyData } from "@/types/privacy";
 import {
   calculateMevRisk,
@@ -28,13 +28,13 @@ export function MevRiskSection({ data }: MevRiskSectionProps) {
   const getRiskIcon = (level: string) => {
     switch (level) {
       case "CRITICAL":
-        return <AlertTriangle className="text-red-500" size={28} />;
+        return <Warning className="text-red-500" size={28} weight="bold" />;
       case "HIGH":
-        return <AlertTriangle className="text-amber-500" size={28} />;
+        return <Warning className="text-amber-500" size={28} weight="bold" />;
       case "MEDIUM":
-        return <Shield className="text-yellow-500" size={28} />;
+        return <Shield className="text-yellow-500" size={28} weight="bold" />;
       default:
-        return <Shield className="text-green-500" size={28} />;
+        return <Shield className="text-green-500" size={28} weight="bold" />;
     }
   };
 
@@ -58,7 +58,7 @@ export function MevRiskSection({ data }: MevRiskSectionProps) {
         >
           <div className="flex items-center gap-4">
             <div
-              className="p-3 rounded-xl border"
+              className="p-3 border"
               style={{
                 backgroundColor: `${riskColor}20`,
                 borderColor: `${riskColor}30`,
@@ -69,7 +69,7 @@ export function MevRiskSection({ data }: MevRiskSectionProps) {
             <div>
               <h2 className="text-xl font-bold flex items-center gap-2">
                 MEV Risk Analysis
-                <span className="text-xs bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full">
+                <span className="text-xs bg-amber-500/20 text-amber-400 px-2 py-0.5">
                   NEW
                 </span>
               </h2>
@@ -84,54 +84,32 @@ export function MevRiskSection({ data }: MevRiskSectionProps) {
           {/* Risk Score Display */}
           <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
             {/* Score Circle */}
-            <div className="relative">
-              <svg width="140" height="140" className="md:w-[160px] md:h-[160px] transform -rotate-90">
+            <div className="relative w-[120px] h-[120px] sm:w-[140px] sm:h-[140px] md:w-[160px] md:h-[160px] flex-shrink-0">
+              <svg
+                viewBox="0 0 160 160"
+                className="w-full h-full transform -rotate-90"
+                preserveAspectRatio="xMidYMid meet"
+              >
                 {/* Background circle */}
-                <circle
-                  cx="70"
-                  cy="70"
-                  r="60"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="10"
-                  className="text-muted/20 md:hidden"
-                />
                 <circle
                   cx="80"
                   cy="80"
                   r="70"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="12"
-                  className="text-muted/20 hidden md:block"
+                  strokeWidth="10"
+                  className="text-muted/20"
                 />
                 {/* Progress circle */}
                 <motion.circle
-                  cx="70"
-                  cy="70"
-                  r="60"
-                  fill="none"
-                  stroke={riskColor}
-                  strokeWidth="10"
-                  strokeLinecap="round"
-                  strokeDasharray={377}
-                  className="md:hidden"
-                  initial={{ strokeDashoffset: 377 }}
-                  animate={{
-                    strokeDashoffset: 377 - (377 * mevAnalysis.riskScore) / 100,
-                  }}
-                  transition={{ duration: 1, ease: "easeOut" }}
-                />
-                <motion.circle
                   cx="80"
                   cy="80"
                   r="70"
                   fill="none"
                   stroke={riskColor}
-                  strokeWidth="12"
+                  strokeWidth="10"
                   strokeLinecap="round"
                   strokeDasharray={440}
-                  className="hidden md:block"
                   initial={{ strokeDashoffset: 440 }}
                   animate={{
                     strokeDashoffset: 440 - (440 * mevAnalysis.riskScore) / 100,
@@ -141,7 +119,7 @@ export function MevRiskSection({ data }: MevRiskSectionProps) {
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <motion.span
-                  className="text-3xl md:text-4xl font-bold"
+                  className="text-2xl sm:text-3xl md:text-4xl font-bold"
                   style={{ color: riskColor }}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -158,7 +136,7 @@ export function MevRiskSection({ data }: MevRiskSectionProps) {
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <span
-                    className="px-3 py-1 rounded-full text-sm font-bold"
+                    className="px-3 py-1 text-sm font-bold"
                     style={{
                       backgroundColor: `${riskColor}20`,
                       color: riskColor,
@@ -174,18 +152,18 @@ export function MevRiskSection({ data }: MevRiskSectionProps) {
 
               {/* Quick Stats */}
               <div className="grid grid-cols-2 gap-3">
-                <div className="p-3 rounded-lg bg-muted/20 border border-border/30">
+                <div className="p-3 bg-muted/20 border border-border/30">
                   <div className="flex items-center gap-2 mb-1">
-                    <TrendingUp size={14} className="text-muted-foreground" />
+                    <TrendUp size={14} className="text-muted-foreground" weight="bold" />
                     <span className="text-xs text-muted-foreground">Est. Exposure</span>
                   </div>
                   <p className="text-lg font-bold" style={{ color: riskColor }}>
                     ${mevAnalysis.stats.estimatedExposureUsd.toFixed(0)}
                   </p>
                 </div>
-                <div className="p-3 rounded-lg bg-muted/20 border border-border/30">
+                <div className="p-3 bg-muted/20 border border-border/30">
                   <div className="flex items-center gap-2 mb-1">
-                    <Zap size={14} className="text-muted-foreground" />
+                    <Lightning size={14} className="text-muted-foreground" weight="bold" />
                     <span className="text-xs text-muted-foreground">High-Risk Swaps</span>
                   </div>
                   <p className="text-lg font-bold">
@@ -200,7 +178,7 @@ export function MevRiskSection({ data }: MevRiskSectionProps) {
           {mevAnalysis.vulnerabilityFactors.length > 0 && (
             <div>
               <h3 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
-                <Target size={16} />
+                <Target size={16} weight="bold" />
                 Vulnerability Factors
               </h3>
               <div className="space-y-2">
@@ -210,11 +188,11 @@ export function MevRiskSection({ data }: MevRiskSectionProps) {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.1 + 0.3 }}
-                    className="flex items-center justify-between p-3 rounded-lg bg-muted/10 border border-border/30"
+                    className="flex items-center justify-between p-3 bg-muted/10 border border-border/30"
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className="w-2 h-2 rounded-full"
+                        className="w-2 h-2"
                         style={{
                           backgroundColor:
                             factor.severity === "HIGH"
@@ -251,9 +229,9 @@ export function MevRiskSection({ data }: MevRiskSectionProps) {
           )}
 
           {/* What is MEV? */}
-          <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/20">
+          <div className="p-4 bg-amber-500/5 border border-amber-500/20">
             <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
-              <AlertTriangle size={16} className="text-amber-400" />
+              <Warning size={16} className="text-amber-400" weight="bold" />
               What are Sandwich Attacks?
             </h3>
             <p className="text-xs text-muted-foreground leading-relaxed">
@@ -268,7 +246,7 @@ export function MevRiskSection({ data }: MevRiskSectionProps) {
           {/* Recommendations */}
           <div>
             <h3 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
-              <Shield size={16} />
+              <Shield size={16} weight="bold" />
               Protection Recommendations
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -278,7 +256,7 @@ export function MevRiskSection({ data }: MevRiskSectionProps) {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.1 + 0.5 }}
-                  className="p-3 rounded-lg bg-muted/20 border border-border/30 hover:border-primary/30 transition-colors"
+                  className="p-3 bg-muted/20 border border-border/30 hover:border-primary/30 transition-colors"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div>
@@ -318,9 +296,9 @@ export function MevRiskSection({ data }: MevRiskSectionProps) {
                         href={rec.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-1.5 rounded-lg bg-muted/30 hover:bg-primary/20 transition-colors shrink-0"
+                        className="p-1.5 bg-muted/30 hover:bg-primary/20 transition-colors shrink-0"
                       >
-                        <ExternalLink size={14} className="text-muted-foreground" />
+                        <ArrowSquareOut size={14} className="text-muted-foreground" weight="bold" />
                       </a>
                     )}
                   </div>
@@ -334,13 +312,13 @@ export function MevRiskSection({ data }: MevRiskSectionProps) {
             href="https://jito.wtf"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full p-4 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold hover:from-amber-400 hover:to-orange-400 transition-all shadow-lg shadow-amber-500/25"
+            className="flex items-center justify-center gap-2 w-full p-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold hover:from-amber-400 hover:to-orange-400 transition-all shadow-lg shadow-amber-500/25"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <Shield size={20} />
+            <Shield size={20} weight="bold" />
             Protect with Jito Bundles
-            <ChevronRight size={16} />
+            <CaretRight size={16} weight="bold" />
           </motion.a>
 
           <p className="text-xs text-muted-foreground text-center">

@@ -1,5 +1,15 @@
 import { motion } from "framer-motion";
-import { Eye, AlertTriangle, Shield, ExternalLink, Sparkles, X, Check, Lock, Zap } from "lucide-react";
+import {
+  Eye,
+  Warning,
+  Shield,
+  ArrowSquareOut,
+  Sparkle,
+  X,
+  Check,
+  Lock,
+  Lightning
+} from "@phosphor-icons/react";
 
 export function EncryptTradeSection() {
   const surveillanceFacts = [
@@ -9,7 +19,7 @@ export function EncryptTradeSection() {
       description: "Chainalysis, Elliptic, and TRM Labs track every transaction on public blockchains",
     },
     {
-      icon: AlertTriangle,
+      icon: Warning,
       title: "Exchange Reporting",
       description: "CEXs share your transaction data with governments via subpoenas and regulations",
     },
@@ -40,7 +50,7 @@ export function EncryptTradeSection() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className="p-3 rounded-xl bg-purple-500/30 border border-purple-500/50 shadow-lg shadow-purple-500/20">
-                <Sparkles className="text-purple-300" size={28} />
+                <Sparkle className="text-purple-300" size={28} weight="fill" />
               </div>
               <div>
                 <h2 className="text-xl font-bold flex items-center gap-2">
@@ -61,9 +71,9 @@ export function EncryptTradeSection() {
               className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-purple-500/20 border border-purple-500/40 hover:bg-purple-500/30 transition-colors"
               whileHover={{ scale: 1.05 }}
             >
-              <Lock size={16} className="text-purple-300" />
+              <Lock size={16} className="text-purple-300" weight="bold" />
               <span className="text-sm font-semibold text-purple-300">encrypt.trade</span>
-              <ExternalLink size={14} className="text-purple-400" />
+              <ArrowSquareOut size={14} className="text-purple-400" weight="bold" />
             </motion.a>
           </div>
         </div>
@@ -73,7 +83,7 @@ export function EncryptTradeSection() {
           <div className="p-4 rounded-xl bg-gradient-to-r from-purple-500/10 to-purple-600/5 border border-purple-500/30">
             <div className="flex items-start gap-3">
               <div className="p-2 rounded-lg bg-purple-500/20 shrink-0">
-                <Zap size={20} className="text-purple-400" />
+                <Lightning size={20} className="text-purple-400" weight="fill" />
               </div>
               <div>
                 <h3 className="font-semibold text-purple-300 mb-1">Why DEXs Aren't Enough</h3>
@@ -88,10 +98,10 @@ export function EncryptTradeSection() {
 
           {/* Comparison Table - NEW */}
           <div className="rounded-xl border border-border/30 overflow-hidden">
-            <div className="grid grid-cols-3 bg-muted/20 p-3 text-xs font-semibold">
+            <div className="grid grid-cols-3 bg-muted/20 p-2 sm:p-3 text-[10px] sm:text-xs font-semibold">
               <span className="text-muted-foreground">Feature</span>
               <span className="text-center text-purple-400">encrypt.trade</span>
-              <span className="text-center text-muted-foreground">Regular DEXs</span>
+              <span className="text-center text-muted-foreground">DEXs</span>
             </div>
             {comparisonItems.map((item, index) => (
               <motion.div
@@ -99,17 +109,17 @@ export function EncryptTradeSection() {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 + 0.2 }}
-                className="grid grid-cols-3 p-3 border-t border-border/20 text-sm"
+                className="grid grid-cols-3 p-2 sm:p-3 border-t border-border/20 text-sm items-center"
               >
-                <span className="text-muted-foreground text-xs">{item.feature}</span>
+                <span className="text-muted-foreground text-[10px] sm:text-xs leading-tight">{item.feature}</span>
                 <div className="flex justify-center">
                   <div className="p-1 rounded-full bg-green-500/20">
-                    <Check size={14} className="text-green-400" />
+                    <Check size={14} className="text-green-400" weight="bold" />
                   </div>
                 </div>
                 <div className="flex justify-center">
                   <div className="p-1 rounded-full bg-red-500/20">
-                    <X size={14} className="text-red-400" />
+                    <X size={14} className="text-red-400" weight="bold" />
                   </div>
                 </div>
               </motion.div>
@@ -128,10 +138,12 @@ export function EncryptTradeSection() {
                   transition={{ delay: index * 0.1 + 0.4 }}
                   className="p-3 rounded-xl bg-muted/10 border border-border/20 hover:border-purple-500/30 transition-colors"
                 >
-                  <div className="p-1.5 rounded-lg bg-purple-500/10 border border-purple-500/20 w-fit mb-2">
-                    <fact.icon size={16} className="text-purple-400" />
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="p-1.5 rounded-lg bg-purple-500/10 border border-purple-500/20 shrink-0">
+                      <fact.icon size={16} className="text-purple-400" weight="bold" />
+                    </div>
+                    <h4 className="font-semibold text-xs">{fact.title}</h4>
                   </div>
-                  <h4 className="font-semibold text-xs mb-1">{fact.title}</h4>
                   <p className="text-[10px] text-muted-foreground leading-relaxed">{fact.description}</p>
                 </motion.div>
               ))}
@@ -147,9 +159,9 @@ export function EncryptTradeSection() {
             whileHover={{ scale: 1.02, boxShadow: "0 20px 40px rgba(168, 85, 247, 0.4)" }}
             whileTap={{ scale: 0.98 }}
           >
-            <Lock size={22} />
+            <Lock size={22} weight="bold" />
             Start Fresh with encrypt.trade
-            <ExternalLink size={18} />
+            <ArrowSquareOut size={18} weight="bold" />
           </motion.a>
 
           <p className="text-xs text-muted-foreground text-center">

@@ -28,15 +28,16 @@ import { Footer } from "@/components/Footer";
 import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 import { usePrivacyAnalysis } from "@/hooks/usePrivacyAnalysis";
 import {
-  AlertCircle,
+  Warning,
   ArrowLeft,
   Shield,
-  Zap,
-  BarChart3,
+  Lightning,
+  ChartBar,
   Link as LinkIcon,
-  BookOpen,
+  Book,
   Eye,
-} from "lucide-react";
+  Broom,
+} from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
@@ -68,7 +69,7 @@ const Index = () => {
       <NavBar />
 
       <div className="relative z-10 flex-1 flex flex-col">
-        <div className="container mx-auto px-4 py-8 flex-1 flex flex-col">
+        <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 flex-1 flex flex-col">
           {/* Hero Section - only show if no data and no wallet param */}
           {!data && !isLoading && !wallet && (
             <HeroSection onAnalyze={handleAnalyze} isLoading={isLoading} />
@@ -85,7 +86,7 @@ const Index = () => {
               >
                 <div className="glass-card p-6 border-critical/30 bg-critical/5">
                   <div className="flex items-center gap-3">
-                    <AlertCircle className="text-critical" size={24} />
+                    <Warning className="text-critical" size={24} weight="bold" />
                     <div>
                       <h3 className="font-semibold text-critical">Analysis Failed</h3>
                       <p className="text-muted-foreground text-sm">{error}</p>
@@ -94,9 +95,9 @@ const Index = () => {
                   <Button
                     variant="outline"
                     onClick={handleNewAnalysis}
-                    className="mt-4 gap-2"
+                    className="mt-4 gap-2 touch-feedback"
                   >
-                    <ArrowLeft size={16} />
+                    <ArrowLeft size={16} weight="bold" />
                     Try Again
                   </Button>
                 </div>
@@ -119,7 +120,7 @@ const Index = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="max-w-4xl mx-auto w-full"
+                className="max-w-4xl mx-auto w-full overflow-x-hidden"
               >
                 {/* Header */}
                 <motion.div
@@ -127,11 +128,8 @@ const Index = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className="text-center mb-6"
                 >
-                  <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-primary/20 border border-primary/30 mb-3">
-                    <Shield className="text-primary" size={24} />
-                  </div>
-                  <h1 className="text-2xl md:text-3xl font-bold mb-2">Privacy Analyzer</h1>
-                  <p className="text-muted-foreground text-sm md:text-base">
+                  <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2">Privacy Analyzer</h1>
+                  <p className="text-muted-foreground text-xs sm:text-sm md:text-base">
                     Complete wallet privacy analysis
                   </p>
                 </motion.div>
@@ -162,14 +160,14 @@ const Index = () => {
                 <UrgentAlert data={data.data} />
 
                 {/* Quick Actions */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <Button
                     variant="outline"
-                    className="h-auto py-4 flex flex-col items-start gap-2"
+                    className="h-auto py-4 flex flex-col items-start gap-2 touch-feedback"
                     onClick={() => navigate(`/mev/${data.data.address}`)}
                   >
                     <div className="flex items-center gap-2">
-                      <Zap size={18} className="text-amber-400" />
+                      <Lightning size={18} className="text-amber-400" weight="bold" />
                       <span className="font-semibold">Check MEV Risk</span>
                     </div>
                     <span className="text-xs text-muted-foreground text-left">
@@ -178,11 +176,11 @@ const Index = () => {
                   </Button>
                   <Button
                     variant="outline"
-                    className="h-auto py-4 flex flex-col items-start gap-2"
+                    className="h-auto py-4 flex flex-col items-start gap-2 touch-feedback"
                     onClick={() => navigate(`/dust/${data.data.address}`)}
                   >
                     <div className="flex items-center gap-2">
-                      <Shield size={18} className="text-red-400" />
+                      <Broom size={18} className="text-red-400" weight="bold" />
                       <span className="font-semibold">Clean Dust Tokens</span>
                     </div>
                     <span className="text-xs text-muted-foreground text-left">
@@ -194,10 +192,10 @@ const Index = () => {
                 {/* SECTION 2: Quick Actions */}
                 <CollapsibleSection
                   title="Improve Your Privacy"
-                  icon={<Shield size={18} />}
+                  icon={<Shield size={18} weight="bold" />}
                   defaultOpen={true}
                   badge="Recommended"
-                  badgeColor="#14f195"
+                  badgeColor="#10B981"
                 >
                   <div className="space-y-4">
                     <EncryptTradeSection />
@@ -209,7 +207,7 @@ const Index = () => {
                 {/* SECTION 2.5: Financial Surveillance */}
                 <CollapsibleSection
                   title="Financial Surveillance"
-                  icon={<Eye size={18} />}
+                  icon={<Eye size={18} weight="bold" />}
                   defaultOpen={false}
                   badge="New"
                   badgeColor="#ef4444"
@@ -220,7 +218,7 @@ const Index = () => {
                 {/* SECTION 3: Detailed Analysis */}
                 <CollapsibleSection
                   title="Detailed Analysis"
-                  icon={<BarChart3 size={18} />}
+                  icon={<ChartBar size={18} weight="bold" />}
                   defaultOpen={false}
                 >
                   <div className="space-y-4">
@@ -236,7 +234,7 @@ const Index = () => {
                 {/* SECTION 4: Integrations */}
                 <CollapsibleSection
                   title="Protocol Integrations"
-                  icon={<LinkIcon size={18} />}
+                  icon={<LinkIcon size={18} weight="bold" />}
                   defaultOpen={false}
                 >
                   <div className="space-y-4">
@@ -249,7 +247,7 @@ const Index = () => {
                 {/* SECTION 5: More */}
                 <CollapsibleSection
                   title="More Tools & Info"
-                  icon={<BookOpen size={18} />}
+                  icon={<Book size={18} weight="bold" />}
                   defaultOpen={false}
                 >
                   <div className="space-y-4">
@@ -261,13 +259,13 @@ const Index = () => {
                 </div>
 
                 {/* Back button */}
-                <div className="text-center mt-8">
+                <div className="text-center mt-6 sm:mt-8 pb-4">
                   <Button
                     variant="outline"
                     onClick={handleNewAnalysis}
-                    className="gap-2"
+                    className="gap-2 touch-feedback"
                   >
-                    <ArrowLeft size={16} />
+                    <ArrowLeft size={16} weight="bold" />
                     Analyze Another Wallet
                   </Button>
                 </div>
@@ -276,8 +274,8 @@ const Index = () => {
           </AnimatePresence>
 
           <div className="flex-1" />
-          <Footer />
         </div>
+        <Footer />
       </div>
     </div>
   );

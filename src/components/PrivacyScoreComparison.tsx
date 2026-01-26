@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { TrendingUp, ArrowRight, Sparkles } from "lucide-react";
+import { TrendUp, ArrowRight, Sparkle } from "@phosphor-icons/react";
 import { PrivacyData } from "@/types/privacy";
 import { calculatePrivacyProjection } from "@/lib/privacyProjections";
 import { Switch } from "@/components/ui/switch";
@@ -66,8 +66,12 @@ function ScoreGauge({
       animate={{ scale: isActive ? 1 : 0.95 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="relative">
-        <svg width="160" height="160" className="transform -rotate-90">
+      <div className="relative w-[120px] sm:w-[140px] md:w-[160px] aspect-square flex-shrink-0">
+        <svg
+          viewBox="0 0 160 160"
+          className="w-full h-full transform -rotate-90"
+          preserveAspectRatio="xMidYMid meet"
+        >
           <circle
             cx="80"
             cy="80"
@@ -91,12 +95,12 @@ function ScoreGauge({
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <motion.span
-            className={`text-4xl font-bold ${isProjected ? "text-success" : getTextColor()}`}
+            className={`text-2xl sm:text-3xl md:text-4xl font-bold ${isProjected ? "text-success" : getTextColor()}`}
             key={animatedScore}
           >
             {animatedScore}
           </motion.span>
-          <span className="text-xs text-muted-foreground uppercase tracking-wider">
+          <span className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">
             {label}
           </span>
         </div>
@@ -116,8 +120,8 @@ export function PrivacyScoreComparison({ data }: PrivacyScoreComparisonProps) {
       transition={{ duration: 0.6, delay: 0.2 }}
       className="py-8"
     >
-      <h2 className="text-2xl font-bold mb-2 flex items-center gap-3">
-        <TrendingUp className="text-primary" size={24} />
+      <h2 className="text-xl sm:text-2xl font-bold mb-2 flex items-center gap-3">
+        <TrendUp className="text-primary" size={24} weight="bold" />
         Privacy Improvement Potential
       </h2>
       <p className="text-muted-foreground text-sm mb-6">
@@ -144,13 +148,13 @@ export function PrivacyScoreComparison({ data }: PrivacyScoreComparisonProps) {
               showProjected ? "text-success" : "text-muted-foreground"
             }`}
           >
-            <Sparkles size={14} />
+            <Sparkle size={14} weight="fill" />
             Projected Score
           </span>
         </div>
 
         {/* Dual Gauge Display */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-8">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 mb-8">
           <ScoreGauge
             score={projection.currentScore}
             label="Current"
@@ -158,17 +162,17 @@ export function PrivacyScoreComparison({ data }: PrivacyScoreComparisonProps) {
           />
 
           <motion.div
-            className="flex flex-col items-center"
+            className="flex flex-row sm:flex-col items-center gap-2"
             animate={{ opacity: showProjected ? 1 : 0.5 }}
           >
-            <ArrowRight className="text-primary hidden md:block" size={32} />
+            <ArrowRight className="text-primary rotate-90 sm:rotate-0" size={24} weight="bold" />
             <motion.span
-              className="text-lg font-bold text-success"
+              className="text-base sm:text-lg font-bold text-success"
               animate={{ scale: showProjected ? 1.1 : 1 }}
             >
               +{projection.improvement.toFixed(0)}
             </motion.span>
-            <span className="text-xs text-muted-foreground">points</span>
+            <span className="text-[10px] sm:text-xs text-muted-foreground">points</span>
           </motion.div>
 
           <ScoreGauge
@@ -193,22 +197,22 @@ export function PrivacyScoreComparison({ data }: PrivacyScoreComparisonProps) {
                 <h3 className="text-sm font-semibold text-muted-foreground mb-4 text-center">
                   Projected Improvements by Metric
                 </h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 gap-2 sm:gap-4 md:grid-cols-4">
                   {projection.metrics.map((metric, index) => (
                     <motion.div
                       key={metric.name}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      className="text-center p-3 rounded-lg bg-muted/20 border border-border/30"
+                      className="text-center p-2 sm:p-3 rounded-lg bg-muted/20 border border-border/30"
                     >
                       <p className="text-xs text-muted-foreground mb-1">{metric.name}</p>
                       <div className="flex items-center justify-center gap-2">
-                        <span className="text-sm text-muted-foreground">
+                        <span className="text-xs sm:text-sm text-muted-foreground">
                           {metric.current.toFixed(0)}
                         </span>
-                        <ArrowRight size={12} className="text-success" />
-                        <span className="text-sm font-bold text-success">
+                        <ArrowRight size={12} className="text-success" weight="bold" />
+                        <span className="text-xs sm:text-sm font-bold text-success">
                           {metric.projected.toFixed(0)}
                         </span>
                       </div>

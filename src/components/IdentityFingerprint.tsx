@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Fingerprint, AlertTriangle, Users, TrendingUp } from "lucide-react";
+import { Fingerprint, Warning, Users, TrendUp } from "@phosphor-icons/react";
 import { PrivacyData } from "@/types/privacy";
 
 interface IdentityFingerprintProps {
@@ -32,14 +32,14 @@ export function IdentityFingerprint({ data }: IdentityFingerprintProps) {
       className="py-8"
     >
       <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-        <Fingerprint className="text-primary" size={24} />
+        <Fingerprint className="text-primary" size={24} weight="bold" />
         Identity Fingerprint
       </h2>
 
       <div className="glass-card p-6">
         {/* Warning banner */}
-        <div className="bg-warning/10 border border-warning/20 rounded-lg p-4 mb-6 flex items-start gap-3">
-          <AlertTriangle className="text-warning shrink-0 mt-0.5" size={20} />
+        <div className="bg-warning/10 border border-warning/20 p-4 mb-6 flex items-start gap-3">
+          <Warning className="text-warning shrink-0 mt-0.5" size={20} weight="bold" />
           <div>
             <p className="text-sm text-warning font-medium">What makes you identifiable?</p>
             <p className="text-xs text-muted-foreground mt-1">
@@ -50,9 +50,9 @@ export function IdentityFingerprint({ data }: IdentityFingerprintProps) {
 
         {/* K-Anonymity Summary */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="p-4 rounded-xl bg-muted/30 border border-border/30">
+          <div className="p-4 bg-muted/30 border border-border/30">
             <div className="flex items-center gap-3 mb-2">
-              <Users className="text-primary" size={18} />
+              <Users className="text-primary" size={18} weight="bold" />
               <span className="text-muted-foreground text-sm">Anonymity Set</span>
             </div>
             <p className="text-3xl font-bold">k={kAnonymity.kValue}</p>
@@ -61,9 +61,9 @@ export function IdentityFingerprint({ data }: IdentityFingerprintProps) {
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-muted/30 border border-border/30">
+          <div className="p-4 bg-muted/30 border border-border/30">
             <div className="flex items-center gap-3 mb-2">
-              <TrendingUp className="text-primary" size={18} />
+              <TrendUp className="text-primary" size={18} weight="bold" />
               <span className="text-muted-foreground text-sm">Anonymity Score</span>
             </div>
             <p className="text-3xl font-bold">{kAnonymity.kAnonymityScore.toFixed(0)}%</p>
@@ -72,9 +72,9 @@ export function IdentityFingerprint({ data }: IdentityFingerprintProps) {
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-muted/30 border border-border/30">
+          <div className="p-4 bg-muted/30 border border-border/30">
             <div className="flex items-center gap-3 mb-2">
-              <AlertTriangle className={getRiskColor(kAnonymity.reIdentificationRisk)} size={18} />
+              <Warning className={getRiskColor(kAnonymity.reIdentificationRisk)} size={18} weight="bold" />
               <span className="text-muted-foreground text-sm">Re-ID Risk</span>
             </div>
             <p className={`text-3xl font-bold ${getRiskColor(kAnonymity.reIdentificationRisk)}`}>
@@ -99,7 +99,7 @@ export function IdentityFingerprint({ data }: IdentityFingerprintProps) {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 + 0.4 }}
-                  className="p-4 rounded-xl bg-muted/20 border border-border/30"
+                  className="p-4 bg-muted/20 border border-border/30"
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-medium">{qi.identifier}</span>
@@ -107,7 +107,7 @@ export function IdentityFingerprint({ data }: IdentityFingerprintProps) {
                       {(qi.uniqueness * 100).toFixed(0)}% unique
                     </span>
                   </div>
-                  <div className="h-2 bg-muted rounded-full overflow-hidden mb-2">
+                  <div className="h-2 bg-muted overflow-hidden mb-2">
                     <motion.div
                       className={getUniquenessColor(qi.uniqueness)}
                       initial={{ width: 0 }}
@@ -125,7 +125,7 @@ export function IdentityFingerprint({ data }: IdentityFingerprintProps) {
 
         {/* Interpretation */}
         {kAnonymity.interpretation && (
-          <div className="mt-6 p-4 rounded-xl bg-primary/5 border border-primary/20">
+          <div className="mt-6 p-4 bg-primary/5 border border-primary/20">
             <p className="text-sm text-muted-foreground">
               <span className="text-primary font-medium">Analysis: </span>
               {kAnonymity.interpretation}
@@ -136,21 +136,21 @@ export function IdentityFingerprint({ data }: IdentityFingerprintProps) {
         {/* Graph Stats */}
         {graph.degree > 0 && (
           <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center p-3 rounded-lg bg-muted/20">
+            <div className="text-center p-3 bg-muted/20">
               <p className="text-2xl font-bold">{graph.degree}</p>
               <p className="text-xs text-muted-foreground">Unique Contacts</p>
             </div>
             {graph.clusteringCoefficient !== undefined && (
-              <div className="text-center p-3 rounded-lg bg-muted/20">
+              <div className="text-center p-3 bg-muted/20">
                 <p className="text-2xl font-bold">{(graph.clusteringCoefficient * 100).toFixed(0)}%</p>
                 <p className="text-xs text-muted-foreground">Clustering</p>
               </div>
             )}
-            <div className="text-center p-3 rounded-lg bg-muted/20">
+            <div className="text-center p-3 bg-muted/20">
               <p className="text-2xl font-bold">{graph.graphPrivacyScore}%</p>
               <p className="text-xs text-muted-foreground">Graph Privacy</p>
             </div>
-            <div className="text-center p-3 rounded-lg bg-muted/20">
+            <div className="text-center p-3 bg-muted/20">
               <p className="text-2xl font-bold">{graph.detectedClusters.length}</p>
               <p className="text-xs text-muted-foreground">Linked Clusters</p>
             </div>

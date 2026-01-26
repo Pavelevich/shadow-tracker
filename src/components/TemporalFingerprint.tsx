@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Clock, Globe, Activity, AlertTriangle } from "lucide-react";
+import { Clock, Globe, Pulse, Warning } from "@phosphor-icons/react";
 import { PrivacyData } from "@/types/privacy";
 
 interface TemporalFingerprintProps {
@@ -23,14 +23,14 @@ export function TemporalFingerprint({ data }: TemporalFingerprintProps) {
       className="py-8"
     >
       <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-        <Clock className="text-primary" size={24} />
+        <Clock className="text-primary" size={24} weight="bold" />
         Temporal Fingerprint
       </h2>
 
       <div className="glass-card p-6">
         {/* Warning banner */}
-        <div className="bg-warning/10 border border-warning/20 rounded-lg p-4 mb-6 flex items-start gap-3">
-          <AlertTriangle className="text-warning shrink-0 mt-0.5" size={20} />
+        <div className="bg-warning/10 border border-warning/20 p-4 mb-6 flex items-start gap-3">
+          <Warning className="text-warning shrink-0 mt-0.5" size={20} weight="bold" />
           <div>
             <p className="text-sm text-warning font-medium">Timing patterns can reveal your identity</p>
             <p className="text-xs text-muted-foreground mt-1">
@@ -41,9 +41,9 @@ export function TemporalFingerprint({ data }: TemporalFingerprintProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Timezone */}
-          <div className="p-4 rounded-xl bg-muted/30 border border-border/30">
+          <div className="p-4 bg-muted/30 border border-border/30">
             <div className="flex items-center gap-3 mb-3">
-              <Globe className="text-primary" size={20} />
+              <Globe className="text-primary" size={20} weight="bold" />
               <span className="text-muted-foreground text-sm">Estimated Timezone</span>
             </div>
             <p className="text-2xl font-bold">{temporalAnalysis.estimatedTimezone}</p>
@@ -56,13 +56,13 @@ export function TemporalFingerprint({ data }: TemporalFingerprintProps) {
           </div>
 
           {/* Autocorrelation */}
-          <div className="p-4 rounded-xl bg-muted/30 border border-border/30">
+          <div className="p-4 bg-muted/30 border border-border/30">
             <div className="flex items-center gap-3 mb-3">
-              <Activity className="text-primary" size={20} />
+              <Pulse className="text-primary" size={20} weight="bold" />
               <span className="text-muted-foreground text-sm">Pattern Regularity</span>
             </div>
             <p className="text-2xl font-bold">
-              {Math.abs(temporalAnalysis.autocorrelation) < 0.3 ? "Random" : 
+              {Math.abs(temporalAnalysis.autocorrelation) < 0.3 ? "Random" :
                Math.abs(temporalAnalysis.autocorrelation) < 0.6 ? "Moderate" : "Predictable"}
             </p>
             <div className="flex items-center gap-2 mt-2">
@@ -76,9 +76,9 @@ export function TemporalFingerprint({ data }: TemporalFingerprintProps) {
           </div>
 
           {/* Activity Patterns */}
-          <div className="p-4 rounded-xl bg-muted/30 border border-border/30">
+          <div className="p-4 bg-muted/30 border border-border/30">
             <div className="flex items-center gap-3 mb-3">
-              <Clock className="text-primary" size={20} />
+              <Clock className="text-primary" size={20} weight="bold" />
               <span className="text-muted-foreground text-sm">Detected Patterns</span>
             </div>
             <div className="space-y-2">
@@ -87,8 +87,8 @@ export function TemporalFingerprint({ data }: TemporalFingerprintProps) {
                   <div key={index} className="flex items-center justify-between">
                     <span className="text-sm font-medium">{period.period}</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-16 h-1.5 bg-muted rounded-full overflow-hidden">
-                        <div 
+                      <div className="w-16 h-1.5 bg-muted overflow-hidden">
+                        <div
                           className={`h-full ${getConfidenceColor(period.confidence).replace('text-', 'bg-')}`}
                           style={{ width: `${period.confidence * 100}%` }}
                         />

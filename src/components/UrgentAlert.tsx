@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { AlertTriangle, Rocket, Shield, Link2 } from "lucide-react";
+import { Warning, Rocket, Shield, LinkBreak } from "@phosphor-icons/react";
 import { PrivacyData } from "@/types/privacy";
 
 interface UrgentAlertProps {
@@ -28,7 +28,7 @@ const quickActions = [
   {
     title: "Break the Link",
     description: "Swap through DEX to obfuscate",
-    icon: Link2,
+    icon: LinkBreak,
     url: "https://raydium.io",
     color: "from-warning/20 to-warning/5",
     borderColor: "border-warning/30",
@@ -52,8 +52,8 @@ export function UrgentAlert({ data }: UrgentAlertProps) {
         {/* Alert header */}
         <div className="bg-gradient-to-r from-critical/20 via-warning/10 to-critical/20 border-b border-critical/20 p-6">
           <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-critical/20 border border-critical/30">
-              <AlertTriangle className="text-critical animate-pulse" size={28} />
+            <div className="p-3 bg-critical/20 border border-critical/30">
+              <Warning className="text-critical animate-pulse" size={28} weight="bold" />
             </div>
             <div>
               <h2 className="text-xl font-bold text-critical">Urgent Action Required</h2>
@@ -76,9 +76,9 @@ export function UrgentAlert({ data }: UrgentAlertProps) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 + 0.3 }}
-                className={`group p-5 rounded-xl bg-gradient-to-br ${action.color} border ${action.borderColor} hover:scale-[1.02] transition-all duration-300`}
+                className={`group p-5 bg-gradient-to-br ${action.color} border ${action.borderColor} hover:scale-[1.02] transition-all duration-300`}
               >
-                <action.icon className={`${action.iconColor} mb-3`} size={24} />
+                <action.icon className={`${action.iconColor} mb-3`} size={24} weight="bold" />
                 <h3 className="font-semibold text-foreground mb-1">{action.title}</h3>
                 <p className="text-sm text-muted-foreground">{action.description}</p>
               </motion.a>

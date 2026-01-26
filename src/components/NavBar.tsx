@@ -1,12 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Shield, Zap, Trash2 } from "lucide-react";
+import { Detective, ShieldWarning, Broom } from "@phosphor-icons/react";
 import { Logo } from "./Logo";
 
 const NAV_ITEMS = [
-  { path: "/", label: "Privacy", icon: Shield, color: "#14f195" },
-  { path: "/mev", label: "MEV Shield", icon: Zap, color: "#f59e0b" },
-  { path: "/dust", label: "Dust Cleaner", icon: Trash2, color: "#ef4444" },
+  { path: "/", label: "Privacy", icon: Detective, color: "#7C3AED" },
+  { path: "/mev", label: "MEV Shield", icon: ShieldWarning, color: "#D97706" },
+  { path: "/dust", label: "Dust Cleaner", icon: Broom, color: "#DC2626" },
 ];
 
 export function NavBar() {
@@ -23,11 +23,11 @@ export function NavBar() {
   const activePath = getActivePath();
 
   return (
-    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/30">
-      <div className="container mx-auto px-3 md:px-4">
-        <div className="flex items-center justify-between h-12 md:h-14">
+    <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur-xl border-b border-border/30">
+      <div className="container mx-auto px-3 sm:px-4">
+        <div className="flex items-center justify-between h-14 sm:h-14">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2 touch-feedback">
             <Logo size="sm" />
           </Link>
 
@@ -41,7 +41,7 @@ export function NavBar() {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="relative px-2 md:px-3 py-1.5 rounded-lg transition-colors"
+                  className="relative px-2.5 sm:px-3 py-2 sm:py-1.5 transition-colors touch-feedback"
                 >
                   <div
                     className={`flex items-center gap-1.5 text-xs md:text-sm font-medium ${
@@ -51,6 +51,7 @@ export function NavBar() {
                     {Icon && (
                       <Icon
                         size={14}
+                        weight="bold"
                         className="md:w-4 md:h-4"
                         style={{ color: isActive ? item.color : undefined }}
                       />
@@ -62,7 +63,7 @@ export function NavBar() {
                   {isActive && (
                     <motion.div
                       layoutId="nav-indicator"
-                      className="absolute inset-0 rounded-lg -z-10"
+                      className="absolute inset-0 -z-10"
                       style={{ backgroundColor: `${item.color}20` }}
                       transition={{ type: "spring", stiffness: 500, damping: 30 }}
                     />

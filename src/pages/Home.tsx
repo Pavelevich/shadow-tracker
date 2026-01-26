@@ -2,58 +2,57 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  Shield,
-  Zap,
-  Trash2,
-  Search,
+  Detective,
+  ShieldWarning,
+  Broom,
+  MagnifyingGlass,
   ArrowRight,
   Terminal,
   Copy,
   Check,
-  Github,
-  ExternalLink,
+  GithubLogo,
+  ArrowSquareOut,
   Lock,
-  Eye,
-  TrendingDown,
-} from "lucide-react";
-import { GridBackground } from "@/components/GridBackground";
-import { Logo } from "@/components/Logo";
+} from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Footer } from "@/components/Footer";
+import { Logo } from "@/components/Logo";
 
 type ToolType = "analyze" | "mev" | "dust";
 
 const TOOLS = [
   {
     id: "analyze" as ToolType,
-    icon: Shield,
-    title: "Privacy Analyzer",
+    icon: Detective,
+    title: "PRIVACY\nANALYZER",
     shortDesc: "Full privacy audit",
-    description: "Complete wallet privacy analysis with actionable recommendations.",
-    color: "#14f195",
+    description: "Complete wallet privacy analysis with actionable recommendations based on academic research.",
+    color: "#7C3AED",
+    bgColor: "rgba(124, 58, 237, 0.1)",
     route: "/analyze",
-    stats: "15+ metrics",
+    stats: "15+ METRICS",
   },
   {
     id: "mev" as ToolType,
-    icon: Zap,
-    title: "MEV Shield",
+    icon: ShieldWarning,
+    title: "MEV\nSHIELD",
     shortDesc: "Sandwich protection",
-    description: "Check vulnerability to sandwich attacks and frontrunning.",
-    color: "#f59e0b",
+    description: "Check vulnerability to sandwich attacks, frontrunning, and other MEV extraction methods.",
+    color: "#D97706",
+    bgColor: "rgba(217, 119, 6, 0.1)",
     route: "/mev",
-    stats: "$500M+ lost",
+    stats: "$500M+ LOST",
   },
   {
     id: "dust" as ToolType,
-    icon: Trash2,
-    title: "Dust Cleaner",
+    icon: Broom,
+    title: "DUST\nCLEANER",
     shortDesc: "Remove trackers",
-    description: "Identify spam tokens and recover locked SOL rent.",
-    color: "#ef4444",
+    description: "Identify spam tokens and recover locked SOL rent from dust attacks and airdrop spam.",
+    color: "#DC2626",
+    bgColor: "rgba(220, 38, 38, 0.1)",
     route: "/dust",
-    stats: "~0.002 SOL/token",
+    stats: "~0.002 SOL/TOKEN",
   },
 ];
 
@@ -93,351 +92,310 @@ export default function Home() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const selectedToolData = TOOLS.find((t) => t.id === selectedTool);
-
   return (
-    <div className="min-h-screen relative flex flex-col">
-      <GridBackground />
+    <div className="min-h-screen bg-[#0A0A0A] flex flex-col safe-top">
+      {/* Header */}
+      <header className="w-full px-4 sm:px-8 lg:px-20 h-12 sm:h-16 flex items-center justify-between border-b border-[#2A2A2A] shrink-0">
+        <span className="text-xs font-bold tracking-[0.1em] text-white">SOLPRIVACY</span>
+        <a
+          href="https://www.npmjs.com/package/solprivacy"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs font-bold tracking-[0.1em] text-[#8A8A8A] hover:text-white transition-colors !min-h-0 !min-w-0"
+        >
+          CLI
+        </a>
+      </header>
 
-      <div className="relative z-10 flex-1 flex flex-col">
-        <div className="container mx-auto px-4 py-6 flex-1 flex flex-col">
-          {/* Hero */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-8 pt-4"
+      {/* Hero Section */}
+      <section className="w-full px-4 sm:px-8 lg:px-20 py-4 sm:py-10 lg:py-14 flex flex-col items-center">
+        {/* Tag - Hidden on small mobile */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="hidden sm:flex items-center gap-2 px-4 py-2 border border-[#2A2A2A] mb-6"
+        >
+          <div className="w-1.5 h-1.5 bg-[#10B981]" />
+          <span className="text-[11px] font-medium tracking-[0.15em] text-[#8A8A8A]">
+            PRIVACY ANALYSIS FOR SOLANA
+          </span>
+        </motion.div>
+
+        {/* Headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-[22px] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white text-center leading-[1] sm:leading-[0.95] tracking-tight mb-2 sm:mb-4"
+        >
+          KNOW WHAT THE
+          <br />
+          BLOCKCHAIN KNOWS
+          <br />
+          ABOUT YOU
+        </motion.h1>
+
+        {/* Subline - Shorter on mobile */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-xs sm:text-base text-[#8A8A8A] text-center max-w-xl leading-relaxed mb-4 sm:mb-8 px-2"
+        >
+          <span className="sm:hidden">Privacy analysis for Solana wallets</span>
+          <span className="hidden sm:inline">Advanced privacy analysis using information theory, graph analysis,
+          and blockchain forensics from academic research.</span>
+        </motion.p>
+
+        {/* Wallet Input - Mobile Stacked */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="w-full max-w-2xl flex flex-col sm:flex-row gap-2 sm:gap-0"
+        >
+          <div className="flex-1 flex items-center gap-2 sm:gap-3 px-3 sm:px-6 h-11 sm:h-14 bg-[#141414] border border-[#2A2A2A]">
+            <MagnifyingGlass size={16} className="text-[#5A5A5A] shrink-0" weight="bold" />
+            <Input
+              type="text"
+              placeholder="Enter wallet address..."
+              value={walletAddress}
+              onChange={(e) => setWalletAddress(e.target.value)}
+              onKeyPress={handleKeyPress}
+              className="flex-1 bg-transparent border-0 text-xs sm:text-sm font-mono text-white placeholder:text-[#5A5A5A] focus-visible:ring-0 focus-visible:ring-offset-0 h-full px-0"
+            />
+          </div>
+          <Button
+            onClick={handleAnalyze}
+            disabled={!walletAddress.trim() || isValidating}
+            className="h-11 sm:h-14 px-5 sm:px-8 bg-primary hover:bg-primary/90 text-white text-xs sm:text-sm font-semibold tracking-[0.1em] sm:tracking-[0.15em] flex items-center justify-center gap-2 touch-feedback"
           >
-            <Logo size="lg" />
-            <p className="text-muted-foreground mt-3 max-w-md mx-auto text-sm">
-              Know what the blockchain knows about you.
-            </p>
-          </motion.div>
+            {isValidating ? "..." : "ANALYZE"}
+            <ArrowRight size={16} weight="bold" />
+          </Button>
+        </motion.div>
 
-          {/* Main Content Grid */}
-          <div className="max-w-5xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
-            {/* Tool Selection - Left Column */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 }}
-              className="lg:col-span-1 space-y-2"
+        {/* Example wallets */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="mt-2 sm:mt-3 flex items-center gap-2 sm:gap-3 flex-wrap justify-center"
+        >
+          <span className="text-[10px] sm:text-xs text-[#5A5A5A]">Try:</span>
+          {[
+            { addr: "vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg", label: "Toly" },
+            { addr: "DYw8jCTfwHNRJhhmFcbXvVDTqWMEVFBX6ZKUmG5CNSKK", label: "Whale" },
+          ].map((item) => (
+            <button
+              key={item.addr}
+              onClick={() => setWalletAddress(item.addr)}
+              className="text-[10px] sm:text-xs font-mono px-2 sm:px-3 py-1 sm:py-1.5 bg-[#1A1A1A] text-[#8A8A8A] hover:text-white active:bg-[#2A2A2A] transition-colors touch-feedback"
             >
-              <p className="text-xs text-muted-foreground mb-2 px-1">Select Tool</p>
-              {TOOLS.map((tool, index) => {
-                const Icon = tool.icon;
-                const isSelected = selectedTool === tool.id;
-                return (
-                  <motion.button
-                    key={tool.id}
-                    onClick={() => setSelectedTool(tool.id)}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 + index * 0.05 }}
-                    className={`w-full p-3 rounded-xl border transition-all text-left flex items-center gap-3 ${
-                      isSelected
-                        ? "border-opacity-100 bg-opacity-10"
-                        : "border-border/30 hover:border-opacity-50 bg-muted/5"
-                    }`}
-                    style={{
-                      borderColor: isSelected ? tool.color : undefined,
-                      backgroundColor: isSelected ? `${tool.color}10` : undefined,
-                    }}
-                  >
-                    <div
-                      className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
-                      style={{ backgroundColor: `${tool.color}20` }}
-                    >
-                      <Icon size={20} style={{ color: tool.color }} />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between">
-                        <h3 className="font-semibold text-sm">{tool.title}</h3>
-                        {isSelected && (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="w-2 h-2 rounded-full"
-                            style={{ backgroundColor: tool.color }}
-                          />
-                        )}
-                      </div>
-                      <p className="text-[11px] text-muted-foreground truncate">
-                        {tool.shortDesc}
-                      </p>
-                    </div>
-                  </motion.button>
-                );
-              })}
-            </motion.div>
+              {item.label}
+            </button>
+          ))}
+        </motion.div>
+      </section>
 
-            {/* Wallet Input & Info - Right Column */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="lg:col-span-2 space-y-4"
-            >
-              {/* Selected Tool Info */}
-              <div
-                className="glass-card p-4 border-l-4"
-                style={{ borderLeftColor: selectedToolData?.color }}
+      {/* Tools Section */}
+      <section className="w-full px-4 sm:px-8 lg:px-20 py-6 sm:py-10 lg:py-12 bg-[#141414]">
+        {/* Section Header - Hidden on mobile for space */}
+        <div className="hidden sm:block text-center mb-8">
+          <span className="text-xs font-semibold tracking-[0.25em] text-[#10B981]">
+            PRIVACY TOOLS
+          </span>
+          <p className="text-sm text-[#8A8A8A] mt-2">
+            Select a tool to analyze your wallet
+          </p>
+        </div>
+
+        {/* Tools Grid - Compact vertical on mobile */}
+        <div className="flex flex-col sm:grid sm:grid-cols-3 gap-2 sm:gap-4">
+          {TOOLS.map((tool, index) => {
+            const Icon = tool.icon;
+            const isSelected = selectedTool === tool.id;
+            return (
+              <motion.button
+                key={tool.id}
+                onClick={() => setSelectedTool(tool.id)}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + index * 0.05 }}
+                className={`w-full p-3 sm:p-5 text-left transition-all duration-200 bg-[#0A0A0A] touch-feedback ${
+                  isSelected
+                    ? "border-2"
+                    : "border border-[#2A2A2A] active:border-[#3A3A3A]"
+                }`}
+                style={{
+                  borderColor: isSelected ? tool.color : undefined,
+                }}
               >
-                <div className="flex items-start gap-3">
-                  {selectedToolData && (
+                {/* Mobile: Compact horizontal layout */}
+                <div className="sm:hidden flex items-center gap-3">
+                  <div
+                    className="w-10 h-10 flex items-center justify-center shrink-0"
+                    style={{ backgroundColor: tool.bgColor }}
+                  >
+                    <Icon size={20} style={{ color: tool.color }} weight="bold" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-sm font-bold text-white">
+                      {tool.title.replace("\n", " ")}
+                    </h3>
+                    <p className="text-[11px] text-[#8A8A8A]">{tool.shortDesc}</p>
+                  </div>
+                  <div
+                    className={`w-5 h-5 flex items-center justify-center shrink-0 ${
+                      isSelected ? "" : "opacity-30"
+                    }`}
+                    style={{ backgroundColor: isSelected ? tool.bgColor : "#2A2A2A" }}
+                  >
+                    <Check
+                      size={12}
+                      style={{ color: isSelected ? tool.color : "#5A5A5A" }}
+                      weight="bold"
+                    />
+                  </div>
+                </div>
+
+                {/* Desktop: Original vertical layout */}
+                <div className="hidden sm:block">
+                  {/* Header */}
+                  <div className="flex items-center justify-between mb-4">
                     <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ backgroundColor: `${selectedToolData.color}20` }}
+                      className="w-10 h-10 flex items-center justify-center"
+                      style={{ backgroundColor: tool.bgColor }}
                     >
-                      <selectedToolData.icon
-                        size={24}
-                        style={{ color: selectedToolData.color }}
-                      />
+                      <Icon size={18} style={{ color: tool.color }} />
                     </div>
-                  )}
-                  <div>
-                    <h2 className="font-bold text-lg">{selectedToolData?.title}</h2>
-                    <p className="text-sm text-muted-foreground">
-                      {selectedToolData?.description}
-                    </p>
                     <span
-                      className="inline-block mt-2 text-xs px-2 py-0.5 rounded-full"
-                      style={{
-                        backgroundColor: `${selectedToolData?.color}20`,
-                        color: selectedToolData?.color,
-                      }}
+                      className="text-[10px] font-semibold tracking-[0.1em]"
+                      style={{ color: tool.color }}
                     >
-                      {selectedToolData?.stats}
+                      {tool.stats}
                     </span>
                   </div>
-                </div>
-              </div>
 
-              {/* Wallet Input */}
-              <div className="glass-card p-4">
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <div className="relative flex-1">
-                    <Search
-                      size={16}
-                      className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                    />
-                    <Input
-                      type="text"
-                      placeholder="Enter Solana wallet address..."
-                      value={walletAddress}
-                      onChange={(e) => setWalletAddress(e.target.value)}
-                      onKeyPress={handleKeyPress}
-                      className="pl-9 h-11 font-mono text-xs"
+                  {/* Title */}
+                  <h3 className="text-xl font-extrabold text-white leading-tight tracking-wide mb-2 whitespace-pre-line">
+                    {tool.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-xs text-[#8A8A8A] leading-relaxed mb-4">
+                    {tool.description}
+                  </p>
+
+                  {/* CTA */}
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="text-xs font-semibold tracking-[0.15em]"
+                      style={{ color: isSelected ? tool.color : "#5A5A5A" }}
+                    >
+                      SELECT TOOL
+                    </span>
+                    <ArrowRight
+                      size={12}
+                      style={{ color: isSelected ? tool.color : "#5A5A5A" }}
                     />
                   </div>
-                  <Button
-                    onClick={handleAnalyze}
-                    disabled={!walletAddress.trim() || isValidating}
-                    className="h-11 px-5 gap-2 font-semibold"
-                    style={{
-                      backgroundColor: selectedToolData?.color,
-                    }}
-                  >
-                    {isValidating ? (
-                      "..."
-                    ) : (
-                      <>
-                        Analyze
-                        <ArrowRight size={16} />
-                      </>
-                    )}
-                  </Button>
                 </div>
+              </motion.button>
+            );
+          })}
+        </div>
+      </section>
 
-                {/* Example wallets */}
-                <div className="mt-3 flex flex-wrap gap-2 items-center">
-                  <span className="text-[10px] text-muted-foreground">Try:</span>
-                  {[
-                    { addr: "vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg", label: "Toly" },
-                    { addr: "DYw8jCTfwHNRJhhmFcbXvVDTqWMEVFBX6ZKUmG5CNSKK", label: "Whale" },
-                  ].map((item) => (
-                    <button
-                      key={item.addr}
-                      onClick={() => setWalletAddress(item.addr)}
-                      className="text-[10px] font-mono px-2 py-0.5 rounded bg-muted/30 hover:bg-muted/50 transition-colors"
-                    >
-                      {item.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Quick Stats */}
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { icon: Eye, label: "Privacy Risks", value: "15+", desc: "Metrics analyzed" },
-                  { icon: TrendingDown, label: "MEV Losses", value: "$500M+", desc: "In 2025" },
-                  { icon: Lock, label: "Dust Recovery", value: "0.002", desc: "SOL per token" },
-                ].map((stat, i) => (
-                  <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 + i * 0.05 }}
-                    className="p-3 rounded-xl bg-muted/10 border border-border/20 text-center"
-                  >
-                    <stat.icon size={14} className="mx-auto mb-1 text-primary" />
-                    <p className="text-sm font-bold text-primary">{stat.value}</p>
-                    <p className="text-[9px] text-muted-foreground">{stat.desc}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
+      {/* CLI Section */}
+      <section className="w-full px-4 sm:px-8 lg:px-20 py-10 sm:py-16 lg:py-24 bg-[#0A0A0A]">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center gap-8 lg:gap-16">
+          {/* Left */}
+          <div className="flex-1">
+            <span className="text-[10px] sm:text-xs font-semibold tracking-[0.2em] sm:tracking-[0.25em] text-[#10B981] mb-3 sm:mb-4 block">
+              COMMAND LINE
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-3 sm:mb-4">
+              SOLPRIVACY CLI
+            </h2>
+            <p className="text-sm sm:text-base text-[#8A8A8A] leading-relaxed max-w-md">
+              Advanced privacy tools for power users. Run analyses locally, export reports, and integrate with your workflow.
+            </p>
           </div>
 
-          {/* CLI Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="max-w-5xl mx-auto w-full mb-8"
-          >
-            <div className="glass-card overflow-hidden">
-              <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-transparent p-4 border-b border-primary/20">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-primary/20">
-                    <Terminal size={18} className="text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-sm">SolPrivacy CLI</h3>
-                    <p className="text-[11px] text-muted-foreground">
-                      Command-line tools for advanced users
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {/* Install Command */}
-                  <div>
-                    <p className="text-[11px] text-muted-foreground mb-2">Install globally:</p>
-                    <div className="relative">
-                      <div className="bg-black/50 rounded-lg p-3 font-mono text-[11px]">
-                        <span className="text-muted-foreground">$ </span>
-                        <span className="text-amber-400">npm i -g solprivacy</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Run Command */}
-                  <div>
-                    <p className="text-[11px] text-muted-foreground mb-2">Or run instantly:</p>
-                    <div className="relative">
-                      <div className="bg-black/50 rounded-lg p-3 font-mono text-[11px]">
-                        <span className="text-muted-foreground">$ </span>
-                        <span className="text-green-400">npx solprivacy</span>
-                      </div>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="absolute top-1 right-1 h-7 w-7 p-0"
-                        onClick={copyCliCommand}
-                      >
-                        {copied ? (
-                          <Check size={12} className="text-green-400" />
-                        ) : (
-                          <Copy size={12} />
-                        )}
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Features */}
-                  <div>
-                    <p className="text-[11px] text-muted-foreground mb-2">Commands:</p>
-                    <div className="space-y-1.5">
-                      <div className="flex items-center gap-2 text-[11px]">
-                        <code className="px-1.5 py-0.5 rounded bg-muted/30 text-primary font-mono">
-                          /analyze
-                        </code>
-                        <span className="text-muted-foreground">Privacy analysis</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-[11px]">
-                        <code className="px-1.5 py-0.5 rounded bg-muted/30 text-amber-400 font-mono">
-                          /agent
-                        </code>
-                        <span className="text-muted-foreground">AI recommendations</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Benefits & Link */}
-                <div className="mt-4 pt-4 border-t border-border/20 flex flex-col sm:flex-row items-center justify-between gap-3">
-                  <div className="flex flex-wrap gap-4 text-[10px] text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Lock size={10} className="text-green-400" />
-                      Keys stay local
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Github size={10} className="text-primary" />
-                      Open source
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Shield size={10} className="text-amber-400" />
-                      No wallet connect
-                    </span>
-                  </div>
-                  <a
-                    href="https://www.npmjs.com/package/solprivacy"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-xs text-primary hover:underline"
-                  >
-                    <Terminal size={14} />
-                    View on npm
-                    <ExternalLink size={10} />
-                  </a>
-                </div>
-              </div>
+          {/* Right - Commands */}
+          <div className="w-full lg:w-96 space-y-3 sm:space-y-4">
+            <div className="flex items-center gap-3 px-4 sm:px-5 h-12 sm:h-14 bg-black border border-[#2A2A2A] overflow-x-auto scrollbar-hide">
+              <span className="text-xs sm:text-sm font-mono text-[#5A5A5A]">$</span>
+              <span className="text-xs sm:text-sm font-mono text-[#10B981] whitespace-nowrap">npm i -g solprivacy</span>
             </div>
-          </motion.div>
-
-          {/* Powered by */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="text-center text-[10px] text-muted-foreground mb-4"
-          >
-            Powered by{" "}
-            <a
-              href="https://helius.dev"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:underline"
-            >
-              Helius
-            </a>
-            {" • "}
-            <a
-              href="https://lightprotocol.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:underline"
-            >
-              Light Protocol
-            </a>
-            {" • "}
-            <a
-              href="https://arcium.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:underline"
-            >
-              Arcium
-            </a>
-          </motion.div>
-
-          <div className="flex-1" />
-          <Footer />
+            <div className="relative flex items-center gap-3 px-4 sm:px-5 h-12 sm:h-14 bg-black border border-[#2A2A2A]">
+              <span className="text-xs sm:text-sm font-mono text-[#5A5A5A]">$</span>
+              <span className="text-xs sm:text-sm font-mono text-primary">npx solprivacy</span>
+              <button
+                onClick={copyCliCommand}
+                className="absolute right-3 sm:right-4 p-2 text-[#5A5A5A] hover:text-white active:text-[#10B981] transition-colors touch-feedback"
+              >
+                {copied ? <Check size={16} className="text-[#10B981]" weight="bold" /> : <Copy size={16} weight="bold" />}
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+
+        {/* Benefits */}
+        <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-[#2A2A2A] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
+          <div className="flex flex-wrap gap-4 sm:gap-8 text-[11px] sm:text-xs text-[#5A5A5A]">
+            <span className="flex items-center gap-2">
+              <Lock size={14} className="text-[#10B981]" weight="bold" />
+              Keys stay local
+            </span>
+            <span className="flex items-center gap-2">
+              <GithubLogo size={14} className="text-primary" weight="bold" />
+              Open source
+            </span>
+            <span className="flex items-center gap-2">
+              <Terminal size={14} className="text-[#F59E0B]" weight="bold" />
+              No wallet connect
+            </span>
+          </div>
+          <a
+            href="https://www.npmjs.com/package/solprivacy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-xs text-primary hover:underline touch-feedback"
+          >
+            <Terminal size={14} weight="bold" />
+            View on npm
+            <ArrowSquareOut size={12} weight="bold" />
+          </a>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="w-full px-4 sm:px-8 lg:px-20 h-12 sm:h-20 flex items-center justify-between border-t border-[#2A2A2A] bg-[#141414] safe-bottom shrink-0">
+        <div className="flex items-center gap-2 sm:gap-6">
+          <span className="text-[10px] sm:text-sm font-bold tracking-[0.1em] text-white">SOLPRIVACY</span>
+          <span className="text-[9px] sm:text-xs text-[#5A5A5A]">© 2026</span>
+        </div>
+        <div className="flex items-center gap-3 sm:gap-8">
+          {/* Hide partners on mobile, show on desktop */}
+          <div className="hidden md:flex items-center gap-8">
+            {["HELIUS", "LIGHT PROTOCOL", "ARCIUM"].map((partner) => (
+              <span key={partner} className="text-[11px] font-medium tracking-[0.15em] text-[#5A5A5A]">
+                {partner}
+              </span>
+            ))}
+          </div>
+          <a
+            href="https://github.com/Pavelevich/solprivacy-cli"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 touch-feedback"
+          >
+            <GithubLogo size={18} className="text-[#8A8A8A] hover:text-white transition-colors" weight="bold" />
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }

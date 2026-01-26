@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
-import { 
-  Shuffle, Lock, Users, Network, Clock, Eye, 
-  Fingerprint, Layers, AlertTriangle, Building, CheckCircle, XCircle, AlertCircle
-} from "lucide-react";
+import {
+  Shuffle, Lock, Users, Graph, Clock, Eye,
+  Fingerprint, Stack, Warning, Bank, CheckCircle, XCircle, WarningCircle
+} from "@phosphor-icons/react";
 import { PrivacyData } from "@/types/privacy";
 
 interface MetricsGridProps {
@@ -57,7 +57,7 @@ export function MetricsGrid({ data }: MetricsGridProps) {
       name: "Cluster Resistance",
       value: data.advancedClustering ? (1 - data.advancedClustering.clusteringVulnerability) * 100 : data.graph.graphPrivacyScore,
       displayValue: `${data.graph.graphPrivacyScore}%`,
-      icon: Network,
+      icon: Graph,
       interpretation: data.graph.graphPrivacyScore > 60
         ? "Good resistance to clustering attacks"
         : "Vulnerable to wallet clustering algorithms",
@@ -82,7 +82,7 @@ export function MetricsGrid({ data }: MetricsGridProps) {
       name: "Privacy Tool Usage",
       value: data.mixerDetection.mixerUsageProbability * 100,
       displayValue: `${(data.mixerDetection.mixerUsageProbability * 100).toFixed(0)}%`,
-      icon: Layers,
+      icon: Stack,
       interpretation: data.mixerDetection.mixerUsageProbability > 0.3 ? "Privacy tools detected in history" : "No privacy tool usage detected",
     },
     {
@@ -96,23 +96,23 @@ export function MetricsGrid({ data }: MetricsGridProps) {
       name: "Dust Protection",
       value: data.dustAttack.dustAttackDetected ? 20 : 100,
       displayValue: data.dustAttack.dustAttackDetected ? `${data.dustAttack.dustTransactionsReceived} attacks` : "Clean",
-      icon: AlertTriangle,
+      icon: Warning,
       interpretation: data.dustAttack.dustAttackDetected ? "You've received dust attack transactions" : "No dust attacks detected",
     },
     {
       name: "Exchange Privacy",
       value: (1 - data.exchangeFingerprint.kycExposure) * 100,
       displayValue: `${((1 - data.exchangeFingerprint.kycExposure) * 100).toFixed(0)}%`,
-      icon: Building,
+      icon: Bank,
       interpretation: data.exchangeFingerprint.kycExposure > 0.5 ? "High KYC exposure through exchanges" : "Low exchange exposure",
     },
   ];
 
   // Higher value = better privacy = green
   const getStatusIcon = (value: number) => {
-    if (value >= 70) return <CheckCircle className="text-success" size={16} />;
-    if (value >= 40) return <AlertCircle className="text-warning" size={16} />;
-    return <XCircle className="text-critical" size={16} />;
+    if (value >= 70) return <CheckCircle className="text-success" size={16} weight="bold" />;
+    if (value >= 40) return <WarningCircle className="text-warning" size={16} weight="bold" />;
+    return <XCircle className="text-critical" size={16} weight="bold" />;
   };
 
   const getProgressColor = (value: number) => {
@@ -129,7 +129,7 @@ export function MetricsGrid({ data }: MetricsGridProps) {
       className="py-8"
     >
       <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-        <Network className="text-primary" size={24} />
+        <Graph className="text-primary" size={24} weight="bold" />
         Privacy Metrics
       </h2>
 
@@ -144,7 +144,7 @@ export function MetricsGrid({ data }: MetricsGridProps) {
           >
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-center gap-3">
-                <metric.icon className="text-primary" size={20} />
+                <metric.icon className="text-primary" size={20} weight="bold" />
                 <span className="font-medium text-sm">{metric.name}</span>
               </div>
               {getStatusIcon(metric.value)}
@@ -152,7 +152,7 @@ export function MetricsGrid({ data }: MetricsGridProps) {
 
             <div className="text-3xl font-bold mb-3">{metric.displayValue}</div>
 
-            <div className="h-1.5 bg-muted rounded-full overflow-hidden mb-3">
+            <div className="h-1.5 bg-muted overflow-hidden mb-3">
               <motion.div
                 className={`h-full ${getProgressColor(metric.value)}`}
                 initial={{ width: 0 }}

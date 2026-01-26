@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Trash2, Search, ArrowLeft, AlertTriangle } from "lucide-react";
+import { MagnifyingGlass, ArrowLeft, Warning } from "@phosphor-icons/react";
 import { GridBackground } from "@/components/GridBackground";
 import { NavBar } from "@/components/NavBar";
 import { DustCleaner } from "@/components/DustCleaner";
@@ -63,18 +63,15 @@ export default function DustCleanerPage() {
       <NavBar />
 
       <div className="relative z-10 flex-1 flex flex-col">
-        <div className="container mx-auto px-4 py-8 flex-1 flex flex-col">
+        <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 flex-1 flex flex-col">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-6"
           >
-            <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-red-500/20 border border-red-500/30 mb-3">
-              <Trash2 className="text-red-400" size={24} />
-            </div>
-            <h1 className="text-2xl md:text-3xl font-bold mb-2">Dust Cleaner</h1>
-            <p className="text-muted-foreground text-sm md:text-base max-w-lg mx-auto px-4">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2">Dust Cleaner</h1>
+            <p className="text-muted-foreground text-xs sm:text-sm md:text-base max-w-lg mx-auto px-4">
               Remove tracking tokens and recover locked SOL
             </p>
           </motion.div>
@@ -90,8 +87,9 @@ export default function DustCleanerPage() {
               <div className="glass-card p-4">
                 <div className="flex flex-col sm:flex-row gap-2">
                   <div className="relative flex-1">
-                    <Search
+                    <MagnifyingGlass
                       size={16}
+                      weight="bold"
                       className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
                     />
                     <Input
@@ -105,10 +103,26 @@ export default function DustCleanerPage() {
                   </div>
                   <Button
                     onClick={handleAnalyze}
-                    className="h-10 px-4 bg-red-500 hover:bg-red-600 text-sm"
+                    className="h-11 sm:h-10 px-6 sm:px-4 bg-red-500 hover:bg-red-600 text-sm touch-feedback"
                   >
                     Scan
                   </Button>
+                </div>
+                {/* Example wallets */}
+                <div className="mt-3 flex items-center gap-3 flex-wrap">
+                  <span className="text-xs text-[#5A5A5A]">Try:</span>
+                  {[
+                    { addr: "vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg", label: "Toly" },
+                    { addr: "DYw8jCTfwHNRJhhmFcbXvVDTqWMEVFBX6ZKUmG5CNSKK", label: "Whale" },
+                  ].map((item) => (
+                    <button
+                      key={item.addr}
+                      onClick={() => navigate(`/dust/${item.addr}`)}
+                      className="text-xs font-mono px-3 py-1.5 bg-[#1A1A1A] text-[#8A8A8A] hover:text-white transition-colors touch-feedback"
+                    >
+                      {item.label}
+                    </button>
+                  ))}
                 </div>
               </div>
             </motion.div>
@@ -130,7 +144,7 @@ export default function DustCleanerPage() {
             >
               <div className="glass-card p-6 border-red-500/30 bg-red-500/5">
                 <div className="flex items-center gap-3">
-                  <AlertTriangle className="text-red-500" size={24} />
+                  <Warning className="text-red-500" size={24} weight="bold" />
                   <div>
                     <h3 className="font-semibold text-red-500">Scan Failed</h3>
                     <p className="text-muted-foreground text-sm">{error}</p>
@@ -139,9 +153,9 @@ export default function DustCleanerPage() {
                 <Button
                   variant="outline"
                   onClick={() => navigate("/dust")}
-                  className="mt-4 gap-2"
+                  className="mt-4 gap-2 touch-feedback"
                 >
-                  <ArrowLeft size={16} />
+                  <ArrowLeft size={16} weight="bold" />
                   Try Again
                 </Button>
               </div>
@@ -167,13 +181,13 @@ export default function DustCleanerPage() {
               <DustCleaner data={data} />
 
               {/* Back button */}
-              <div className="text-center mt-8">
+              <div className="text-center mt-6 sm:mt-8 pb-4">
                 <Button
                   variant="outline"
                   onClick={() => navigate("/dust")}
-                  className="gap-2"
+                  className="gap-2 touch-feedback"
                 >
-                  <ArrowLeft size={16} />
+                  <ArrowLeft size={16} weight="bold" />
                   Scan Another Wallet
                 </Button>
               </div>
@@ -190,7 +204,7 @@ export default function DustCleanerPage() {
             >
               <div className="glass-card p-4">
                 <h3 className="font-semibold text-sm mb-3 flex items-center gap-2">
-                  <AlertTriangle className="text-red-400" size={16} />
+                  <Warning className="text-red-400" size={16} weight="bold" />
                   Why Clean Dust Tokens?
                 </h3>
                 <div className="space-y-3 text-xs text-muted-foreground">
@@ -210,8 +224,8 @@ export default function DustCleanerPage() {
           )}
 
           <div className="flex-1" />
-          <Footer />
         </div>
+        <Footer />
       </div>
     </div>
   );

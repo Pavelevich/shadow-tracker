@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { AlertTriangle, Building, Shield, TrendingDown, ArrowUpRight, ArrowDownRight, Percent, Users, Link2 } from "lucide-react";
+import { Warning, Bank, Shield, TrendDown, ArrowUpRight, ArrowDownRight, Percent, Users, LinkBreak } from "@phosphor-icons/react";
 import { PrivacyData } from "@/types/privacy";
 
 interface DetailedAlertsProps {
@@ -44,7 +44,7 @@ export function DetailedAlerts({ data }: DetailedAlertsProps) {
       className="py-8"
     >
       <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-        <AlertTriangle className="text-warning" size={24} />
+        <Warning className="text-warning" size={24} weight="bold" />
         Detailed Alerts
       </h2>
 
@@ -60,21 +60,21 @@ export function DetailedAlerts({ data }: DetailedAlertsProps) {
           <div className={`p-5 bg-gradient-to-r ${getRiskGradient(dustAttack.linkingRisk)} border-b border-border/30`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className={`p-3 rounded-2xl ${dustAttack.dustAttackDetected ? 'bg-critical/20 border border-critical/30' : 'bg-success/20 border border-success/30'}`}>
-                  <Shield className={dustAttack.dustAttackDetected ? 'text-critical' : 'text-success'} size={28} />
+                <div className={`p-3 ${dustAttack.dustAttackDetected ? 'bg-critical/20 border border-critical/30' : 'bg-success/20 border border-success/30'}`}>
+                  <Shield className={dustAttack.dustAttackDetected ? 'text-critical' : 'text-success'} size={28} weight="bold" />
                 </div>
                 <div>
                   <h3 className="font-bold text-lg">Dust Attack Detection</h3>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${dustAttack.dustAttackDetected ? 'bg-critical/20 text-critical' : 'bg-success/20 text-success'}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${dustAttack.dustAttackDetected ? 'bg-critical animate-pulse' : 'bg-success'}`} />
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 text-xs font-bold ${dustAttack.dustAttackDetected ? 'bg-critical/20 text-critical' : 'bg-success/20 text-success'}`}>
+                      <span className={`w-1.5 h-1.5 ${dustAttack.dustAttackDetected ? 'bg-critical animate-pulse' : 'bg-success'}`} />
                       {dustAttack.dustAttackDetected ? 'Detected' : 'Not Detected'}
                     </span>
                   </div>
                 </div>
               </div>
               {dustAttack.dustAttackDetected && (
-                <span className={`px-3 py-1.5 rounded-lg text-xs font-bold ${getRiskBadge(dustAttack.linkingRisk)}`}>
+                <span className={`px-3 py-1.5 text-xs font-bold ${getRiskBadge(dustAttack.linkingRisk)}`}>
                   {dustAttack.linkingRisk}
                 </span>
               )}
@@ -87,16 +87,16 @@ export function DetailedAlerts({ data }: DetailedAlertsProps) {
               <div className="space-y-4">
                 {/* Stats Grid */}
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="p-4 rounded-xl bg-muted/30 border border-border/30">
+                  <div className="p-4 bg-muted/30 border border-border/30">
                     <div className="flex items-center gap-2 mb-2">
-                      <TrendingDown size={14} className="text-critical" />
+                      <TrendDown size={14} className="text-critical" weight="bold" />
                       <span className="text-xs text-muted-foreground font-medium">Dust Transactions</span>
                     </div>
                     <p className="text-2xl font-bold font-mono">{dustAttack.dustTransactionsReceived}</p>
                   </div>
-                  <div className="p-4 rounded-xl bg-muted/30 border border-border/30">
+                  <div className="p-4 bg-muted/30 border border-border/30">
                     <div className="flex items-center gap-2 mb-2">
-                      <Users size={14} className="text-warning" />
+                      <Users size={14} className="text-warning" weight="bold" />
                       <span className="text-xs text-muted-foreground font-medium">Unique Senders</span>
                     </div>
                     <p className="text-2xl font-bold font-mono">{dustAttack.uniqueDustSenders.length}</p>
@@ -104,41 +104,41 @@ export function DetailedAlerts({ data }: DetailedAlertsProps) {
                 </div>
 
                 {/* Vulnerability Score Bar */}
-                <div className="p-4 rounded-xl bg-muted/20 border border-border/30">
+                <div className="p-4 bg-muted/20 border border-border/30">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      <Percent size={14} className="text-muted-foreground" />
+                      <Percent size={14} className="text-muted-foreground" weight="bold" />
                       <span className="text-sm text-muted-foreground">Vulnerability Score</span>
                     </div>
                     <span className={`text-xl font-bold font-mono ${dustAttack.dustVulnerability > 0.7 ? 'text-critical' : dustAttack.dustVulnerability > 0.4 ? 'text-warning' : 'text-success'}`}>
                       {(dustAttack.dustVulnerability * 100).toFixed(0)}%
                     </span>
                   </div>
-                  <div className="h-3 bg-muted rounded-full overflow-hidden">
+                  <div className="h-3 bg-muted overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${dustAttack.dustVulnerability * 100}%` }}
                       transition={{ duration: 1, delay: 1 }}
-                      className={`h-full rounded-full ${dustAttack.dustVulnerability > 0.7 ? 'bg-critical' : dustAttack.dustVulnerability > 0.4 ? 'bg-warning' : 'bg-success'}`}
+                      className={`h-full ${dustAttack.dustVulnerability > 0.7 ? 'bg-critical' : dustAttack.dustVulnerability > 0.4 ? 'bg-warning' : 'bg-success'}`}
                     />
                   </div>
                 </div>
 
                 {/* Linking Risk */}
-                <div className="flex items-center justify-between p-4 rounded-xl bg-critical/5 border border-critical/20">
+                <div className="flex items-center justify-between p-4 bg-critical/5 border border-critical/20">
                   <div className="flex items-center gap-2">
-                    <Link2 size={14} className="text-critical" />
+                    <LinkBreak size={14} className="text-critical" weight="bold" />
                     <span className="text-sm font-medium">Wallet Linking Risk</span>
                   </div>
-                  <span className={`px-3 py-1 rounded-lg text-sm font-bold ${getRiskBadge(dustAttack.linkingRisk)}`}>
+                  <span className={`px-3 py-1 text-sm font-bold ${getRiskBadge(dustAttack.linkingRisk)}`}>
                     {dustAttack.linkingRisk}
                   </span>
                 </div>
               </div>
             ) : (
               <div className="text-center py-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-success/10 border border-success/20 mb-4">
-                  <Shield className="text-success" size={32} />
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-success/10 border border-success/20 mb-4">
+                  <Shield className="text-success" size={32} weight="bold" />
                 </div>
                 <p className="text-muted-foreground">
                   No dust attack transactions detected. Your wallet appears clean from this attack vector.
@@ -159,21 +159,21 @@ export function DetailedAlerts({ data }: DetailedAlertsProps) {
           <div className={`p-5 bg-gradient-to-r ${exchangeFingerprint.kycExposure > 0.5 ? 'from-warning/20 via-warning/10 to-transparent' : 'from-success/10 via-success/5 to-transparent'} border-b border-border/30`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className={`p-3 rounded-2xl ${exchangeFingerprint.kycExposure > 0.5 ? 'bg-warning/20 border border-warning/30' : 'bg-success/20 border border-success/30'}`}>
-                  <Building className={exchangeFingerprint.kycExposure > 0.5 ? 'text-warning' : 'text-success'} size={28} />
+                <div className={`p-3 ${exchangeFingerprint.kycExposure > 0.5 ? 'bg-warning/20 border border-warning/30' : 'bg-success/20 border border-success/30'}`}>
+                  <Bank className={exchangeFingerprint.kycExposure > 0.5 ? 'text-warning' : 'text-success'} size={28} weight="bold" />
                 </div>
                 <div>
                   <h3 className="font-bold text-lg">Exchange/KYC Exposure</h3>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${exchangeFingerprint.exchangeInteractionDetected ? 'bg-warning/20 text-warning' : 'bg-success/20 text-success'}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${exchangeFingerprint.exchangeInteractionDetected ? 'bg-warning' : 'bg-success'}`} />
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 text-xs font-bold ${exchangeFingerprint.exchangeInteractionDetected ? 'bg-warning/20 text-warning' : 'bg-success/20 text-success'}`}>
+                      <span className={`w-1.5 h-1.5 ${exchangeFingerprint.exchangeInteractionDetected ? 'bg-warning' : 'bg-success'}`} />
                       {exchangeFingerprint.exchangeInteractionDetected ? 'Interactions Detected' : 'No Interactions'}
                     </span>
                   </div>
                 </div>
               </div>
               {exchangeFingerprint.traceabilityRisk && (
-                <span className={`px-3 py-1.5 rounded-lg text-xs font-bold ${getRiskBadge(exchangeFingerprint.traceabilityRisk)}`}>
+                <span className={`px-3 py-1.5 text-xs font-bold ${getRiskBadge(exchangeFingerprint.traceabilityRisk)}`}>
                   {exchangeFingerprint.traceabilityRisk}
                 </span>
               )}
@@ -184,22 +184,22 @@ export function DetailedAlerts({ data }: DetailedAlertsProps) {
           <div className="p-5">
             <div className="space-y-4">
               {/* KYC Exposure Bar */}
-              <div className="p-4 rounded-xl bg-muted/20 border border-border/30">
+              <div className="p-4 bg-muted/20 border border-border/30">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <Percent size={14} className="text-muted-foreground" />
+                    <Percent size={14} className="text-muted-foreground" weight="bold" />
                     <span className="text-sm text-muted-foreground">KYC Exposure Level</span>
                   </div>
                   <span className={`text-xl font-bold font-mono ${exchangeFingerprint.kycExposure > 0.7 ? 'text-critical' : exchangeFingerprint.kycExposure > 0.4 ? 'text-warning' : 'text-success'}`}>
                     {(exchangeFingerprint.kycExposure * 100).toFixed(0)}%
                   </span>
                 </div>
-                <div className="h-3 bg-muted rounded-full overflow-hidden">
+                <div className="h-3 bg-muted overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${exchangeFingerprint.kycExposure * 100}%` }}
                     transition={{ duration: 1, delay: 1.1 }}
-                    className={`h-full rounded-full ${exchangeFingerprint.kycExposure > 0.7 ? 'bg-critical' : exchangeFingerprint.kycExposure > 0.4 ? 'bg-warning' : 'bg-success'}`}
+                    className={`h-full ${exchangeFingerprint.kycExposure > 0.7 ? 'bg-critical' : exchangeFingerprint.kycExposure > 0.4 ? 'bg-warning' : 'bg-success'}`}
                   />
                 </div>
               </div>
@@ -208,18 +208,18 @@ export function DetailedAlerts({ data }: DetailedAlertsProps) {
               {(exchangeFingerprint.exchangeDeposits !== undefined || exchangeFingerprint.exchangeWithdrawals !== undefined) && (
                 <div className="grid grid-cols-2 gap-3">
                   {exchangeFingerprint.exchangeDeposits !== undefined && (
-                    <div className="p-4 rounded-xl bg-muted/30 border border-border/30">
+                    <div className="p-4 bg-muted/30 border border-border/30">
                       <div className="flex items-center gap-2 mb-2">
-                        <ArrowUpRight size={14} className="text-warning" />
+                        <ArrowUpRight size={14} className="text-warning" weight="bold" />
                         <span className="text-xs text-muted-foreground font-medium">Deposits</span>
                       </div>
                       <p className="text-2xl font-bold font-mono">{exchangeFingerprint.exchangeDeposits}</p>
                     </div>
                   )}
                   {exchangeFingerprint.exchangeWithdrawals !== undefined && (
-                    <div className="p-4 rounded-xl bg-muted/30 border border-border/30">
+                    <div className="p-4 bg-muted/30 border border-border/30">
                       <div className="flex items-center gap-2 mb-2">
-                        <ArrowDownRight size={14} className="text-success" />
+                        <ArrowDownRight size={14} className="text-success" weight="bold" />
                         <span className="text-xs text-muted-foreground font-medium">Withdrawals</span>
                       </div>
                       <p className="text-2xl font-bold font-mono">{exchangeFingerprint.exchangeWithdrawals}</p>
@@ -230,7 +230,7 @@ export function DetailedAlerts({ data }: DetailedAlertsProps) {
 
               {/* Detected Exchanges */}
               {exchangeFingerprint.detectedExchanges.length > 0 && (
-                <div className="p-4 rounded-xl bg-muted/20 border border-border/30">
+                <div className="p-4 bg-muted/20 border border-border/30">
                   <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-3">Detected Exchanges</p>
                   <div className="flex flex-wrap gap-2">
                     {exchangeFingerprint.detectedExchanges.map((exchange, index) => (
@@ -239,13 +239,13 @@ export function DetailedAlerts({ data }: DetailedAlertsProps) {
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: index * 0.1 + 1.2 }}
-                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium ${
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium ${
                           exchange.type === 'CEX'
                             ? 'bg-warning/20 text-warning border border-warning/30'
                             : 'bg-primary/20 text-primary border border-primary/30'
                         }`}
                       >
-                        <Building size={12} />
+                        <Bank size={12} weight="bold" />
                         {exchange.name}
                         <span className="text-xs opacity-70">({exchange.type})</span>
                       </motion.span>

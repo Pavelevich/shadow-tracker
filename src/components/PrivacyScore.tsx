@@ -75,11 +75,15 @@ export function PrivacyScore({ data }: PrivacyScoreProps) {
       transition={{ duration: 0.6 }}
       className="py-12"
     >
-      <div className="glass-card p-8 md:p-12 max-w-3xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+      <div className="glass-card p-6 sm:p-8 md:p-12 max-w-3xl mx-auto">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-6 sm:gap-8 md:gap-16">
           {/* Score Gauge */}
-          <div className="relative">
-            <svg width="280" height="280" className="transform -rotate-90">
+          <div className="relative w-[200px] sm:w-[240px] md:w-[280px] aspect-square flex-shrink-0">
+            <svg
+              viewBox="0 0 280 280"
+              className="w-full h-full transform -rotate-90"
+              preserveAspectRatio="xMidYMid meet"
+            >
               {/* Background circle */}
               <circle
                 cx="140"
@@ -110,18 +114,18 @@ export function PrivacyScore({ data }: PrivacyScoreProps) {
                 </linearGradient>
               </defs>
             </svg>
-            
+
             {/* Center content */}
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <motion.span
-                className={`text-7xl font-black ${getScoreColor(advancedPrivacyScore)} score-highlight`}
+                className={`text-5xl sm:text-6xl md:text-7xl font-black ${getScoreColor(advancedPrivacyScore)} score-highlight`}
                 initial={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.5, duration: 0.5, type: "spring" }}
               >
                 {animatedScore}
               </motion.span>
-              <span className="text-muted-foreground text-xs uppercase tracking-widest mt-2 font-medium">
+              <span className="text-muted-foreground text-[10px] sm:text-xs uppercase tracking-widest mt-1 sm:mt-2 font-medium">
                 Privacy Score
               </span>
             </div>

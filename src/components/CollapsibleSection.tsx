@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { CaretDown } from "@phosphor-icons/react";
 
 interface CollapsibleSectionProps {
   title: string;
@@ -17,7 +17,7 @@ export function CollapsibleSection({
   defaultOpen = false,
   children,
   badge,
-  badgeColor = "#14f195",
+  badgeColor = "#10B981",
 }: CollapsibleSectionProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
@@ -26,14 +26,14 @@ export function CollapsibleSection({
       {/* Header - Always visible */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full p-4 flex items-center justify-between hover:bg-muted/10 transition-colors"
+        className="w-full p-4 flex items-center justify-between hover:bg-muted/10 transition-colors touch-feedback"
       >
         <div className="flex items-center gap-3">
           {icon && <span className="text-muted-foreground">{icon}</span>}
           <span className="font-semibold">{title}</span>
           {badge && (
             <span
-              className="text-xs px-2 py-0.5 rounded-full"
+              className="text-xs px-2 py-0.5"
               style={{
                 backgroundColor: `${badgeColor}20`,
                 color: badgeColor,
@@ -47,7 +47,7 @@ export function CollapsibleSection({
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
         >
-          <ChevronDown size={20} className="text-muted-foreground" />
+          <CaretDown size={20} className="text-muted-foreground" weight="bold" />
         </motion.div>
       </button>
 

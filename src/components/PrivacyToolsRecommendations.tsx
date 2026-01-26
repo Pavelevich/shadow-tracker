@@ -5,13 +5,13 @@ import {
   Shield,
   Lock,
   Shuffle,
-  ArrowRightLeft,
-  Droplets,
-  ExternalLink,
-  AlertCircle,
+  ArrowsLeftRight,
+  Drop,
+  ArrowSquareOut,
+  Warning,
   CheckCircle,
-  TrendingUp
-} from "lucide-react";
+  TrendUp
+} from "@phosphor-icons/react";
 import { PrivacyData, ToolRecommendation } from "@/types/privacy";
 import { getToolRecommendations } from "@/lib/privacyProjections";
 
@@ -19,12 +19,12 @@ interface PrivacyToolsRecommendationsProps {
   data: PrivacyData;
 }
 
-const iconMap: Record<string, React.ComponentType<{ className?: string; size?: number }>> = {
+const iconMap: Record<string, React.ComponentType<{ className?: string; size?: number; weight?: string }>> = {
   Shield,
   Lock,
   Shuffle,
-  ArrowRightLeft,
-  Droplets,
+  ArrowRightLeft: ArrowsLeftRight,
+  Droplets: Drop,
 };
 
 export function PrivacyToolsRecommendations({ data }: PrivacyToolsRecommendationsProps) {
@@ -46,11 +46,11 @@ export function PrivacyToolsRecommendations({ data }: PrivacyToolsRecommendation
   const getPriorityIcon = (priority: string) => {
     switch (priority) {
       case "HIGH":
-        return <AlertCircle size={12} />;
+        return <Warning size={12} weight="bold" />;
       case "MEDIUM":
-        return <AlertCircle size={12} />;
+        return <Warning size={12} weight="bold" />;
       default:
-        return <CheckCircle size={12} />;
+        return <CheckCircle size={12} weight="bold" />;
     }
   };
 
@@ -62,7 +62,7 @@ export function PrivacyToolsRecommendations({ data }: PrivacyToolsRecommendation
       className="py-8"
     >
       <h2 className="text-2xl font-bold mb-2 flex items-center gap-3">
-        <Wrench className="text-primary" size={24} />
+        <Wrench className="text-primary" size={24} weight="bold" />
         Recommended Privacy Tools
       </h2>
       <p className="text-muted-foreground text-sm mb-6">
@@ -115,8 +115,8 @@ export function PrivacyToolsRecommendations({ data }: PrivacyToolsRecommendation
 
                 {/* Issue detected */}
                 <div className="mt-2 flex items-center gap-2 text-[10px]">
-                  <div className="p-0.5 rounded bg-warning/20 shrink-0">
-                    <AlertCircle size={10} className="text-warning" />
+                  <div className="p-0.5 bg-warning/20 shrink-0">
+                    <Warning size={10} className="text-warning" weight="bold" />
                   </div>
                   <span className="text-muted-foreground truncate">{rec.relevantIssue}</span>
                 </div>
@@ -125,9 +125,9 @@ export function PrivacyToolsRecommendations({ data }: PrivacyToolsRecommendation
                 <div className="flex-1 min-h-2" />
 
                 {/* Projected improvement */}
-                <div className="mt-3 flex items-center justify-between p-2.5 rounded-lg bg-success/5 border border-success/20">
+                <div className="mt-3 flex items-center justify-between p-2.5 bg-success/5 border border-success/20">
                   <div className="flex items-center gap-1.5">
-                    <TrendingUp size={12} className="text-success" />
+                    <TrendUp size={12} className="text-success" weight="bold" />
                     <span className="text-[10px] text-muted-foreground">Improvement</span>
                   </div>
                   <span className="text-sm font-bold text-success">+{rec.projectedImprovement} pts</span>
@@ -138,12 +138,12 @@ export function PrivacyToolsRecommendations({ data }: PrivacyToolsRecommendation
                   href={rec.tool.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-3 flex items-center justify-center gap-2 w-full p-2.5 rounded-lg bg-primary/10 border border-primary/30 text-primary font-semibold text-xs hover:bg-primary/20 hover:border-primary/50 transition-all"
+                  className="mt-3 flex items-center justify-center gap-2 w-full p-2.5 bg-primary/10 border border-primary/30 text-primary font-semibold text-xs hover:bg-primary/20 hover:border-primary/50 transition-all"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   Use {rec.tool.name}
-                  <ExternalLink size={12} />
+                  <ArrowSquareOut size={12} weight="bold" />
                 </motion.a>
               </div>
             </motion.div>

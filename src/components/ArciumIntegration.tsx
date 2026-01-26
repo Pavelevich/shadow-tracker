@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { Lock, ArrowRight, Check, ExternalLink, Cpu, Shield, Eye, EyeOff } from "lucide-react";
+import { Lock, ArrowRight, Check, ArrowSquareOut, Cpu, Shield, Eye, EyeSlash } from "@phosphor-icons/react";
 import { PrivacyData } from "@/types/privacy";
 
 interface ArciumIntegrationProps {
@@ -72,8 +72,8 @@ export function ArciumIntegration({ data }: ArciumIntegrationProps) {
         {/* Header with Arcium branding */}
         <div className="bg-gradient-to-r from-purple-500/20 via-purple-500/10 to-transparent p-6 border-b border-purple-500/20">
           <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-purple-500/20 border border-purple-500/30">
-              <Lock className="text-purple-400" size={28} />
+            <div className="p-3 bg-purple-500/20 border border-purple-500/30">
+              <Lock className="text-purple-400" size={28} weight="duotone" />
             </div>
             <div>
               <h2 className="text-xl font-bold">
@@ -88,9 +88,9 @@ export function ArciumIntegration({ data }: ArciumIntegrationProps) {
 
         <div className="p-6 space-y-6">
           {/* What is MPC */}
-          <div className="p-4 rounded-xl bg-purple-500/5 border border-purple-500/20">
+          <div className="p-4 bg-purple-500/5 border border-purple-500/20">
             <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
-              <Cpu size={16} className="text-purple-400" />
+              <Cpu size={16} className="text-purple-400" weight="bold" />
               What is Multi-Party Computation?
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -101,7 +101,7 @@ export function ArciumIntegration({ data }: ArciumIntegrationProps) {
           </div>
 
           {/* Score Comparison */}
-          <div className="flex items-center justify-center gap-4 md:gap-8 p-6 rounded-xl bg-muted/20 border border-border/30">
+          <div className="flex items-center justify-center gap-4 md:gap-8 p-6 bg-muted/20 border border-border/30">
             <div className="text-center">
               <p className="text-muted-foreground text-xs uppercase tracking-wider mb-2">Current</p>
               <motion.p
@@ -119,7 +119,7 @@ export function ArciumIntegration({ data }: ArciumIntegrationProps) {
               transition={{ delay: 0.3 }}
               className="flex flex-col items-center"
             >
-              <ArrowRight className="text-purple-400" size={24} />
+              <ArrowRight className="text-purple-400" size={24} weight="bold" />
               <span className="text-xs text-success font-bold mt-1">
                 +{projection.improvement.toFixed(0)}
               </span>
@@ -148,13 +148,13 @@ export function ArciumIntegration({ data }: ArciumIntegrationProps) {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 + 0.4 }}
-                  className="p-4 rounded-xl bg-muted/20 border border-border/30 hover:border-purple-500/30 transition-colors"
+                  className="p-4 bg-muted/20 border border-border/30 hover:border-purple-500/30 transition-colors"
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <div className="p-2 rounded-lg bg-purple-500/10 border border-purple-500/20">
-                      {feature.icon === "EyeOff" && <EyeOff size={16} className="text-purple-400" />}
-                      {feature.icon === "Cpu" && <Cpu size={16} className="text-purple-400" />}
-                      {feature.icon === "Shield" && <Shield size={16} className="text-purple-400" />}
+                    <div className="p-2 bg-purple-500/10 border border-purple-500/20">
+                      {feature.icon === "EyeOff" && <EyeSlash size={16} className="text-purple-400" weight="bold" />}
+                      {feature.icon === "Cpu" && <Cpu size={16} className="text-purple-400" weight="bold" />}
+                      {feature.icon === "Shield" && <Shield size={16} className="text-purple-400" weight="bold" />}
                     </div>
                     <span className="text-xs font-bold text-success">{feature.improvement}</span>
                   </div>
@@ -177,7 +177,7 @@ export function ArciumIntegration({ data }: ArciumIntegrationProps) {
                   transition={{ delay: index * 0.05 + 0.6 }}
                   className="flex items-center gap-2 text-sm"
                 >
-                  <Check size={14} className="text-purple-400 shrink-0" />
+                  <Check size={14} className="text-purple-400 shrink-0" weight="bold" />
                   <span className="text-muted-foreground">{useCase}</span>
                 </motion.div>
               ))}
@@ -185,12 +185,12 @@ export function ArciumIntegration({ data }: ArciumIntegrationProps) {
           </div>
 
           {/* SDK Code Example */}
-          <div className="p-4 rounded-xl bg-purple-500/5 border border-purple-500/20">
+          <div className="p-4 bg-purple-500/5 border border-purple-500/20">
             <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-              <Cpu size={16} className="text-purple-400" />
+              <Cpu size={16} className="text-purple-400" weight="bold" />
               Quick Start - Confidential Token Transfer
             </h3>
-            <div className="bg-black/40 rounded-lg p-4 overflow-x-auto">
+            <div className="bg-black/40 p-4 overflow-x-auto">
               <pre className="text-xs font-mono text-purple-300">
 {`import { ArciumProvider, ConfidentialToken } from "@arcium/sdk";
 
@@ -228,13 +228,13 @@ const balance = await arcium.decryptBalance(ctAccount);`}
             href="https://arcium.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full p-4 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold hover:from-purple-400 hover:to-purple-500 transition-all shadow-lg shadow-purple-500/25"
+            className="flex items-center justify-center gap-2 w-full p-4 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold hover:from-purple-400 hover:to-purple-500 transition-all shadow-lg shadow-purple-500/25"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <Lock size={20} />
+            <Lock size={20} weight="bold" />
             Explore Arcium MPC
-            <ExternalLink size={16} />
+            <ArrowSquareOut size={16} weight="bold" />
           </motion.a>
 
           <p className="text-xs text-muted-foreground text-center">
