@@ -19,7 +19,7 @@ export function Footer() {
           ))}
         </div>
         <a
-          href="https://github.com/Pavelevich/solprivacy-cli"
+          href="https://github.com/Pavelevich/shadow-tracker"
           target="_blank"
           rel="noopener noreferrer"
           className="p-2 touch-feedback"
